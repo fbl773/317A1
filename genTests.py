@@ -24,32 +24,45 @@ def getCoord(d):
 		coord.append(str(addMe))
 	return coord
 
-#MAIN#####
-
-def getSet(d,y):
+def genSet(d,y):
 	group = []
 	for i in range(y):
 		group.append(getCoord(d))
 	return group
+
+"""
+oneTest()
+	- Outputs M-N-K-Y values as one followed by 1 randomized point in 1d space
+"""
+def oneTest():
+	mnky = '1 1 1 1 '
+	point  = genSet(1,1)
+	return mnky + point[0][0]
+
+
+def getMNKY(mnky):
+	return ' '.join(mnky)
 	
 def usage():
 	bannr = "\n#################################################\n"
-	usgMsg = "USAGE: genPoints <dimensionality> <#Coordinates>"
-	infoMsg= "Generates n random points of dimensionality y"
+	usgMsg = "USAGE: genTest <MNKY>"
+	infoMsg= "Outputs the MNKY values then Generates n random \npoints of dimensionality y"
 	
 	return bannr + infoMsg + '\n' + usgMsg + bannr
 #MAIN#################
 
 #I know this is a bunk check, I also know that I really shouldn't need exception handling in a program this simple. 
 # But It works. and This is really more of a novelty."
-if sys.argv[1] is '-u':
+if sys.argv[1] is 'u':
 	print (usage())
 else:
 	try:
-		dimensions = sys.argv[1]
-		numPoints = sys.argv[2]
-		print (getCoord(int(dimension)))
-		print("A group of 4:\n", getSet(int(dimension),int(numPoints)))
+		mnky = sys.argv[1]
+		if mnky is '1':
+			print (oneTest())
+		else:
+			print(getMNKY(mnky) , genSet(int(mnky[1]),int(mnky[3])))
 	except IndexError as e:
+		print (e)
 		print (usage())
 
