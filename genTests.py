@@ -24,7 +24,7 @@ def getCoord(d):
 		coord.append(str(addMe))
 	return coord
 
-def genSet(d,y):
+def genSet(y,d):
 	group = []
 	for i in range(y):
 		group.append(getCoord(d))
@@ -36,8 +36,10 @@ oneTest()
 """
 def oneTest():
 	mnky = '1 1 1 1 '
-	point  = genSet(1,1)
-	return mnky + point[0][0]
+	pointSrc  = genSet(1,1)
+	pointDes  = genSet(1,1)	
+	return mnky + pointSrc[0][0] +' ' + pointDes[0][0]
+
 
 
 def getMNKY(mnky):
@@ -60,8 +62,11 @@ else:
 		mnky = sys.argv[1]
 		if mnky is '1':
 			print (oneTest())
-		else:
-			print(getMNKY(mnky) , genSet(int(mnky[1]),int(mnky[3])))
+		else:	
+			numPoints = int(mnky[1])
+			dest = genSet(numPoints,int(mnky[3]))
+			src = genSet(numPoints,int(mnky[3]))
+			print(getMNKY(mnky),src,dest,(mnky[3]))
 	except IndexError as e:
 		print (e)
 		print (usage())
