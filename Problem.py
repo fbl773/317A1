@@ -67,3 +67,15 @@ class Problem:
 			else:
 				newStates.append((0, 0, state.loaded, state.distance + newDist))
 				newStates.append((prob.src, prob.src, state.loaded, state.distance + newDist))
+
+
+#MAIN
+print ("Begin Algorithm Code Program")
+
+src = int(input("Source Coordinate: "))
+dest = int(input("Destination Coordinate: "))
+
+print ("src: ",src, " dest: ", dest)
+print ("Sum is: ", src + dest)
+
+
