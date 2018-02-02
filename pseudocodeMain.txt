@@ -1,0 +1,17 @@
+main()
+	#some way of have source and destination as global because sucessor function needs
+	
+	source = ""
+	destination = ""
+	
+	print "Enter Source"
+	input source #cast to int
+	print "Enter Destination"
+	input source #cast to int
+	
+	startState = createState (0,source,False,0) #vehicle loc, product loc, loaded, distance
+	
+	#search outputs list and cost as global variable
+	seqSolution = search (startState)
+	
+	output seqSolution 
