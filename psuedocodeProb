@@ -1,9 +1,0 @@
-class ProblemParameter(object):
-  #will be arrays/list when more than one
-  src
-  dest
-  
-  def __init__(self, sourceLoc, destLoc):
-    src = sourceLoc
-    dest = destLoc
-    
