@@ -91,7 +91,3 @@ def runTests():
 	return
 
 	
-
-#Main
-runTests()	
-

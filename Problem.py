@@ -126,7 +126,5 @@ def runTests():
 
 	print("Type of Succesors is: ", type(successorList))
 	print(" And it Contains: ", successors)
-#MAIN
 
-runTests()	
 
