@@ -50,6 +50,7 @@ def aStarSearch(state, prob):
 	for value in newNodes:
 		heapq.heappush(heap,(heuristicOneProb(value, prob) + value.distance, value)
 	maxSize = len(heap)
+	nodesCreated = len(heap)
 			       
 	while not isEmpty(heap):
 		currentState = heapq.heappop(heap)
@@ -57,11 +58,13 @@ def aStarSearch(state, prob):
 		sequence.append(currentState)
 			       
 		if Problem.isGoal(currenState,prob):
-			return (sequence, maxSize)
+			return (sequence, nodesCreated, maxSize)
 		else:
 			newNodes.extend(Problem.getSuccessors(currentState, problem)
 			for value in newNodes:
 				heapq.heappush(heap,(heuristicOneProb(value, prob) + value.distance, value)
-				maxSize += 1
+				nodesCreated += 1
+			if len(heap) > maxSize:
+				maxSize = len(heap)
 	
-	return (sequence,maxSize)
+	return (sequence,nodesCreated, maxSize)
