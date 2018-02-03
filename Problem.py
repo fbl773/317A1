@@ -76,7 +76,7 @@ src = float(input("Source Coordinate: "))
 dest = float(input("Destination Coordinate: "))
 
 print ("src: ",src, " dest: ", dest)
-print ("Sum is: ", abs(src) + abs(dest))
+print ("Sum is: ", src + dest)
 
 startState = ProblemState(0,src,False,0)
 
