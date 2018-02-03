@@ -119,13 +119,14 @@ def runTests():
 	print (aProblem.toString())
 
 	#Testing Successor Function
-	successors = aProblem.getSuccessors(startState)
-	print("Type of Succesors is: ", type(successors))
-		
+	successorList = aProblem.getSuccessors(startState)
+	successors = ''	
+	for s in successorList:
+		successors += s.toString()
 
+	print("Type of Succesors is: ", type(successorList))
+	print(" And it Contains: ", successors)
 #MAIN
 
 runTests()	
-
-
 
