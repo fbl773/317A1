@@ -22,13 +22,13 @@ def getCoord(d):
 	for i in range(d):
 		addMe = random()
 		coord.append(str(addMe))
-	return coord
+	return ' '.join(coord)
 
 def genSet(y,d):
 	group = []
 	for i in range(y):
 		group.append(getCoord(d))
-	return group
+	return ' '.join(group)
 
 """
 oneTest()
@@ -66,7 +66,7 @@ else:
 			numPoints = int(mnky[1])
 			dest = genSet(numPoints,int(mnky[3]))
 			src = genSet(numPoints,int(mnky[3]))
-			print(getMNKY(mnky),src,dest,(mnky[3]))
+			print(getMNKY(mnky),src,dest)
 	except IndexError as e:
 		print (e)
 		print (usage())
