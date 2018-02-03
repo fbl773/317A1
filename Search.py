@@ -17,14 +17,14 @@ Breadth first Search of the search states to find the goal state if it exists
 :returns: the state that is found to meet the goal state or nothing if the goal is not found.
 """
 def BFS( startState, problem):
-	queue.extend(startState)		#Added as per Wiz's bug catch, not adding the first state
-	queue.extend(Problem.getSuccessors(startState, problem))
+	queue.append(startState)		#Added as per Wiz's bug catch, not adding the first state
+	queue.extend(problem.getSuccessors(startState, problem))
 	while not isQueueEmpty(queue):
 		state = queue.pop()
 		if Problem.isGoal(state, problem):
 			return state
 		else:
-			queue.extend(Problem.getSuccessors(state, problem))
+			queue.extend(problem.getSuccessors(state, problem))
 	return None
 
 

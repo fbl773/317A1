@@ -69,7 +69,7 @@ class Problem:
 	 Returns a list of the possible moves that to be searched through
 	 param: curState - the current state in the search
 	"""
-	def getSuccessors(state, prob):
+	def getSuccessors(self, state, prob):
 		newStates = []
 		if state.vLoc == 0:
 			newStates.append( ( prob.src, state.pLoc, state.loaded, state.distance+newDist ) )
@@ -86,6 +86,7 @@ class Problem:
 			else:
 				newStates.append((0, 0, state.loaded, state.distance + newDist))
 				newStates.append((prob.src, prob.src, state.loaded, state.distance + newDist))
+		return newStates
 
 
 def runTests():
