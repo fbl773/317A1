@@ -4,15 +4,18 @@
 
 import Problem
 
-#Starting with BFS
+#Queue for BFS
 queue = []
 
 def isQueueEmpty(queue):
 	return queue == []
 
-#BFS
-#Does a Breadth First Search of the Search Space
-
+"""
+Breadth first Search of the search states to find the goal state if it exists
+:param: startState the state at which the search is starting from
+:param: problem the object for the current problem
+:returns: the state that is found to meet the goal state or nothing if the goal is not found.
+"""
 def BFS( startState, problem):
 	queue.extend(Problem.getSuccessors(startState, problem))
 	while not isQueueEmpty(queue):
@@ -21,4 +24,5 @@ def BFS( startState, problem):
 			return state
 		else:
 			queue.extend(Problem.getSuccessors(state, problem))
+	return None
 
