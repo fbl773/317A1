@@ -72,29 +72,29 @@ class Problem:
 	 Returns a list of the possible moves that to be searched through
 	 param: curState - the current state in the search
 	"""
-	def getSuccessors(self,state, prob):
+	def getSuccessors(self,state):
 		newStates = []
 		if state.vLoc == 0:
-			newStates.append( ProblemState(prob.src, state.pLoc, state.loaded, state.distance + abs(prob.src - state.vLoc)) )
-			newStates.append(ProblemState(prob.dest, state.pLoc, state.loaded, state.distance + abs(prob.dest - state.vLoc )) )
-		elif state.vLoc == prob.src :
+			newStates.append( ProblemState(self.src, state.pLoc, state.loaded, state.distance + abs(self.src - state.vLoc)) )
+			newStates.append(ProblemState(self.dest, state.pLoc, state.loaded, state.distance + abs(self.dest - state.vLoc )) )
+		elif state.vLoc == self.src :
 			if state.loaded == False:
 				newStates.append(ProblemState(state.vLoc, state.pLoc, True, state.distance))
 				#also consider that it doesn't pick up package and move without package
-				newStates.append(ProblemState(prob.dest, state.pLoc, state.loaded, state.distance + abs(prob.dest - state.vLoc )) )
+				newStates.append(ProblemState(self.dest, state.pLoc, state.loaded, state.distance + abs(self.dest - state.vLoc )) )
 				newStates.append(ProblemState(0, state.pLoc, state.loaded, state.distance + abs(0 - state.vLoc )) )
 			else:
 				newStates.append(ProblemState(0, 0, state.loaded, state.distance + abs(0 - state.vLoc )))
-				newStates.append(ProblemState(prob.dest, prob.dest, state.loaded, state.distance + abs(prob.dest - state.vLoc )))
+				newStates.append(ProblemState(self.dest, self.dest, state.loaded, state.distance + abs(self.dest - state.vLoc )))
 		else:
 			if state.loaded == True:
 				newStates.append(ProblemState(state.vLoc, state.pLoc, False, state.distance))
 				#also consider when it doesnt do the smart thing
-				newStates.append( ProblemState( prob.src, state.pLoc, state.loaded, state.distance + abs(prob.src - state.vLoc )) )
+				newStates.append( ProblemState( self.src, state.pLoc, state.loaded, state.distance + abs(self.src - state.vLoc )) )
 				newStates.append(ProblemState( 0, state.pLoc, state.loaded, state.distance + abs(0 - state.vLoc)) )
 			else:
 				newStates.append(ProblemState(0, 0, state.loaded, state.distance + abs(0 - state.vLoc)))
-				newStates.append(ProblemState(prob.src, prob.src, state.loaded, state.distance + abs(prob.src - state.vLoc)))
+				newStates.append(ProblemState(self.src, self.src, state.loaded, state.distance + abs(self.src - state.vLoc)))
 		return newStates
 
 def runTests():
@@ -119,6 +119,8 @@ def runTests():
 	print (aProblem.toString())
 
 	#Testing Successor Function
+	successors = aProblem.getSuccessors(startState)
+	print("Type of Succesors is: ", type(successors))
 		
 
 #MAIN
