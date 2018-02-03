@@ -7,13 +7,29 @@ heuristic for the 1 problem
 	def heuristicOneProb(state,prob):
 		estCost = 0
 		if state.loaded:
-			if stat.vLoc == prob.dest:
+			if state.vLoc == prob.dest:
 				estCost = prob.dest
 			else:
 				#at 0 or source
 				estCost = abs(prob.dest - state.vLoc) + prob.dest
 		else:
 			estCost = abs(prob.src - state.vLoc) + abs(prob.src - prob.dest) + prob.dest
+		
+		return estCost
+"""
+heuristic for the 1 problem but 2 dimensions
+
+"""
+	def heuristicOneProb2D(state,prob):
+		estCost = 0
+		if state.loaded:
+			if state.vLoc == prob.dest:
+				estCost = coordinate.eudCalc((0,0), prob.dest)
+			else:
+				#at 0 or source
+				estCost = coordinate.eudCalc(state.vLoc,prob.dest) + coordinate.eudCalc((0,0), prob.dest)
+		else:
+			estCost = coordinate.eudCalc(state.vLoc, prob.src) + coordinate.eudCalc(prob.src,prob.dest) + coordinate.eudCalc((0,0), prob.dest)
 		
 		return estCost
 
