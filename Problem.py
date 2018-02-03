@@ -5,10 +5,10 @@
 #ProblemState
 #Object to hold a state of the problem
 class ProblemState(object):
-	vLoc
-	pLoc
-	loaded
-	distance 
+	vLoc = 0
+	pLoc = 0
+	loaded = False
+	distance = 0
 
 	def __init__(self, vLoc, pLoc, loaded, distance): 
 		self.vLoc = vLoc
@@ -61,7 +61,7 @@ class Problem:
 		prob  - the current problem to check against
 		return: true of the state matches the goal state false otherwise
 	"""
-	def isGoal( state, prob):
+	def isGoal( self, state, prob):
 		if state.vLoc == 0 and state.pLoc == prob.dest:
 			return True
 		else:
@@ -72,7 +72,7 @@ class Problem:
 	 Returns a list of the possible moves that to be searched through
 	 param: curState - the current state in the search
 	"""
-	def getSuccessors(state, prob):
+	def getSuccessors(self,state, prob):
 		newStates = []
 		if state.vLoc == 0:
 			newStates.append( ProblemState(prob.src, state.pLoc, state.loaded, state.distance + abs(prob.src - state.vLoc)) )
@@ -103,21 +103,27 @@ def runTests():
 	src = float(input("Source Coordinate: "))
 	dest = float(input("Destination Coordinate: "))
 
+	#Testing Input validity
 	print ("src: ",src, " dest: ", dest)
 	print ("Sum is: ", src + dest)
 
+	#Testing State Declaration
 	startState = ProblemState(0,src,False,0)
-
 	if startState is None:
 		print ("No no no no no no no no no no none")
 	else:
 		print ("StartState is not None: ", startState.toString())
 
-
+	#Testing Problem Declaration
 	aProblem = Problem(src,dest)
 	print (aProblem.toString())
 
+	#Testing Successor Function
+		
 
+#MAIN
+
+runTests()	
 
 
 
