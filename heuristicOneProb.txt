@@ -1,0 +1,13 @@
+#heuristic for the 1 problem
+	def heuristicOneProb(state,prob):
+		estCost = 0
+		if state.loaded:
+			if stat.vLoc == prob.dest:
+				estCost = prob.dest
+			else:
+				#at 0 or source
+				estCost = abs(prob.dest - state.vLoc) + prob.dest
+		else:
+			estCost = abs(prob.src - state.vLoc) + abs(prob.src - prob.dest) + prob.dest
+		
+		return estCost
