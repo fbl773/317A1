@@ -15,7 +15,18 @@ class ProblemState(object):
 		self.pLoc = pLoc
 		self.loaded = loaded
 		self.distance = distance
+	"""
+	toString()
+	- Returns a string represntation Problem state Attributes
+	"""
+	def toString(self):
+		bannr = "\n****PROBLEM_STATE****\n"
+		return (bannr + "vLoc: " +str(self.vLoc) + '\n' +
+				"pLoc: " + str(self.pLoc) + '\n'+
+				"loaded: " + str(self.loaded) + '\n' +
+				"distance: " + str(self.distance) + '\n') 
 
+	
 """
  Problem
   the problem for the function
@@ -30,7 +41,15 @@ class Problem:
 	def __init__(self, dest, source): 
 		self.dest = dest
 		self.src = source
-
+	
+	""" 
+	toString()
+	- Returns a string representation of the Problem Object
+	"""
+	def toString(self):
+		bannr = "\n****PROBLEM****\n"
+		return(bannr + "Destination:Source" + '\n' +
+			  str(self.dest) + ':' + str(self.src))
 	"""
 	isGoal()
 	Goal checking function
@@ -83,5 +102,13 @@ startState = ProblemState(0,src,False,0)
 if startState is None:
 	print ("No no no no no no no no no no none")
 else:
-	print ("StartState is not None: ", startState)
+	print ("StartState is not None: ", startState.toString())
+
+
+aProblem = Problem(src,dest)
+print (aProblem.toString())
+
+
+
+
 
