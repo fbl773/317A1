@@ -5,16 +5,19 @@
 #ProblemState
 #Object to hold a state of the problem
 class ProblemState(object):
-	vLoc = 0.0 
-	pLoc = 0.0
-	loaded = ''
-	distance = 0
+	vLoc
+	pLoc
+	loaded
+	distance 
 
 	def __init__(self, vLoc, pLoc, loaded, distance): 
 		self.vLoc = vLoc
 		self.pLoc = pLoc
 		self.loaded = loaded
 		self.distance = distance
+	
+	def __lt__(self, other):
+    		return self.distance < other.distance
 
 """
  Problem
