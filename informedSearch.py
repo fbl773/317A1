@@ -36,19 +36,19 @@ heuristic for the 1 problem but 2 dimensions
 """
 Greedy search
 """
-def greedySearch(state, prob):
+def greedySearch(state):
 	heap = []
 	
-	heap.extend(Problem.getSuccessors(state, problem))
+	heap.extend(Problem.getSuccessors(state))
 	heapq.heapify(heap)
 	
 	while not isEmpty(heap):
 		currentState = heapq.heappop(heap)
 		
-		if Problem.isGoal(currenState,prob):
+		if Problem.isGoal(currenState):
 			return currentState
 		else:
-			heap.extend(Problem.getSuccessors(currentState, problem))
+			heap.extend(Problem.getSuccessors(currentState))
 	
 	return None
 	
@@ -59,12 +59,12 @@ def aStarSearch(state, prob):
 	heap = []
 	
 	newNodes = []
-	newNodes.extend(Problem.getSuccessors(state, problem)
+	newNodes.extend(Problem.getSuccessors(state)
 	
 	sequence = []
 			
 	for value in newNodes:
-		heapq.heappush(heap,(heuristicOneProb(value, prob) + value.distance, value)
+		heapq.heappush(heap,(heuristicOneProb(value,prob) + value.distance, value)
 	maxSize = len(heap)
 	nodesCreated = len(heap)
 			       
@@ -76,7 +76,7 @@ def aStarSearch(state, prob):
 		if Problem.isGoal(currenState,prob):
 			return (sequence, nodesCreated, maxSize)
 		else:
-			newNodes.extend(Problem.getSuccessors(currentState, problem)
+			newNodes.extend(Problem.getSuccessors(currentState)
 			for value in newNodes:
 				heapq.heappush(heap,(heuristicOneProb(value, prob) + value.distance, value)
 				nodesCreated += 1
