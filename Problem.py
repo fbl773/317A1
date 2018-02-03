@@ -61,8 +61,8 @@ class Problem:
 		prob  - the current problem to check against
 		return: true of the state matches the goal state false otherwise
 	"""
-	def isGoal( self, state, prob):
-		if state.vLoc == 0 and state.pLoc == prob.dest:
+	def isGoal( self, state):
+		if state.vLoc == 0 and state.pLoc == self.dest:
 			return True
 		else:
 			return False
@@ -99,13 +99,13 @@ class Problem:
 
 def runTests():
 	print ("Begin Algorithm Code Program")
-
+	
+	bannr = '\n*****************************\n'
 	src = float(input("Source Coordinate: "))
 	dest = float(input("Destination Coordinate: "))
 
 	#Testing Input validity
 	print ("src: ",src, " dest: ", dest)
-	print ("Sum is: ", src + dest)
 
 	#Testing State Declaration
 	startState = ProblemState(0,src,False,0)
@@ -114,9 +114,13 @@ def runTests():
 	else:
 		print ("StartState is not None: ", startState.toString())
 
+	print (bannr)
+
 	#Testing Problem Declaration
 	aProblem = Problem(src,dest)
 	print (aProblem.toString())
+
+	print (bannr)
 
 	#Testing Successor Function
 	successorList = aProblem.getSuccessors(startState)
@@ -127,4 +131,5 @@ def runTests():
 	print("Type of Succesors is: ", type(successorList))
 	print(" And it Contains: ", successors)
 
+	print (bannr, "PROBLEM MODULE TESTING FINISHED",bannr)
 

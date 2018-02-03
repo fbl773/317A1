@@ -15,10 +15,10 @@ print ("MNKY Tester")
 print ("PROBLEM")
 print ("-------")
 
-Problem.runTests()
+#Problem.runTests()
 
 
 
 print ("SEARCH")
 print ("------")
-#Search.runTests()
+Search.runTests()
