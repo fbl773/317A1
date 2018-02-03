@@ -72,10 +72,16 @@ class Problem:
 #MAIN
 print ("Begin Algorithm Code Program")
 
-src = int(input("Source Coordinate: "))
-dest = int(input("Destination Coordinate: "))
+src = float(input("Source Coordinate: "))
+dest = float(input("Destination Coordinate: "))
 
 print ("src: ",src, " dest: ", dest)
-print ("Sum is: ", src + dest)
+print ("Sum is: ", abs(src) + abs(dest))
 
+startState = ProblemState(0,src,False,0)
+
+if startState is None:
+	print ("No no no no no no no no no no none")
+else:
+	print ("StartState is not None: ", startState)
 
