@@ -1,4 +1,4 @@
-#!user/bin/env python3
+#!/usr/bin/env python3
 #File Search
 #Contains the various uninformed search algortihms
 
@@ -56,4 +56,42 @@ def DFSRec(stack, problem):
 		if Problem.isGoal(state):
 			return state
 		stack.extend(Problem.getSuccessors(state, problem))
+
+
+
+def runTests():
+	bannr = "\n********************************\n"
+	
+	src = float(input("Input Source: "))
+	dst = float(input("Input Dest: "))
+	
+	#Intializing objects	
+	prob = Problem.Problem(src,dst)
+	startState = Problem.ProblemState(0,src,False,0)
+	
+	print ("TESTING DFS",bannr)
+	
+	#Checking input	
+	print ("Source: ",src," Dest: ",dst)
+	
+	print (bannr)
+
+	#Check Objects
+	print ("Problem: ", prob.toString())
+	print ("State: ", startState.toString())
+
+	#Testing DFS
+	dfsStack = DFS(startState,prob)
+	
+	print("Type of dfsStack: ", type(dfsStack))
+	print("Within it is: ", defStack)	
+
+	return
+
+	
+
+#Main
+runTests()	
+
+
 
