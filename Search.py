@@ -1,4 +1,4 @@
-#!user/bin/env python3
+#!/usr/bin/env python3
 #File Search
 #Contains the various uninformed search algortihms
 
@@ -17,6 +17,7 @@ Breadth first Search of the search states to find the goal state if it exists
 :returns: the state that is found to meet the goal state or nothing if the goal is not found.
 """
 def BFS( startState, problem):
+	queue.extend(startState)		#Added as per Wiz's bug catch, not adding the first state
 	queue.extend(Problem.getSuccessors(startState, problem))
 	while not isQueueEmpty(queue):
 		state = queue.pop()
@@ -26,3 +27,26 @@ def BFS( startState, problem):
 			queue.extend(Problem.getSuccessors(state, problem))
 	return None
 
+
+def runTests():
+	
+	bannr = "\n************************\n"
+	src = float(input("Source: "))
+	dst = float(input("Destination: "))
+
+	testProblem = Problem.Problem(src,dst)
+	testState = Problem.ProblemState(0,src,False,0)
+
+	print ("Test Values: ")
+	print ("testProblem: " , testProblem.toString())
+	print ("\n**********\n")
+	print ("TestState: " , testState.toString())
+
+
+	print ("TEST BFS",bannr)
+	#BFS(testState,testProblem)
+	
+	return
+
+#Main
+runTests()

@@ -88,25 +88,25 @@ class Problem:
 				newStates.append((prob.src, prob.src, state.loaded, state.distance + newDist))
 
 
-#MAIN
-print ("Begin Algorithm Code Program")
+def runTests():
+	print ("Begin Algorithm Code Program")
 
-src = float(input("Source Coordinate: "))
-dest = float(input("Destination Coordinate: "))
+	src = float(input("Source Coordinate: "))
+	dest = float(input("Destination Coordinate: "))
 
-print ("src: ",src, " dest: ", dest)
-print ("Sum is: ", src + dest)
+	print ("src: ",src, " dest: ", dest)
+	print ("Sum is: ", src + dest)
 
-startState = ProblemState(0,src,False,0)
+	startState = ProblemState(0,src,False,0)
 
-if startState is None:
-	print ("No no no no no no no no no no none")
-else:
-	print ("StartState is not None: ", startState.toString())
+	if startState is None:
+		print ("No no no no no no no no no no none")
+	else:
+		print ("StartState is not None: ", startState.toString())
 
 
-aProblem = Problem(src,dest)
-print (aProblem.toString())
+	aProblem = Problem(src,dest)
+	print (aProblem.toString())
 
 
 
