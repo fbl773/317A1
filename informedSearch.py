@@ -16,12 +16,13 @@ heuristic for the 1 problem
 			estCost = abs(prob.src - state.vLoc) + abs(prob.src - prob.dest) + prob.dest
 		
 		return estCost
-heap = []
 
 """
 Greedy search
 """
 def greedySearch(state, prob):
+	heap = []
+	
 	heap.extend(Problem.getSuccessors(state, problem))
 	heapq.heapify(heap)
 	
@@ -39,21 +40,28 @@ def greedySearch(state, prob):
 A* search
 """
 def aStarSearch(state, prob):
-		
-	newNodes []
+	heap = []
+	
+	newNodes = []
 	newNodes.extend(Problem.getSuccessors(state, problem)
 	
+	sequence = []
+			
 	for value in newNodes:
 		heapq.heappush(heap,(heuristicOneProb(value, prob) + value.distance, value)
-	
+	maxSize = len(heap)
+			       
 	while not isEmpty(heap):
 		currentState = heapq.heappop(heap)
 		
+		sequence.append(currentState)
+			       
 		if Problem.isGoal(currenState,prob):
-			return currentState
+			return (sequence, maxSize)
 		else:
 			newNodes.extend(Problem.getSuccessors(currentState, problem)
 			for value in newNodes:
 				heapq.heappush(heap,(heuristicOneProb(value, prob) + value.distance, value)
+				maxSize += 1
 	
-	return None
+	return (sequence,maxSize)
