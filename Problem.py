@@ -5,10 +5,10 @@
 #ProblemState
 #Object to hold a state of the problem
 class ProblemState(object):
-	vLoc = 0
-	pLoc = ""
-	loaded = False
-	distance = 0
+	vLoc
+	pLoc
+	loaded
+	distance 
 
 	def __init__(self, vLoc, pLoc, loaded, distance): 
 		self.vLoc = vLoc
@@ -25,8 +25,11 @@ class ProblemState(object):
 				"pLoc: " + str(self.pLoc) + '\n'+
 				"loaded: " + str(self.loaded) + '\n' +
 				"distance: " + str(self.distance) + '\n') 
-
 	
+	def __lt__(self, other):
+    		return self.distance < other.distance
+
+
 """
  Problem
   the problem for the function
@@ -72,21 +75,27 @@ class Problem:
 	def getSuccessors(state, prob):
 		newStates = []
 		if state.vLoc == 0:
-			newStates.append( ( prob.src, state.pLoc, state.loaded, state.distance+newDist ) )
-			newStates.append((prob.dest, state.pLoc, state.loaded, state.distance + newDist) )
+			newStates.append( ProblemState(prob.src, state.pLoc, state.loaded, state.distance + abs(prob.src - state.vLoc)) )
+			newStates.append(ProblemState(prob.dest, state.pLoc, state.loaded, state.distance + abs(prob.dest - state.vLoc )) )
 		elif state.vLoc == prob.src :
 			if state.loaded == False:
-				newStates.append((state.vLoc, state.pLoc, True, state.distance))
+				newStates.append(ProblemState(state.vLoc, state.pLoc, True, state.distance))
+				#also consider that it doesn't pick up package and move without package
+				newStates.append(ProblemState(prob.dest, state.pLoc, state.loaded, state.distance + abs(prob.dest - state.vLoc )) )
+				newStates.append(ProblemState(0, state.pLoc, state.loaded, state.distance + abs(0 - state.vLoc )) )
 			else:
-				newStates.append((0, 0, state.loaded, state.distance + newDist))
-				newStates.append((prob.dest, prob.dest, state.loaded, state.distance + newDist))
+				newStates.append(ProblemState(0, 0, state.loaded, state.distance + abs(0 - state.vLoc )))
+				newStates.append(ProblemState(prob.dest, prob.dest, state.loaded, state.distance + abs(prob.dest - state.vLoc )))
 		else:
 			if state.loaded == True:
-				newStates.append((state.vLoc, state.pLoc, False, state.distance))
+				newStates.append(ProblemState(state.vLoc, state.pLoc, False, state.distance))
+				#also consider when it doesnt do the smart thing
+				newStates.append( ProblemState( prob.src, state.pLoc, state.loaded, state.distance + abs(prob.src - state.vLoc )) )
+				newStates.append(ProblemState( 0, state.pLoc, state.loaded, state.distance + abs(0 - state.vLoc)) )
 			else:
-				newStates.append((0, 0, state.loaded, state.distance + newDist))
-				newStates.append((prob.src, prob.src, state.loaded, state.distance + newDist))
-
+				newStates.append(ProblemState(0, 0, state.loaded, state.distance + abs(0 - state.vLoc)))
+				newStates.append(ProblemState(prob.src, prob.src, state.loaded, state.distance + abs(prob.src - state.vLoc)))
+		return newStates
 
 def runTests():
 	print ("Begin Algorithm Code Program")
