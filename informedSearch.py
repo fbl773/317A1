@@ -32,7 +32,32 @@ heuristic for the 1 problem but 2 dimensions
 			estCost = coordinate.eudCalc(state.vLoc, prob.src) + coordinate.eudCalc(prob.src,prob.dest) + coordinate.eudCalc((0,0), prob.dest)
 		
 		return estCost
+"""
+heuristic for M=K=1, N=2, Y=2
 
+"""
+	def heuristicMK1NY2(state,prob):
+		estCost = 0
+		if state.loaded[0]:
+			if state.vLoc == prob.dest[0]:
+				if state.pLoc[1] == prob.dest[1]:
+					estCost = coordinate.eudCalc(prob.dest[0],(0,0)]) 
+				else:
+					estCost = coordinate.eudCalc(prob.dest[0],prob.src[1]) + coordinate.eudCalc(prob.src[1],prob.dest[1]) + coordinate.eudCalc(prob.dest[1],(0,0))
+			elif state.vLoc == prob.dest[1]:
+				if state.pLoc[0] == prob.dest[0]:
+					estCost = coordinate.eudCalc(prob.dest[1],prob.src[1]) + coordinate.eudCalc(prob.src[1],prob.dest[1]) + coordinate.eudCalc(prob.dest[1],(0,0)])
+				else:
+					if coordinate.eudCalc(prob.dest[1],prob.src[0]) < coordinate.eudCalc(prob.dest[1],prob.src[1]):
+						coordinate.eudCalc(prob.dest[1],prob.src[0]) + coordinate.eudCalc(prob.src[0],prob.dest[0]) + coordinate.eudCalc(prob.dest[0],prob.src[1]) + coordinate.eudCalc(prob.src[1],prob.dest[1]) + coordinate.eudCalc(prob.dest[1],(0,0)) 
+					else:
+						coordinate.eudCalc(prob.dest[1],prob.src[1]) + coordinate.eudCalc(prob.src[1],prob.dest[1]) + coordinate.eudCalc(prob.dest[1],prob.src[0]) + coordinate.eudCalc(prob.src[0],prob.dest[0]) + coordinate.eudCalc(prob.dest[0],(0,0))
+		elif state.loaded[1]:
+		
+		else:
+			estCost = coordinate.eudCalc(state.vLoc, prob.src) + coordinate.eudCalc(prob.src,prob.dest) + coordinate.eudCalc((0,0), prob.dest)
+		
+		return estCost
 """
 Greedy search
 """
