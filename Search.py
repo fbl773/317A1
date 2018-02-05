@@ -85,6 +85,16 @@ def DFS(startState, problem):
 				newPathFlag = True
 	return (None, NODESCREATED, MAXSTACK)
 
+
+"""
+Depth Limited search of states to find the goal state if it exists
+:param: startState the state at which the search is starting from
+:param: problem the object for the current problem
+:returns: the state that is found to meet the goal state or nothing if the goal is not found.
+"""
+
+
+
 def runTests():
 	bannr = "\n********************************\n"
 
