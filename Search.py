@@ -40,41 +40,6 @@ def BFS( startState, problem):
 			return (path, NODESCREATED, MAXQUEUE)
 		else:
 			queue.extend(problem.getSuccessors(state))
-	return (None, NODESCREATED, MAXQUEUE)
-
-#Stack for DFSs
-stack = []
-
-"""
-Depth first search  of states to find the goal state if it exists
-:param: startState the state at which the search is starting from
-:param: problem the object for the current problem
-:returns: the state that is found to meet the goal state or nothing if the goal is not found.
-"""
-def DFS(startState, problem):
-	if problem.isGoal(startState):
-		return startState
-	#print ("about to append: ",problem.getSuccessors(startState))
-	stack.extend(problem.getSuccessors(startState)
-	return DFSRec(stack, problem)
-
-
-"""
-Recursive Helper for Depth first search
-:param: stack of the states in the problem
-:param: problem the object for the current problem
-:returns: the state that is found to meet the goal or nothing if it does not
-"""
-def DFSRec(stack, problem):
-	if isEmpty(stack):
-		return None
-	else:
-		state = stack.pop()
-		if Problem.isGoal(state):
-			return state
-		stack.extend(Problem.getSuccessors(state))
-
-
 
 def runTests():
 	bannr = "\n********************************\n"

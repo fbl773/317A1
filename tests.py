@@ -9,6 +9,7 @@
 
 import Problem
 import Search
+import informedSearch
 
 print ("MNKY Tester")
 
@@ -21,4 +22,8 @@ print ("-------")
 
 print ("SEARCH")
 print ("------")
-Search.runTests()
+#Search.runTests()
+
+print ("INFORMED search")
+print ("---------------")
+informedSearch.runTests()
