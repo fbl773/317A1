@@ -3,29 +3,43 @@
 #Contains the various uninformed search algortihms
 
 import Problem
+import collections
 
 #Queue for BFS
-queue = []
+queue = collections.deque([])
+
+
 
 def isQueueEmpty(queue):
-	return queue == []
+	return len(queue) == 0
 
 """
 Breadth first Search of the search states to find the goal state if it exists
 :param: startState the state at which the search is starting from
 :param: problem the object for the current problem
-:returns: the state that is found to meet the goal state or nothing if the goal is not found.
+:returns: the Path of the search the  number of nodes explored and the maximum size the queue was at any point
+		if the search fails the path will be empty
 """
 def BFS( startState, problem):
+	#Records the largestsize of the queue
+	MAXQUEUE = 0
+	#Records the number of nodes examined
+	NODESCREATED = 1
 	queue.append(startState)		#Added as per Wiz's bug catch, not adding the first state
-	queue.extend(problem.getSuccessors(startState, problem))
+	newNodes = problem.getSuccessors(startState)
+	NODESCREATED += len(newNodes)
+	queue.extend(newNodes)
+	if MAXQUEUE < len(queue):
+		MAXQUEUE = len(queue)
+	path = []
 	while not isQueueEmpty(queue):
-		state = queue.pop()
-		if Problem.isGoal(state, problem):
-			return state
+		state = queue.popleft()
+		path.append(state)
+		if problem.isGoal(state):
+			return (path, NODESCREATED, MAXQUEUE)
 		else:
-			queue.extend(problem.getSuccessors(state, problem))
-	return None
+			queue.extend(problem.getSuccessors(state))
+	return (None, NODESCREATED, MAXQUEUE)
 
 
 def runTests():
@@ -34,7 +48,7 @@ def runTests():
 	src = float(input("Source: "))
 	dst = float(input("Destination: "))
 
-	testProblem = Problem.Problem(src,dst)
+	testProblem = Problem.Problem(dst,src)
 	testState = Problem.ProblemState(0,src,False,0)
 
 	print ("Test Values: ")
@@ -44,7 +58,10 @@ def runTests():
 
 
 	print ("TEST BFS",bannr)
-	#BFS(testState,testProblem)
+	ResultsTup = BFS(testState,testProblem)
+
+	for items in ResultsTup[0]:
+		print(items.toString())
 	
 	return
 
