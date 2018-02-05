@@ -37,31 +37,31 @@ heuristic for M=K=1, N=2, Y=2
 This is too big to write out, several if statements too many conditions t consider
 Need a better heuristic while the problem scales up
 """
-
-def heuristicMK1NY2(state,prob):
-	estCost = 0
-	if state.loaded[0]:
-		if state.vLoc == prob.dest[0]:
-			if state.pLoc[1] == prob.dest[1]:
-				estCost = coordinate.eudCalc(prob.dest[0],(0,0)]) 
-			else:
-				estCost = coordinate.eudCalc(prob.dest[0],prob.src[1]) + coordinate.eudCalc(prob.src[1],prob.dest[1]) + coordinate.eudCalc(prob.dest[1],(0,0))
-		elif state.vLoc == prob.dest[1]:
-			if state.pLoc[0] == prob.dest[0]:
-				estCost = coordinate.eudCalc(prob.dest[1],prob.src[1]) + coordinate.eudCalc(prob.src[1],prob.dest[1]) + coordinate.eudCalc(prob.dest[1],(0,0)])
-			else:
-				if coordinate.eudCalc(prob.dest[1],prob.src[0]) < coordinate.eudCalc(prob.dest[1],prob.src[1]):
-					coordinate.eudCalc(prob.dest[1],prob.src[0]) + coordinate.eudCalc(prob.src[0],prob.dest[0]) + coordinate.eudCalc(prob.dest[0],prob.src[1]) + coordinate.eudCalc(prob.src[1],prob.dest[1]) + coordinate.eudCalc(prob.dest[1],(0,0)) 
-				else:
-					coordinate.eudCalc(prob.dest[1],prob.src[1]) + coordinate.eudCalc(prob.src[1],prob.dest[1]) + coordinate.eudCalc(prob.dest[1],prob.src[0]) + coordinate.eudCalc(prob.src[0],prob.dest[0]) + coordinate.eudCalc(prob.dest[0],(0,0))
-		elif state.vLoc == prob.src[0]:
-		else:
-	elif state.loaded[1]:
-	elif state.loaded[0] and state.loaded[1]:	
-	else:
-		
-	
-	return estCost
+# 
+# def heuristicMK1NY2(state,prob):
+# 	estCost = 0
+# 	if state.loaded[0]:
+# 		if state.vLoc == prob.dest[0]:
+# 			if state.pLoc[1] == prob.dest[1]:
+# 				estCost = coordinate.eudCal(prob.dest[0],(0,0)) 
+# 			else:
+# 				estCost = coordinate.eudCalc(prob.dest[0],prob.src[1]) + coordinate.eudCalc(prob.src[1],prob.dest[1]) + coordinate.eudCalc(prob.dest[1],(0,0))
+# 		elif state.vLoc == prob.dest[1]:
+# 			if state.pLoc[0] == prob.dest[0]:
+# 				estCost = coordinate.eudCalc(prob.dest[1],prob.src[1]) + coordinate.eudCalc(prob.src[1],prob.dest[1]) + coordinate.eudCalc(prob.dest[1],(0,0)])
+# 			else:
+# 				if coordinate.eudCalc(prob.dest[1],prob.src[0]) < coordinate.eudCalc(prob.dest[1],prob.src[1]):
+# 					coordinate.eudCalc(prob.dest[1],prob.src[0]) + coordinate.eudCalc(prob.src[0],prob.dest[0]) + coordinate.eudCalc(prob.dest[0],prob.src[1]) + coordinate.eudCalc(prob.src[1],prob.dest[1]) + coordinate.eudCalc(prob.dest[1],(0,0)) 
+# 				else:
+# 					coordinate.eudCalc(prob.dest[1],prob.src[1]) + coordinate.eudCalc(prob.src[1],prob.dest[1]) + coordinate.eudCalc(prob.dest[1],prob.src[0]) + coordinate.eudCalc(prob.src[0],prob.dest[0]) + coordinate.eudCalc(prob.dest[0],(0,0))
+# 		elif state.vLoc == prob.src[0]:
+# 		else:
+# 	elif state.loaded[1]:
+# 	elif state.loaded[0] and state.loaded[1]:	
+# 	else:
+# 		
+# 	
+# 	return estCost
 
 """
 Alternative to brute force heuristic for M=N=1, N=Y=2
@@ -104,7 +104,7 @@ def aStarSearch(state, prob):
 	heap = []
 	
 	newNodes = []
-	newNodes.extend(Problem.getSuccessors(state))
+	newNodes.extend(prob.getSuccessors(state))
 	
 	seqPath = []
 			
@@ -113,15 +113,15 @@ def aStarSearch(state, prob):
 	maxSize = len(heap)
 	nodesCreated = len(heap)
 			       
-	while not isEmpty(heap):
+	while len(heap) > 0:
 		currentState = heapq.heappop(heap)
 		
 		seqPath.append(currentState)
 			       
-		if Problem.isGoal(currenState,prob):
+		if prob.isGoal(prob):
 			return (seqPath, nodesCreated, maxSize)
 		else:
-			newNodes.extend(Problem.getSuccessors(currentState))
+			newNodes.extend(prob.getSuccessors(currentState))
 			for value in newNodes:
 				heapq.heappush(heap,(heuristicOneProb(value, prob)) + value.distance, value)
 				nodesCreated += 1
@@ -145,11 +145,14 @@ def runTests():
 	tstProb = Problem.Problem(dst,src)
 	tstState = Problem.ProblemState(0,src,False,0)
 
+	#Validating input
 	print ("Environment is: ",bannr)
 	print ("Source: ", src,'\n',
 		   "Dest : ", dst,'\n',
 		   tstProb.toString(),'\n',
 		   tstState.toString(),'\n')
-	 
 
-
+	#Testing the A*
+	print ("Test A*",bannr)
+		 
+	aStar = aStarSearch(tstState, tstProb)
