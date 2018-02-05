@@ -34,8 +34,9 @@ heuristic for the 1 problem but 2 dimensions
 		return estCost
 """
 heuristic for M=K=1, N=2, Y=2
+This is too big to write out, several if statements too many conditions t consider
+Need a better heuristic while the problem scales up
 
-"""
 	def heuristicMK1NY2(state,prob):
 		estCost = 0
 		if state.loaded[0]:
@@ -52,12 +53,32 @@ heuristic for M=K=1, N=2, Y=2
 						coordinate.eudCalc(prob.dest[1],prob.src[0]) + coordinate.eudCalc(prob.src[0],prob.dest[0]) + coordinate.eudCalc(prob.dest[0],prob.src[1]) + coordinate.eudCalc(prob.src[1],prob.dest[1]) + coordinate.eudCalc(prob.dest[1],(0,0)) 
 					else:
 						coordinate.eudCalc(prob.dest[1],prob.src[1]) + coordinate.eudCalc(prob.src[1],prob.dest[1]) + coordinate.eudCalc(prob.dest[1],prob.src[0]) + coordinate.eudCalc(prob.src[0],prob.dest[0]) + coordinate.eudCalc(prob.dest[0],(0,0))
+			elif state.vLoc == prob.src[0]:
+			else:
 		elif state.loaded[1]:
-		
+		elif state.loaded[0] and state.loaded[1]:	
 		else:
-			estCost = coordinate.eudCalc(state.vLoc, prob.src) + coordinate.eudCalc(prob.src,prob.dest) + coordinate.eudCalc((0,0), prob.dest)
+			
 		
 		return estCost
+"""
+
+	"""
+	Alternative to brute force heuristic for M=N=1, N=Y=2
+	perhpas consdier the distance to get each individual package to their goal
+	break down the problem into a 1 problem
+	"""
+	def heuristicMN1KY2(state, prob):
+		estCost = 0;
+		for i in range(0,len(state.pLoc),1):
+			if stat.pLoc[0] is prob.dest:
+				#do nothing
+			else:
+				estCost = estCost + coordinate.eudCalc(state.pLoc[i],prob.dest[i])
+		return estCost
+			
+		
+
 """
 Greedy search
 """
@@ -86,7 +107,7 @@ def aStarSearch(state, prob):
 	newNodes = []
 	newNodes.extend(Problem.getSuccessors(state)
 	
-	sequence = []
+	seqPath = []
 			
 	for value in newNodes:
 		heapq.heappush(heap,(heuristicOneProb(value,prob) + value.distance, value)
@@ -96,10 +117,10 @@ def aStarSearch(state, prob):
 	while not isEmpty(heap):
 		currentState = heapq.heappop(heap)
 		
-		sequence.append(currentState)
+		seqPath.append(currentState)
 			       
 		if Problem.isGoal(currenState,prob):
-			return (sequence, nodesCreated, maxSize)
+			return (seqPath, nodesCreated, maxSize)
 		else:
 			newNodes.extend(Problem.getSuccessors(currentState)
 			for value in newNodes:
@@ -108,4 +129,4 @@ def aStarSearch(state, prob):
 			if len(heap) > maxSize:
 				maxSize = len(heap)
 	
-	return (sequence,nodesCreated, maxSize)
+	return (seqPath,nodesCreated, maxSize)
