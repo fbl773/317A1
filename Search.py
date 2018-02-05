@@ -40,8 +40,8 @@ Depth first search  of states to find the goal state if it exists
 def DFS(startState, problem):
 	if problem.isGoal(startState):
 		return startState
-	print ("about to append: ",problem.getSuccessors(startState))
-	#stack.extend(problem.getSuccessors(startState)
+	#print ("about to append: ",problem.getSuccessors(startState))
+	stack.extend(problem.getSuccessors(startState)
 	return DFSRec(stack, problem)
 
 
