@@ -12,6 +12,8 @@ queue = collections.deque([])
 def isQueueEmpty(queue):
 	return len(queue) == 0
 
+def isEmpty(list):
+	return list == []
 
 """
 Breadth First Search of the search states to find the goal state if it exists
@@ -52,60 +54,58 @@ Depth first search  of states to find the goal state if it exists
 :returns: the state that is found to meet the goal state or nothing if the goal is not found.
 """
 def DFS(startState, problem):
+	#Records the largest size the stack reaches
+	MAXSTACK = 0
+	#Records the number of nodes created
+	NODESCREATED = 1
+
 	if problem.isGoal(startState):
 		return startState
-	#print ("about to append: ",problem.getSuccessors(startState))
-	stack.extend(problem.getSuccessors(startState)
-	return DFSRec(stack, problem)
 
+	newNodes = problem.getSuccessors(startState)
+	NODESCREATED += len(newNodes)
+	stack.extend(newNodes )
+	if MAXSTACK < len(stack):
+		MAXSTACK = len(stack)
 
-"""
-Recursive Helper for Depth first search
-:param: stack of the states in the problem
-:param: problem the object for the current problem
-:returns: the state that is found to meet the goal or nothing if it does not
-"""
-def DFSRec(stack, problem):
-	if isEmpty(stack):
-		return None
-	else:
+	path = []
+	newPathFlag = False
+	while not isEmpty(stack):
+		if newPathFlag is True:
+			path = []
+			newPathFlag = False
 		state = stack.pop()
-		if Problem.isGoal(state):
-			return state
-		stack.extend(Problem.getSuccessors(state))
-
-
+		path.append(state)
+		if problem.isGoal(state):
+			return (path, NODESCREATED, MAXSTACK)
+		else:
+			temp = problem.getSuccessors(state)
+			stack.extend(temp)
+			if len(temp) < 1:
+				newPathFlag = True
+	return (None, NODESCREATED, MAXSTACK)
 
 def runTests():
 	bannr = "\n********************************\n"
-	
+
 	src = float(input("Input Source: "))
 	dst = float(input("Input Dest: "))
-	
-	#Intializing objects	
+
+	#Intializing objects
 	prob = Problem.Problem(dst,src)
 	startState = Problem.ProblemState(0,src,False,0)
 	print ("Source: ",src," Dest: ",dst)
-	
+
 	#Check Objects
 	print ("Problem: ", prob.toString(),'\n')
 	print ("State: ", startState.toString())
-	print (bannr)
-	
-	testProblem = Problem.Problem(dst,src)
-	testState = Problem.ProblemState(0,src,False,0)
 
+	print (bannr)
 
 	#Testing DFS
-	print ("TESTING DFS",bannr)	
+	print ("TESTING DFS",bannr)
 
 	dfsStack = DFS(startState,prob)
-	print("Type of dfsStack: ", type(dfsStack))
-	print("Within it is: ", dfsStack)
-	print("And that is: ", dfsStack.toString())
-
-	print (bannr)
-
 	#Testing BFS
 	print ("TESTING BFS",bannr)
 	bfsQueue = BFS(startState,prob)
@@ -113,13 +113,19 @@ def runTests():
 	print("WIthin it is: ", bfsStack)
 	print("And that is: ", bfsStack.toString())
 
+	print("DFS returns a ", type(dfsStack))
+	print("The Return value contains", dfsStack)
 
 	print ("TEST BFS",bannr)
 	ResultsTup = BFS(testState,testProblem)
+	if dfsStack[0] is not None:
+		print("The Path contains: ")
+		for items in dfsStack[0]:
+			print(items.toString())
 
 	for items in ResultsTup[0]:
 		print(items.toString())
 	
 	return
 
-	
+
