@@ -112,29 +112,25 @@ def runTests():
 
 	print (bannr)
 
-	#Testing DFS
-	print ("TESTING DFS",bannr)
 
-	dfsStack = DFS(startState,prob)
 	#Testing BFS
 	print ("TESTING BFS",bannr)
-	bfsQueue = BFS(startState,prob)
-	print("Type of bfsQueue: ",type(bfsQueue))
-	print("WIthin it is: ", bfsStack)
-	print("And that is: ", bfsStack.toString())
+	bfsStack = BFS(startState,prob)
+	print("DFS returns a ", type(bfsStack))
+	print("The Return value contains", bfsStack)
 
+	for items in bfsStack[0]:
+		print(items.toString())
+
+	# Testing DFS
+	dfsStack = DFS(startState, prob)
+	print("TESTING DFS", bannr)
 	print("DFS returns a ", type(dfsStack))
 	print("The Return value contains", dfsStack)
-
-	print ("TEST BFS",bannr)
-	ResultsTup = BFS(testState,testProblem)
 	if dfsStack[0] is not None:
 		print("The Path contains: ")
 		for items in dfsStack[0]:
 			print(items.toString())
-
-	for items in ResultsTup[0]:
-		print(items.toString())
 	
 	return
 
