@@ -169,7 +169,6 @@ def runTests():
 	print ("A* is a: ", type(aStar))
 	print ("And in that is: ", aStar)
 
-
 	n = 0
 	for path in aStar:
 		try: 
@@ -178,6 +177,8 @@ def runTests():
 				print ("pLoc",n,": ",state.pLoc)
 				print ("load",n,": ",state.loaded,bannr)
 				n += 1
+				
+				
 		except TypeError as tplsSuk:
 			print (tplsSuk)				
 
