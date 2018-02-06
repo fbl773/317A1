@@ -104,30 +104,40 @@ def aStarSearch(state, prob):
 	heap = []
 	
 	newNodes = []
-	newNodes.extend(prob.getSuccessors(state))
+	#newNodes.extend(prob.getSuccessors(state))
 	
 	seqPath = []
 			
-	for value in newNodes:
-		heapq.heappush(heap,(heuristicOneProb(value,prob) + value.distance, value))
+	#for vState in newNodes:
+		#print ("Values are: ",type(vState))
+		#heapq.heappush(heap,(heuristicOneProb(vState,prob) + vState.distance), vState)
+
+	heapq.heappush(heap,(0,state))
 	maxSize = len(heap)
 	nodesCreated = len(heap)
-			       
+
+	print ("Entering Loop with" )			       
+	print ("Heap Length: ", maxSize)
+	print ("Nodes Created", nodesCreated)
+	
 	while len(heap) > 0:
-		currentState = heapq.heappop(heap)
-		
+		currentState = heapq.heappop(heap)[1]
+	#	print ("within currentState is: ", type(currentState))		
+
 		seqPath.append(currentState)
-			       
-		if prob.isGoal(prob):
+
+		if prob.isGoal(currentState):
 			return (seqPath, nodesCreated, maxSize)
 		else:
 			newNodes.extend(prob.getSuccessors(currentState))
-			for value in newNodes:
-				heapq.heappush(heap,(heuristicOneProb(value, prob)) + value.distance, value)
+			for vState in newNodes:
+				heapq.heappush(heap,(heuristicOneProb(vState, prob) + vState.distance, vState))
 				nodesCreated += 1
+				newNodes.remove(vState)
 			if len(heap) > maxSize:
 				maxSize = len(heap)
 	
+	#print("Heap is: ", heap)
 	return (seqPath,nodesCreated, maxSize)
 
 
@@ -156,3 +166,18 @@ def runTests():
 	print ("Test A*",bannr)
 		 
 	aStar = aStarSearch(tstState, tstProb)
+	print ("A* is a: ", type(aStar))
+	print ("And in that is: ", aStar)
+
+
+	n = 0
+	for path in aStar:
+		try: 
+			for state in path: 
+				print ("vLoc",n,": ",state.vLoc)
+				print ("pLoc",n,": ",state.pLoc)
+				print ("load",n,": ",state.loaded,bannr)
+				n += 1
+		except TypeError as tplsSuk:
+			print (tplsSuk)				
+

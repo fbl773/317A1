@@ -75,8 +75,12 @@ class Problem:
 	def getSuccessors(self,state):
 		newStates = []
 		if state.vLoc == 0:
-			newStates.append( ProblemState(self.src, state.pLoc, state.loaded, state.distance + abs(self.src - state.vLoc)) )
-			newStates.append(ProblemState(self.dest, state.pLoc, state.loaded, state.distance + abs(self.dest - state.vLoc )) )
+			if state.loaded:
+				newStates.append( ProblemState(self.src, self.src, state.loaded, state.distance + abs(self.src - state.vLoc)) )
+				newStates.append(ProblemState(self.dest, self.dest, state.loaded, state.distance + abs(self.dest - state.vLoc )) )
+			else:
+				newStates.append( ProblemState(self.src, state.pLoc, state.loaded, state.distance + abs(self.src - state.vLoc)) )
+				newStates.append(ProblemState(self.dest, state.pLoc, state.loaded, state.distance + abs(self.dest - state.vLoc )) )
 		elif state.vLoc == self.src :
 			if state.loaded == False:
 				newStates.append(ProblemState(state.vLoc, state.pLoc, True, state.distance))
@@ -88,13 +92,15 @@ class Problem:
 				newStates.append(ProblemState(self.dest, self.dest, state.loaded, state.distance + abs(self.dest - state.vLoc )))
 		else:
 			if state.loaded == True:
+				#only legal state to drop off package.
 				newStates.append(ProblemState(state.vLoc, state.pLoc, False, state.distance))
 				#also consider when it doesnt do the smart thing
-				newStates.append( ProblemState( self.src, state.pLoc, state.loaded, state.distance + abs(self.src - state.vLoc )) )
-				newStates.append(ProblemState( 0, state.pLoc, state.loaded, state.distance + abs(0 - state.vLoc)) )
-			else:
 				newStates.append(ProblemState(0, 0, state.loaded, state.distance + abs(0 - state.vLoc)))
 				newStates.append(ProblemState(self.src, self.src, state.loaded, state.distance + abs(self.src - state.vLoc)))
+			else:
+				newStates.append( ProblemState( self.src, state.pLoc, state.loaded, state.distance + abs(self.src - state.vLoc )) )
+				newStates.append(ProblemState( 0, state.pLoc, state.loaded, state.distance + abs(0 - state.vLoc)) )
+				
 		return newStates
 
 def runTests():
