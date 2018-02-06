@@ -2,6 +2,8 @@
 #File Problem
 #Contains the object for the problem state and functions to act on the problem
 
+import copy
+
 #ProblemState
 #Object to hold a state of the problem
 class ProblemState(object):
@@ -28,22 +30,44 @@ class ProblemState(object):
 	
 	def __lt__(self, other):
     		return self.distance < other.distance
-
+"""
+Coordinate object
+used for representing a point in 2D space
+"""
+class coordinate(object):
+	x = 0
+	y = 0
+	
+	def __init__(self, newX, newY):
+		self.x = newX
+		self.y = newY
+	
+	"""
+	eudCalc()
+		calculate euclidean distance bewteen 2 points
+	"""
+	def eudCalc(cord1,cord2):
+		return sqrt((cord1.x - cord2.x)**2 + (cord1.y - cord2.y)**2)
 
 """
  Problem
-  the problem for the function
+  Class to store the problem successor function
   This will need to be refactored in order to handle more general cases
 """
 class Problem:
 	dest = ""
 	src = ""
 	trucks = 1
-
+	#k = 1
+	#packages = 1
+	
 	#Construtor for the problem
-	def __init__(self, dest, source): 
+	def __init__(self, dest, source):  #def __init__(self,dest,source,trucks,capacity,packages)
 		self.dest = dest
 		self.src = source
+		#self.trucks = trucks
+		#self.k = capacity
+		#self.packages = packages
 	
 	""" 
 	toString()
@@ -57,6 +81,7 @@ class Problem:
 	isGoal()
 	Goal checking function
 		Check that vehicle is back in garage and package at destination
+		For the '1 Problem' where M=N=K=Y=1
 		param: state - the Problem state to check
 		prob  - the current problem to check against
 		return: true of the state matches the goal state false otherwise
@@ -66,10 +91,43 @@ class Problem:
 			return True
 		else:
 			return False
+	"""
+	isGoal()
+	Goal checking function
+		Check that vehicle is back in garage and package at destination
+		Can be used for higher variations of the problem
+		param: state - the Problem state to check
+		prob  - the current problem to check against
+		return: true of the state matches the goal state false otherwise
+	"""
+	"""
+	def isGoal(self, state):
+		for t in range(0,self.trucks,1):
+			if state.vLoc[t] != (0,0):
+				return False
+		for p in range(0, self.packages,1):
+			if state.pLoc[p] != self.dest[p]:
+				return False		
+		return True
+	"""
+	
+	"""
+	packageLoaded()
+		Check if package (as specified by index referring to pLoc) is loaded on a vehicle
+		True if loaded on a vehicle, False otherwise
+	"""
+	"""
+	def packageLoaded(self, state, index):
+		for t in range(0,self.trucks,1):
+			if index+1 in state.loaded[t]:
+				return True
+		return False
+	"""
 
 	"""
 	getSuccessors
 	 Returns a list of the possible moves that to be searched through
+	 used for the 1 problem
 	 param: curState - the current state in the search
 	"""
 	def getSuccessors(self,state):
@@ -102,19 +160,178 @@ class Problem:
 				newStates.append(ProblemState( 0, state.pLoc, state.loaded, state.distance + abs(0 - state.vLoc)) )
 				
 		return newStates
-
+	
+	"""
+	getSuccessors
+	 Returns a list of the possible moves that to be searched through
+	 used for the 1 problem in 2D
+	 param: curState - the current state in the search
+	"""
+	"""
+	def getSuccessors(self,state):
+		newStates = []
+		if state.vLoc == 0:
+			newStates.append( ProblemState(self.src, state.pLoc, state.loaded, state.distance + coordinate.eudCalc((0,0), self.src)) )
+			newStates.append(ProblemState(self.dest, state.pLoc, state.loaded, state.distance + coordinate.eudCalc((0,0), self.dest)) )
+		elif state.vLoc == self.src :
+			if state.loaded == False:
+				newStates.append(ProblemState(state.vLoc, state.pLoc, True, state.distance))
+				#also consider that it doesn't pick up package and move without package
+				newStates.append(ProblemState(self.dest, state.pLoc, state.loaded, state.distance + coordinate.eudCalc(state.vLoc, self.dest)))
+				newStates.append(ProblemState(0, state.pLoc, state.loaded, state.distance + coordinate.eudCalc(state.vLoc, (0,0))) )
+			else:
+				newStates.append(ProblemState(0, 0, state.loaded, state.distance + coordinate.eudCalc(state.vLoc, (0,0))))
+				newStates.append(ProblemState(self.dest, self.dest, state.loaded, state.distance +  coordinate.eudCalc(state.vLoc, self.dest)))
+		else:
+			if state.loaded == True:
+				newStates.append(ProblemState(state.vLoc, state.pLoc, False, state.distance))
+				#also consider when it doesnt do the smart thing
+				newStates.append(ProblemState(0, 0, state.loaded, state.distance + coordinate.eudCalc(state.vLoc, (0,0))))
+				newStates.append(ProblemState(self.src, self.src, state.loaded, state.distance +  coordinate.eudCalc(state.vLoc, self.src)))
+			else:
+				newStates.append( ProblemState( self.src, state.pLoc, state.loaded, state.distance + coordinate.eudCalc(state.vLoc, self.src)) )
+				newStates.append(ProblemState( 0, state.pLoc, state.loaded, state.distance + coordinate.eudCalc(state.vLoc, (0,0))) )
+		return newStates
+	"""
+	
+	"""
+	getSuccessors
+	 Returns a list of the possible moves that to be searched through
+	 Can be used for higher order problems
+	 param: curState - the current state in the search
+	"""
+	"""
+	def getSuccessors(self, state):
+		newStates = []
+		
+		for t in range(0,self.trucks,1):
+		
+			if len(state.loaded[t]) is self.k:
+				#truck is full, legal moves is to drop something off
+				
+				for i in range (0,self.k,1):
+					pIndex = state.loaded[t][i] - 1
+					if state.vLoc = self.dest[pIndex]:
+						#truck is loaded with a package and is at that package's dest
+						#only legal move is to drop off package i
+						cState = copy.copy(state)
+						cState.loaded[t].remove(pIndex)
+						newStates.append(cState)
+						#distance doesn't change
+					else:
+						#need to move to package i dest
+						cState = copy.copy(state)
+						cState.distance[t] += coordinate.eudCalc(state.vLoc[t],prob.dest[pIndex])
+						cState.vLoc[t] = self.dest[pIndex]
+						#need to update pacakge locations
+						for x in range(0,self.k,1):
+							newPI = state.loaded[t][x] - 1
+							cState.pLoc[newPI] = self.dest[pIndex]
+						newStates.append(cState) 
+			
+			elif len(state.loaded[t]) is 0:
+				#if truck has no packages, either go home or get new package
+				cState = copy.copy(state)
+				cState.distance[t] += coordinate.eudCalc(state.vLoc[t],(0,0))
+				newStates.append(cState)
+				
+				#check packages not loaded and at a source
+				for p in range (0,prob.packages,1):
+					if state.pLoc[p] == prob.src[p] and not self.packageLoaded(state,p):
+						if state.vLoc[t] == prob.src[p]:
+							#pick up package
+							cState = copy.copy(state)
+							cState.loaded[t].append(p+1)
+							newStates.append(cState)
+						else:
+							#go to a new package
+							cState = copy.copy(state)
+							cState.distance[t] += coordinate.eudCalc(state.vLoc[t],prob.src[p])
+							cState.vLoc[t] = prob.src[p]
+							newStates.append(cState)						
+				
+			else:
+				#truck has room for more packages and is not empty
+				#it can get another package or it can drop off its package
+				for i in range (0,len(state.loaded[t]),1):
+					#of packages loaded if at the destination drop it off otherwise go to dest
+					pIndex = state.loaded[t][i] - 1
+					if state.vLoc[t] == prob.dest[pIndex]:
+						cState = copy.copy(state)
+						cState.loaded[t].remove(pIndex)
+						newStates.append(cState)
+					else:
+						#go to destination
+						cState = copy.copy(state)
+						cState.distance[t] += coordinate.eudCalc(state.vLoc[t],prob.dest[pIndex])
+						cState.vLoc[t] = self.dest[pIndex]
+						#need to update pacakge locations
+						for x in range(0,self.k,1):
+							newPI = state.loaded[t][x] - 1
+							cState.pLoc[newPI] = self.dest[pIndex]
+						newStates.append(cState)
+				#get new package
+				for p in range (0,prob.packages,1):
+					if state.pLoc[p] == prob.src[p] and not self.packageLoaded(state,p):
+						if state.vLoc[t] == prob.src[p]:
+							#pick up package
+							cState = copy.copy(state)
+							cState.loaded[t].append(p+1)
+							newStates.append(cState)
+						else:
+							#go to a new package
+							cState = copy.copy(state)
+							cState.distance[t] += coordinate.eudCalc(state.vLoc[t],prob.src[p])
+							cState.vLoc[t] = prob.src[p]
+							for x in range(0,len(state.loaded[t]),1):
+								newPI = state.loaded[t][x] - 1
+								cState.pLoc[newPI] = self.src[p]
+							newStates.append(cState)
+				
+		return newStates
+	"""
+#--------------------------------------------------
+#Test for the 1 problem renae functions for when change old function names
 def runTests():
 	print ("Begin Algorithm Code Program")
 	
+	#for Y = 1
 	bannr = '\n*****************************\n'
 	src = float(input("Source Coordinate: "))
 	dest = float(input("Destination Coordinate: "))
 
+	"""
+	#taking in 2D, sohuld work for 1D as well
+	
+	Y = int(input("Number of dimensions: "))
+	sources = input("Space seperated list of package sources: ")
+	sinput.extend(sources.split(' '))
+	destinations = input("Space seperated list of package destinations: ")
+	dinput.extend(destinations.split(' '))
+	
+	src = []
+	dest = []
+
+	if( Y ==1):
+		for value in sinput:
+			src.append(float(value))
+		for value in dinput:
+			dest.append(float(value))
+	else: #assume y =2 	
+		for i in range(1,len(sinput),2):
+			coord = coordinate(i, i+1)
+			src.append(coord)
+		for i in range(1,len(dinput),2):
+			coord = coordinate(i, i+1)
+			dest.append(coord)
+	"""
+	
+	
 	#Testing Input validity
 	print ("src: ",src, " dest: ", dest)
 
 	#Testing State Declaration
-	startState = ProblemState(0,src,False,0)
+	startState = ProblemState(dest,src,False,0) # was startState = ProblemState(0,src,False,0) change back if error ~sarah
 	if startState is None:
 		print ("No no no no no no no no no no none")
 	else:
@@ -139,3 +356,4 @@ def runTests():
 
 	print (bannr, "PROBLEM MODULE TESTING FINISHED",bannr)
 
+	
