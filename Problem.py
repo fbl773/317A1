@@ -6,19 +6,48 @@ import copy
 
 #ProblemState
 #Object to hold a state of the problem
+#Does not have reference to itself
 class ProblemState(object):
 	vLoc = 0
 	pLoc = 0
 	loaded = False
 	distance = 0
-	#parentState = None
 
-	def __init__(self, vLoc, pLoc, loaded, distance): #def __init__(self, vLoc, pLoc, loaded, distance, parent):
+	def __init__(self, vLoc, pLoc, loaded, distance): 
 		self.vLoc = vLoc
 		self.pLoc = pLoc
 		self.loaded = loaded
 		self.distance = distance
-		#self.parentState = parent
+		
+	"""
+	toString()
+	- Returns a string represntation Problem state Attributes
+	"""
+	def toString(self):
+		bannr = "\n****PROBLEM_STATE****\n"
+		return (bannr + "vLoc: " +str(self.vLoc) + '\n' +
+				"pLoc: " + str(self.pLoc) + '\n'+
+				"loaded: " + str(self.loaded) + '\n' +
+				"distance: " + str(self.distance) + '\n') 
+	
+	def __lt__(self, other):
+    		return self.distance < other.distance
+#ProblemState
+#Object to hold a state of the problem
+#with reference to itself
+class ProblemStateWithRef(object):
+	vLoc = 0
+	pLoc = 0
+	loaded = False
+	distance = 0
+	parentState = None
+
+	def __init__(self, vLoc, pLoc, loaded, distance, parent):
+		self.vLoc = vLoc
+		self.pLoc = pLoc
+		self.loaded = loaded
+		self.distance = distance
+		self.parentState = parent
 	"""
 	toString()
 	- Returns a string represntation Problem state Attributes
@@ -60,16 +89,16 @@ class Problem:
 	dest = ""
 	src = ""
 	trucks = 1
-	#k = 1
-	#packages = 1
+	k = 1
+	packages = 1
 	
 	#Construtor for the problem
-	def __init__(self, dest, source):  #def __init__(self,dest,source,trucks,capacity,packages)
+	def __init__(self,dest,source,trucks,capacity,packages)
 		self.dest = dest
 		self.src = source
-		#self.trucks = trucks
-		#self.k = capacity
-		#self.packages = packages
+		self.trucks = trucks
+		self.k = capacity
+		self.packages = packages
 	
 	""" 
 	toString()
@@ -80,59 +109,56 @@ class Problem:
 		return(bannr + "Destination:Source" + '\n' +
 			  str(self.dest) + ':' + str(self.src))
 	"""
-	isGoal()
-	Goal checking function
+	isOneProbGoal()
+	one problem Goal checking function
 		Check that vehicle is back in garage and package at destination
 		For the '1 Problem' where M=N=K=Y=1
 		param: state - the Problem state to check
 		prob  - the current problem to check against
 		return: true of the state matches the goal state false otherwise
 	"""
-	def isGoal( self, state):
+	def isOneProbGoal( self, state):
 		if state.vLoc == 0 and state.pLoc == self.dest:
 			return True
 		else:
 			return False
 	"""
 	isGoal()
-	Goal checking function
+	generalized Goal checking function
 		Check that vehicle is back in garage and package at destination
 		Can be used for higher variations of the problem
 		param: state - the Problem state to check
 		prob  - the current problem to check against
 		return: true of the state matches the goal state false otherwise
 	"""
-	"""
 	def isGoal(self, state):
-		for t in range(0,self.trucks,1):
+		for t in range self.trucks:
 			if state.vLoc[t] != (0,0):
 				return False
-		for p in range(0, self.packages,1):
+		for p in range self.packages:
 			if state.pLoc[p] != self.dest[p]:
 				return False		
 		return True
-	"""
 	
 	"""
 	packageLoaded()
 		Check if package (as specified by index referring to pLoc) is loaded on a vehicle
 		True if loaded on a vehicle, False otherwise
 	"""
-	"""
 	def packageLoaded(self, state, index):
 		for t in range(0,self.trucks,1):
 			if index+1 in state.loaded[t]:
 				return True
 		return False
-	"""
 
 	"""
 	getSuccessors
+	only for one problem
 	 Returns a list of the possible moves that to be searched through
 	 used for the 1 problem
 	 param: curState - the current state in the search
 	"""
-	def getSuccessors(self,state):
+	def getOneProbSuccessors(self,state):
 		newStates = []
 		if state.vLoc == 0:
 			if state.loaded:
@@ -164,6 +190,7 @@ class Problem:
 		return newStates
 	"""
 	getSuccessorsOneAStar
+	for one prob
 	 Returns a list of the possible moves that to be searched through
 	 used for the 1 problem
 	 param: curState - the current state in the search
@@ -200,13 +227,13 @@ class Problem:
 		return newStates
 	
 	"""
-	getSuccessors
+	getSuccessorsTD
+	one problem but 2 dimensions
 	 Returns a list of the possible moves that to be searched through
 	 used for the 1 problem in 2D
 	 param: curState - the current state in the search
 	"""
-	"""
-	def getSuccessors(self,state):
+	def getSuccessorsTD(self,state):
 		newStates = []
 		if state.vLoc == 0:
 			newStates.append( ProblemState(self.src, state.pLoc, state.loaded, state.distance + coordinate.eudCalc((0,0), self.src)) )
@@ -230,16 +257,15 @@ class Problem:
 				newStates.append( ProblemState( self.src, state.pLoc, state.loaded, state.distance + coordinate.eudCalc(state.vLoc, self.src)) )
 				newStates.append(ProblemState( (0,0), state.pLoc, state.loaded, state.distance + coordinate.eudCalc(state.vLoc, (0,0))) )
 		return newStates
-	"""
 	
 	"""
-	getSuccessors
+	getSuccessorsGeneral
+	should work for any values M N K (assume Y = 2)
 	 Returns a list of the possible moves that to be searched through
 	 Can be used for higher order problems
 	 param: curState - the current state in the search
 	"""
-	"""
-	def getSuccessors(self, state):
+	def getSuccessorsGeneral(self, state):
 		newStates = []
 		
 		for t in range(0,self.trucks,1):
@@ -327,7 +353,7 @@ class Problem:
 							newStates.append(cState)
 				
 		return newStates
-	"""
+
 #--------------------------------------------------
 #Test for the 1 problem renae functions for when change old function names
 def runTests():
@@ -340,6 +366,9 @@ def runTests():
 
 	"""
 	#taking in 2D, sohuld work for 1D as well
+	
+	sinput = []
+	dinput = []
 	
 	Y = int(input("Number of dimensions: "))
 	sources = input("Space seperated list of package sources: ")
