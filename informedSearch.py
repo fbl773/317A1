@@ -213,25 +213,26 @@ def runTests():
 	print ("And in that is: ", aStar)
 
 	n = 0
-	for path in aStar:
-		try: 
-			for state in path: 
-				print ("vLoc",n,": ",state.vLoc)
-				print ("pLoc",n,": ",state.pLoc)
-				print ("load",n,": ",state.loaded,bannr)
-				n += 1
-				
-				
+	for state in aStar[0]:
+		try:
+			print ("vLoc",n,": ",state.vLoc)
+			print ("pLoc",n,": ",state.pLoc)
+			print ("load",n,": ",state.loaded,bannr)
+			n += 1
+
 		except TypeError as tplsSuk:
-			print (tplsSuk)		
-	
+			print (tplsSuk)
+	print("The number of nodes created is ", aStar[1])
+	print("The largest size the heap gets is ", aStar[2])
+
 	"""
 	This will need some syntax work 
 	"""
+"""
 	aStar2 = aStarSearchWithRef(tstState,tstProb)
 	numNodespath = 0
 	while aStar2[0].parentState:
 		numNodespath += 1
 		#print in here
 		aStar2[0].parentState = aStar2[0].parentState.parentState
-
+"""
