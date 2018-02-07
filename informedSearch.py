@@ -234,5 +234,5 @@ def runTests():
 	while aStar2[0].parentState:
 		numNodespath += 1
 		#print in here
-		aStar2[0].parentState = aStar2[0].parentState.parentState
+		aStar2[0] = aStar2[0].parentState
 """
