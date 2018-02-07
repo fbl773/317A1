@@ -10,20 +10,35 @@
 import Problem
 import Search
 import informedSearch
-
+import sys
 print ("MNKY Tester")
 
-print ("PROBLEM")
-print ("-------")
+def testProblem():
+	print ("PROBLEM")
+	print ("-------")
+	Problem.runTests()
 
-#Problem.runTests()
 
+def testUninformedSearch():
+	print ("SEARCH")
+	print ("------")
+	Search.runTests()
 
+def testInformedSearch():
+	print ("INFORMED search")
+	print ("---------------")
+	informedSearch.runTests()
 
-print ("SEARCH")
-print ("------")
-#Search.runTests()
+#main
+runMe = sys.argv[1]
 
-print ("INFORMED search")
-print ("---------------")
-informedSearch.runTests()
+#uninformed search
+if runMe is 'i':
+	testUninformedSearch()
+#Informed Search
+elif runMe is 's':
+	testInformedSearch()
+#Problem class
+elif runMe is 'p':
+	testProblem()
+
