@@ -140,6 +140,49 @@ def aStarSearch(state, prob):
 	#print("Heap is: ", heap)
 	return (seqPath,nodesCreated, maxSize)
 
+"""
+A* search TEST
+"""
+def aStarSearchWithRef(state, prob):
+	heap = []
+	
+	newNodes = []
+	#newNodes.extend(prob.getSuccessors(state))
+	
+	#seqPath = []
+			
+	#for vState in newNodes:
+		#print ("Values are: ",type(vState))
+		#heapq.heappush(heap,(heuristicOneProb(vState,prob) + vState.distance), vState)
+
+	heapq.heappush(heap,(0,state))
+	maxSize = len(heap)
+	nodesCreated = len(heap)
+
+	print ("Entering Loop with" )			       
+	print ("Heap Length: ", maxSize)
+	print ("Nodes Created", nodesCreated)
+	
+	while len(heap) > 0:
+		currentState = heapq.heappop(heap)[1]
+	#	print ("within currentState is: ", type(currentState))		
+
+		#seqPath.append(currentState)
+
+		if prob.isGoal(currentState):
+			return (currentState, nodesCreated, maxSize)
+		else:
+			newNodes.extend(prob.getSuccessorsOneAStar(currentState))
+			for vState in newNodes:
+				heapq.heappush(heap,(heuristicOneProb(vState, prob) + vState.distance, vState))
+				nodesCreated += 1
+				newNodes.remove(vState)
+			if len(heap) > maxSize:
+				maxSize = len(heap)
+	
+	#print("Heap is: ", heap)
+	return (None,nodesCreated, maxSize)
+
 
 """
 	The tests for the informed search
@@ -180,5 +223,15 @@ def runTests():
 				
 				
 		except TypeError as tplsSuk:
-			print (tplsSuk)				
+			print (tplsSuk)		
+	
+	"""
+	This will need some syntax work 
+	"""
+	aStar2 = aStarSearchWithRef(tstState,tstProb)
+	numNodespath = 0
+	while aStar2[0].parentState:
+		numNodespath += 1
+		#print in here
+		aStar2[0].parentState = aStar2[0].parentState.parentState
 
