@@ -32,13 +32,14 @@ def testInformedSearch():
 #main
 runMe = sys.argv[1]
 
-#uninformed search
+#informed search
 if runMe is 'i':
-	testUninformedSearch()
-#Informed Search
+	testInformedSearch()
+#Uninformed Search
 elif runMe is 's':
 	testInformedSearch()
 #Problem class
 elif runMe is 'p':
 	testProblem()
-
+else:
+	print("call with: i for informedSearch.py\n s for Search.py\n p for Problem.py\n")
