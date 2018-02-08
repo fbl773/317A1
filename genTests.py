@@ -47,11 +47,21 @@ became completely redundant. sorry
 def getMNKY(mnky):
 	return str(mnky)
 
-
-def giveMNKY(giveMe):
-	mnky = getMNKY(giveMe)
-	numPoints = int(mnky[1]) #The bloody getMNKY function adds a space that changes index we need 
-	dimensions = int(mnky[3]) #ditto
+"""
+giveMNKY()
+	- gives a list of lists that represent a list of N, Ydimensional coordinates
+	
+	Paramaters
+	-----------
+	giveMe: an mnky whos n and y values we will use to generate a list of points
+	
+	return: [[point],....,[point]] A list of coordinates.
+	
+"""
+def giveMNKY(mnky):
+	giveMe = getMNKY(mnky)
+	numPoints = int(giveMe[1]) #The bloody getMNKY function adds a space that changes index we need 
+	dimensions = int(giveMe[3]) #ditto
 
 	return genSet(numPoints, dimensions)
 
