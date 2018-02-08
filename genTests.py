@@ -76,10 +76,9 @@ def usage():
 	infoMsg= "Outputs the MNKY values then Generates n random \npoints of dimensionality y"
 	
 	return bannr + infoMsg + '\n' + usgMsg + bannr
+
+
 #MAIN#################
-
-
-runTests()
 
 """
 FROM CMD LINE DAYS
