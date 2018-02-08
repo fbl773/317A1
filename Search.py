@@ -75,8 +75,8 @@ def runTests():
 	print ("TESTING BFS",bannr)
 	bfsQueue = BFS(startState,prob)
 	print("Type of bfsQueue: ",type(bfsQueue))
-	print("WIthin it is: ", bfsStack)
-	print("And that is: ", bfsStack.toString())
+	print("WIthin it is: ", bfsQueue)
+	print("And that is: ", bfsQueue.toString())
 
 
 	print ("TEST BFS",bannr)

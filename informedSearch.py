@@ -24,12 +24,12 @@ def heuristicOneProb2D(state,prob):
 	estCost = 0
 	if state.loaded:
 		if state.vLoc == prob.dest:
-			estCost = coordinate.eudCalc((0,0), prob.dest)
+			estCost = prob.eudCalc((0,0), prob.dest)
 		else:
 			#at 0 or source
-			estCost = coordinate.eudCalc(state.vLoc,prob.dest) + coordinate.eudCalc((0,0), prob.dest)
+			estCost = prob.eudCalc(state.vLoc,prob.dest) + prob.eudCalc((0,0), prob.dest)
 	else:
-		estCost = coordinate.eudCalc(state.vLoc, prob.src) + coordinate.eudCalc(prob.src,prob.dest) + coordinate.eudCalc((0,0), prob.dest)
+		estCost = prob.eudCalc(state.vLoc, prob.src) + prob.eudCalc(prob.src,prob.dest) + prob.eudCalc((0,0), prob.dest)
 	
 	return estCost
 """
@@ -81,16 +81,17 @@ def heuristicMN1KY2(state, prob):
 """
 Greedy search
 """
+
 def greedySearch(state):
 	heap = []
 	
 	heap.extend(Problem.getSuccessors(state))
 	heapq.heapify(heap)
 	
-	while not isEmpty(heap):
+	while len(heap) > 0:
 		currentState = heapq.heappop(heap)
 		
-		if Problem.isGoal(currenState):
+		if Problem.isGoal(currentState):
 			return currentState
 		else:
 			heap.extend(Problem.getSuccessors(currentState))
@@ -169,7 +170,7 @@ def aStarSearchWithRef(state, prob):
 
 		#seqPath.append(currentState)
 
-		if prob.isGoal(currentState):
+		if prob.isOneProbGoal(currentState):
 			return (currentState, nodesCreated, maxSize)
 		else:
 			newNodes.extend(prob.getSuccessorsOneAStar(currentState))

@@ -3,6 +3,7 @@
 #Contains the object for the problem state and functions to act on the problem
 
 import copy
+import math
 
 #ProblemState
 #Object to hold a state of the problem
@@ -78,7 +79,7 @@ class coordinate(object):
 		calculate euclidean distance bewteen 2 points
 	"""
 	def eudCalc(cord1,cord2):
-		return sqrt((cord1.x - cord2.x)**2 + (cord1.y - cord2.y)**2)
+		return math.sqrt((cord1.x - cord2.x)**2 + (cord1.y - cord2.y)**2)
 
 """
  Problem
@@ -93,7 +94,7 @@ class Problem:
 	packages = 1
 	
 	#Construtor for the problem
-	def __init__(self,dest,source,trucks,capacity,packages)
+	def __init__(self,dest,source,trucks,capacity,packages):
 		self.dest = dest
 		self.src = source
 		self.trucks = trucks
@@ -146,10 +147,10 @@ class Problem:
 		return: true of the state matches the goal state false otherwise
 	"""
 	def isGoal(self, state):
-		for t in range self.trucks:
+		for t in range( self.trucks):
 			if state.vLoc[t] != (0,0):
 				return False
-		for p in range self.packages:
+		for p in range( self.packages):
 			if state.pLoc[p] != self.dest[p]:
 				return False		
 		return True
@@ -289,7 +290,7 @@ class Problem:
 				
 				for i in range (0,self.k,1):
 					pIndex = state.loaded[t][i] - 1
-					if state.vLoc = self.dest[pIndex]:
+					if state.vLoc[t] == self.dest[pIndex]:
 						#truck is loaded with a package and is at that package's dest
 						#only legal move is to drop off package i
 						cState = copy.copy(state)
@@ -299,7 +300,7 @@ class Problem:
 					else:
 						#need to move to package i dest
 						cState = copy.copy(state)
-						cState.distance[t] += coordinate.eudCalc(state.vLoc[t],prob.dest[pIndex])
+						cState.distance[t] += coordinate.eudCalc(state.vLoc[t],self.dest[pIndex])
 						cState.vLoc[t] = self.dest[pIndex]
 						#need to update pacakge locations
 						for x in range(0,self.k,1):
@@ -314,9 +315,9 @@ class Problem:
 				newStates.append(cState)
 				
 				#check packages not loaded and at a source
-				for p in range (0,prob.packages,1):
-					if state.pLoc[p] == prob.src[p] and not self.packageLoaded(state,p):
-						if state.vLoc[t] == prob.src[p]:
+				for p in range (0,self.packages,1):
+					if state.pLoc[p] == self.src[p] and not self.packageLoaded(state,p):
+						if state.vLoc[t] == self.src[p]:
 							#pick up package
 							cState = copy.copy(state)
 							cState.loaded[t].append(p+1)
@@ -324,8 +325,8 @@ class Problem:
 						else:
 							#go to a new package
 							cState = copy.copy(state)
-							cState.distance[t] += coordinate.eudCalc(state.vLoc[t],prob.src[p])
-							cState.vLoc[t] = prob.src[p]
+							cState.distance[t] += coordinate.eudCalc(state.vLoc[t],self.src[p])
+							cState.vLoc[t] = self.src[p]
 							newStates.append(cState)						
 				
 			else:
@@ -334,14 +335,14 @@ class Problem:
 				for i in range (0,len(state.loaded[t]),1):
 					#of packages loaded if at the destination drop it off otherwise go to dest
 					pIndex = state.loaded[t][i] - 1
-					if state.vLoc[t] == prob.dest[pIndex]:
+					if state.vLoc[t] == self.dest[pIndex]:
 						cState = copy.copy(state)
 						cState.loaded[t].remove(pIndex)
 						newStates.append(cState)
 					else:
 						#go to destination
 						cState = copy.copy(state)
-						cState.distance[t] += coordinate.eudCalc(state.vLoc[t],prob.dest[pIndex])
+						cState.distance[t] += coordinate.eudCalc(state.vLoc[t],self.dest[pIndex])
 						cState.vLoc[t] = self.dest[pIndex]
 						#need to update pacakge locations
 						for x in range(0,self.k,1):
@@ -349,9 +350,9 @@ class Problem:
 							cState.pLoc[newPI] = self.dest[pIndex]
 						newStates.append(cState)
 				#get new package
-				for p in range (0,prob.packages,1):
-					if state.pLoc[p] == prob.src[p] and not self.packageLoaded(state,p):
-						if state.vLoc[t] == prob.src[p]:
+				for p in range (0,self.packages,1):
+					if state.pLoc[p] == self.src[p] and not self.packageLoaded(state,p):
+						if state.vLoc[t] == self.src[p]:
 							#pick up package
 							cState = copy.copy(state)
 							cState.loaded[t].append(p+1)
@@ -359,8 +360,8 @@ class Problem:
 						else:
 							#go to a new package
 							cState = copy.copy(state)
-							cState.distance[t] += coordinate.eudCalc(state.vLoc[t],prob.src[p])
-							cState.vLoc[t] = prob.src[p]
+							cState.distance[t] += coordinate.eudCalc(state.vLoc[t],self.src[p])
+							cState.vLoc[t] = self.src[p]
 							for x in range(0,len(state.loaded[t]),1):
 								newPI = state.loaded[t][x] - 1
 								cState.pLoc[newPI] = self.src[p]
