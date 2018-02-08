@@ -210,7 +210,7 @@ class Problem:
 	 used for the 1 problem
 	 param: curState - the current state in the search
 	"""
-	def getSuccessorsOneAStar(self,state):
+	def getSuccessorsOneWithRef(self,state):
 		newStates = []
 		if state.vLoc == 0:
 			if state.loaded:
