@@ -29,19 +29,19 @@ def BFS( startState, problem):
 	NODESCREATED = 1
 	queue.append(startState)		#Added as per Wiz's bug catch, not adding the first state
 	
-	newNodes = problem.getSuccessors(startState)
+	newNodes = problem.getSuccessorsWithRef(startState)
 	NODESCREATED += len(newNodes)
 	queue.extend(newNodes)
 	if MAXQUEUE < len(queue):
 		MAXQUEUE = len(queue)
-	path = []
+	#path = []
 	while not isQueueEmpty(queue):
 		state = queue.popleft()
-		path.append(state)
-		if problem.isGoal(state):
-			return (path, NODESCREATED, MAXQUEUE)
+		#path.append(state)
+		if problem.isOneProbGoal(state):
+			return (state, NODESCREATED, MAXQUEUE)
 		else:
-			temp = problem.getSuccessors(state)
+			temp = problem.getSuccessorsWithRef(state)
 			NODESCREATED += len(temp)
 			queue.extend(temp)
 			if MAXQUEUE < len(queue):
@@ -63,27 +63,27 @@ def DFS(startState, problem):
 	#Records the number of nodes created
 	NODESCREATED = 1
 
-	if problem.isGoal(startState):
+	if problem.isOneProbGoal(startState):
 		return ([startState], NODESCREATED, MAXSTACK)
 
-	newNodes = problem.getSuccessors(startState)
+	newNodes = problem.getSuccessorsWithRef(startState)
 	NODESCREATED += len(newNodes)
 	stack.extend(newNodes )
 	if MAXSTACK < len(stack):
 		MAXSTACK = len(stack)
 
-	path = []
-	newPathFlag = False
+	#path = []
+	#newPathFlag = False
 	while not isEmpty(stack):
-		if newPathFlag is True:
-			path = []
-			newPathFlag = False
+		#if newPathFlag is True:
+		#	path = []
+		#	newPathFlag = False
 		state = stack.pop()
-		path.append(state)
-		if problem.isGoal(state):
-			return (path, NODESCREATED, MAXSTACK)
+		#path.append(state)
+		if problem.isOneProbGoal(state):
+			return (sate, NODESCREATED, MAXSTACK)
 		else:
-			temp = problem.getSuccessors(state)
+			temp = problem.getSuccessorsWithRef(state)
 			NODESCREATED += len(temp)
 			stack.extend(temp)
 			if MAXSTACK < len(stack):
