@@ -10,8 +10,9 @@
 import Problem
 import Search
 import informedSearch
+import genTests
 import sys
-print ("MNKY Tester")
+
 
 def testProblem():
 	print ("PROBLEM")
@@ -29,16 +30,21 @@ def testInformedSearch():
 	print ("---------------")
 	informedSearch.runTests()
 
+def testGenerator():
+	print ("GENERATOR")
+	print ("---------")
+	genTests.runTests()
+
 #main
 runMe = sys.argv[1]
+print ("MNKY TESTER")
 
-#uninformed search
 if runMe is 'i':
 	testUninformedSearch()
-#Informed Search
 elif runMe is 's':
 	testInformedSearch()
-#Problem class
 elif runMe is 'p':
 	testProblem()
+elif runMe is 'g':
+	testGenerator()
 
