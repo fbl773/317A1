@@ -196,8 +196,8 @@ def runTests():
 	src = 0.5
 	dst = 1.0
 	
-	tstProb = Problem.Problem(dst,src)
-	tstState = Problem.ProblemState(0,src,False,0)
+	tstProb = Problem.Problem(dst,src, 1, 1, 1)
+	tstState = Problem.ProblemStateWithRef(0,src,False,0, None)
 
 	#Validating input
 	print ("Environment is: ",bannr)
@@ -208,7 +208,7 @@ def runTests():
 
 	#Testing the A*
 	print ("Test A*",bannr)
-		 
+	"""		 
 	aStar = aStarSearch(tstState, tstProb)
 	print ("A* is a: ", type(aStar))
 	print ("And in that is: ", aStar)
@@ -225,15 +225,25 @@ def runTests():
 			print (tplsSuk)
 	print("The number of nodes created is ", aStar[1])
 	print("The largest size the heap gets is ", aStar[2])
-
+	"""
 	"""
 	This will need some syntax work 
 	"""
-"""
+
 	aStar2 = aStarSearchWithRef(tstState,tstProb)
 	numNodespath = 0
-	while aStar2[0].parentState:
+	temp = aStar2[0]
+	print("Printing Path from goal to start")
+	while temp is not None:
 		numNodespath += 1
 		#print in here
-		aStar2[0] = aStar2[0].parentState
-"""
+		print(temp.toString())
+		print(bannr)
+		temp = temp.parentState
+	print("Depth of Search was ", numNodespath)
+	print("Number of Nodes created ", aStar2[1])
+	print("Maximum size of the heap ", aStar2[2])
+
+#	print("Final State of the Problem ", tstProb.toString())
+
+
