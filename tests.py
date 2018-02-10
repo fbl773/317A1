@@ -37,7 +37,7 @@ if runMe is 'i':
 	testInformedSearch()
 #Uninformed Search
 elif runMe is 's':
-	testInformedSearch()
+	testUinformedSearch()
 #Problem class
 elif runMe is 'p':
 	testProblem()
