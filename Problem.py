@@ -211,31 +211,31 @@ class Problem:
 		newStates = []
 		if state.vLoc == 0:
 			if state.loaded:
-				newStates.append( ProblemState(self.src, self.src, state.loaded, state.distance + abs(self.src - state.vLoc)) )
-				newStates.append(ProblemState(self.dest, self.dest, state.loaded, state.distance + abs(self.dest - state.vLoc )) )
+				newStates.append( ProblemState(self.src, self.src, state.loaded, state.distance + abs(self.src - state.vLoc),state) )
+				newStates.append(ProblemState(self.dest, self.dest, state.loaded, state.distance + abs(self.dest - state.vLoc ),state) )
 			else:
-				newStates.append( ProblemState(self.src, state.pLoc, state.loaded, state.distance + abs(self.src - state.vLoc)) )
-				newStates.append(ProblemState(self.dest, state.pLoc, state.loaded, state.distance + abs(self.dest - state.vLoc )) )
+				newStates.append( ProblemState(self.src, state.pLoc, state.loaded, state.distance + abs(self.src - state.vLoc),state) )
+				newStates.append(ProblemState(self.dest, state.pLoc, state.loaded, state.distance + abs(self.dest - state.vLoc ),state) )
 		elif state.vLoc == self.src :
 			if state.loaded == False:
 				if state.pLoc != self.dest:
-					newStates.append(ProblemState(state.vLoc, state.pLoc, True, state.distance))
+					newStates.append(ProblemState(state.vLoc, state.pLoc, True, state.distance,state))
 				#also consider that it doesn't pick up package and move without package
-				newStates.append(ProblemState(self.dest, state.pLoc, state.loaded, state.distance + abs(self.dest - state.vLoc )) )
-				newStates.append(ProblemState(0, state.pLoc, state.loaded, state.distance + abs(0 - state.vLoc )) )
+				newStates.append(ProblemState(self.dest, state.pLoc, state.loaded, state.distance + abs(self.dest - state.vLoc ),state) )
+				newStates.append(ProblemState(0, state.pLoc, state.loaded, state.distance + abs(0 - state.vLoc ),state) )
 			else:
-				newStates.append(ProblemState(0, 0, state.loaded, state.distance + abs(0 - state.vLoc )))
-				newStates.append(ProblemState(self.dest, self.dest, state.loaded, state.distance + abs(self.dest - state.vLoc )))
+				newStates.append(ProblemState(0, 0, state.loaded, state.distance + abs(0 - state.vLoc ),state))
+				newStates.append(ProblemState(self.dest, self.dest, state.loaded, state.distance + abs(self.dest - state.vLoc ),state))
 		else:
 			if state.loaded == True:
 				#only legal state to drop off package.
-				newStates.append(ProblemState(state.vLoc, state.pLoc, False, state.distance))
+				newStates.append(ProblemState(state.vLoc, state.pLoc, False, state.distance,state))
 				#also consider when it doesnt do the smart thing
-				newStates.append(ProblemState(0, 0, state.loaded, state.distance + abs(0 - state.vLoc)))
-				newStates.append(ProblemState(self.src, self.src, state.loaded, state.distance + abs(self.src - state.vLoc)))
+				newStates.append(ProblemState(0, 0, state.loaded, state.distance + abs(0 - state.vLoc),state))
+				newStates.append(ProblemState(self.src, self.src, state.loaded, state.distance + abs(self.src - state.vLoc),state))
 			else:
-				newStates.append( ProblemState( self.src, state.pLoc, state.loaded, state.distance + abs(self.src - state.vLoc )) )
-				newStates.append(ProblemState( 0, state.pLoc, state.loaded, state.distance + abs(0 - state.vLoc)) )
+				newStates.append( ProblemState( self.src, state.pLoc, state.loaded, state.distance + abs(self.src - state.vLoc ),state) )
+				newStates.append(ProblemState( 0, state.pLoc, state.loaded, state.distance + abs(0 - state.vLoc),state) )
 				
 		return newStates
 	"""
