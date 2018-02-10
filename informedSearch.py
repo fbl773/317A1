@@ -230,9 +230,9 @@ def runTests():
 	This will need some syntax work 
 	"""
 
-	aStar2 = aStarSearchWithRef(tstState,tstProb)
+	aStar1 = aStarSearchWithRef(tstState,tstProb)
 	numNodespath = 0
-	temp = aStar2[0]
+	temp = aStar1[0]
 	print("Printing Path from goal to start")
 	while temp is not None:
 		numNodespath += 1
@@ -241,8 +241,17 @@ def runTests():
 		print(bannr)
 		temp = temp.parentState
 	print("Depth of Search was ", numNodespath)
-	print("Number of Nodes created ", aStar2[1])
-	print("Maximum size of the heap ", aStar2[2])
+	print("Number of Nodes created ", aStar1[1])
+	print("Maximum size of the heap ", aStar1[2])
+
+	#Testing 2D#######
+	print ("Testing 2D A*",bannr)
+	
+	
+	
+
+
+
 
 #	print("Final State of the Problem ", tstProb.toString())
 

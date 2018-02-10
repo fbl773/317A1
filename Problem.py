@@ -80,6 +80,8 @@ class coordinate(object):
 	"""
 	def eudCalc(cord1,cord2):
 		return math.sqrt((cord1.x - cord2.x)**2 + (cord1.y - cord2.y)**2)
+	def toString(self):
+		return ('('+ str(self.x) + ',' + str(self.y) + ')')
 
 """
  Problem
@@ -376,8 +378,8 @@ def runTests():
 	
 	#for Y = 1
 	bannr = '\n*****************************\n'
-	src = float(input("Source Coordinate: "))
-	dest = float(input("Destination Coordinate: "))
+	src = 0.5		
+	dest = 1.0 
 
 	"""
 	#taking in 2D, sohuld work for 1D as well
@@ -422,19 +424,32 @@ def runTests():
 	print (bannr)
 
 	#Testing Problem Declaration
-	aProblem = Problem(src,dest)
+	aProblem = Problem(src,dest,1,1,1)
 	print (aProblem.toString())
 
 	print (bannr)
 
 	#Testing Successor Function
-	successorList = aProblem.getSuccessors(startState)
+	successorList = aProblem.getOneProbSuccessors(startState)
 	successors = ''	
 	for s in successorList:
 		successors += s.toString()
 
 	print("Type of Succesors is: ", type(successorList))
 	print(" And it Contains: ", successors)
+
+	#Testing 2d problems
+	print("Testing 2D",bannr)
+	src = coordinate(0.5,0.5)
+	dest = coordinate(1.0,1.0)	
+	print("Source is: " , src.toString())
+	print("Destination is: ", dest.toString())
+
+	
+#	aProblem2 = Problem(dest,src)	
+
+	
+
 
 	print (bannr, "PROBLEM MODULE TESTING FINISHED",bannr)
 
