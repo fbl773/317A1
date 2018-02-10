@@ -415,7 +415,7 @@ def runTests():
 	print ("src: ",src, " dest: ", dest)
 
 	#Testing State Declaration
-	startState = ProblemState(dest,src,False,0) # was startState = ProblemState(0,src,False,0) change back if error ~sarah
+	startState = ProblemState(0,src,False,0) # was startState = ProblemState(0,src,False,0) change back if error ~sarah
 	if startState is None:
 		print ("No no no no no no no no no no none")
 	else:
@@ -424,7 +424,7 @@ def runTests():
 	print (bannr)
 
 	#Testing Problem Declaration
-	aProblem = Problem(src,dest,1,1,1)
+	aProblem = Problem(dest,src,1,1,1)
 	print (aProblem.toString())
 
 	print (bannr)
@@ -440,17 +440,26 @@ def runTests():
 
 	#Testing 2d problems
 	print("Testing 2D",bannr)
+	
 	src = coordinate(0.5,0.5)
 	dest = coordinate(1.0,1.0)	
 	print("Source is: " , src.toString())
 	print("Destination is: ", dest.toString())
-
 	
-#	aProblem2 = Problem(dest,src)	
-
+	#Attempting initialization w/ coordinates
+	aProblem2 = Problem(dest,src,1,1,1)	
+	print("2DProblem: ",aProblem2.toString())
 	
+	#Time to find those successors!
+	startState2 = ProblemStateWithRef(0,src,False,0,None)
+	print("2DState: ", startState2.toString())
+	
+	#And now the moment we've all been waiting for!
+	successors2 = aProblem2.getSuccessorsTD(startState2)
+
+
+
 
 
 	print (bannr, "PROBLEM MODULE TESTING FINISHED",bannr)
-
-	
+		
