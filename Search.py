@@ -122,12 +122,13 @@ def runTests():
 
 	#Testing Search
 	print("TESTING BFS",bannr)
-	bfs2Queue = BFSTwoD(startState2,prob2)
+	bfsQueue2 = BFSTwoD(startState2,prob2)
 	print ("Within BFSTree is: ",bfsQueue2)
 	print ("And that is: ", bfsQueue2[0])
 	print ("Which contains: ", type(bfsQueue2[0][0]))
 	
-	print ("Holy shit you made it this far! A+ Dervs and Sarah")
+	for items in bfsQueue2[0]:
+		print (items.toString())	
 
 	
 	
