@@ -130,15 +130,17 @@ def runTests():
 	print ("TESTING BFS",bannr)
 	bfsQueue = BFSTD(startState1,prob1)
 	print("Type of bfsQueue: ",type(bfsQueue))
-	print("WIthin it is: ", bfsQueue)
-	print("And that is: ", bfsQueue[0])
+	#print("WIthin it is: ", bfsQueue)
+	#print("And that is: ", bfsQueue[0])
 	print("Which contains: ", type(bfsQueue[0][0]))
+	print ("Nodes created: ", str(bfsQueue[1]))
+	print ("Max Queue Size: ", str(bfsQueue[2]))
 
-
-	print ("TEST BFS",bannr)
 	ResultsTup = bfsQueue
-
+	
+	print ("Path",bannr)
 	for items in ResultsTup[0]:
+		print ('-----^-------')
 		print(items.toString())
 	
 	#Two-D testing####################################
@@ -158,20 +160,25 @@ def runTests():
 	#Testing Search
 	print("TESTING 2D BFS",bannr)
 	bfsQueue2 = BFSTD(startState2,prob2)
-	print ("Within BFSTree is: ",bfsQueue2)
-	print ("And that is: ", bfsQueue2[0])
+	print ("Within BFSTree is: ",type(bfsQueue2))
+	#print ("And that is: ", bfsQueue2[0])
 	print ("Which contains: ", type(bfsQueue2[0][0]))
+	print ("Nodes created: ", str(bfsQueue2[1]))
+	print ("Max Queue Size: ", str(bfsQueue2[2]))
 	
+	print ("Path",bannr)
 	for items in bfsQueue2[0]:
+		print ('------^-------')
 		print (items.toString())	
 
 	#TESTING DFS 1D
 	
 	print (bannr,"TESTING DFS",bannr)	
-	dfsStack = DFS(startState1,prob1)
-	print("Type of dfsStack: ", type(dfsStack))
-	print("Within it is: ", dfsStack)
-	print("And that is: ", dfsStack.toString())
+	print ("runs to long, uncomment below code to run out of RAM")
+# 	dfsStack = DFS(startState1,prob1)
+# 	print("Type of dfsStack: ", type(dfsStack))
+# 	print("Within it is: ", dfsStack)
+# 	print("And that is: ", dfsStack.toString())
 	
 	return
 
@@ -188,7 +195,7 @@ def timedTest():
 	dest1 = Problem.coordinate(1.0,0)
 	
 	testProblem = Problem.Problem(dest1,src1,1,1,1)
-	testState = Problem.ProblemStateWithRef(origin, 1.0, False, 0,None)
+	testState = Problem.ProblemStateWithRef(origin, dest1, False, 0,None)
 	start = timer()
 	bfs = BFSTD(testState, testProblem)
 	end = timer()
@@ -206,3 +213,6 @@ def timedTest():
 	print("Time taken to run Breadth first search2D: ", end - start)
 
 	#potentially add code for the general function here too.
+
+
+	
