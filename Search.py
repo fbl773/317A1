@@ -12,6 +12,8 @@ queue = collections.deque([])
 def isQueueEmpty(queue):
 	return len(queue) == 0
 
+def isEmpty(aList):
+	return aList == []
 
 """
 Breadth First Search of the search states to find the goal state if it exists
@@ -76,27 +78,25 @@ def DFS(startState, problem):
 	#Records the number of nodes created
 	NODESCREATED = 1
 
-	if problem.isGoal(startState):
+	if problem.isOneProbGoal(startState):
 		return ([startState], NODESCREATED, MAXSTACK)
 
-	newNodes = problem.getSuccessors(startState)
+	newNodes = problem.getOneProbSuccessors(startState)
 	NODESCREATED += len(newNodes)
-	stack.extend(newNodes )
+	stack.extend(newNodes)
 	if MAXSTACK < len(stack):
 		MAXSTACK = len(stack)
 
-	path = []
 	newPathFlag = False
 	while not isEmpty(stack):
 		if newPathFlag is True:
-			path = []
 			newPathFlag = False
 		state = stack.pop()
 		path.append(state)
-		if problem.isGoal(state):
-			return (path, NODESCREATED, MAXSTACK)
+		if problem.isOneProbGoal(state):
+			return (state,NODESCREATED, MAXSTACK)
 		else:
-			temp = problem.getSuccessors(state)
+			temp = problem.getOneProbSuccessors(state)
 			NODESCREATED += len(temp)
 			stack.extend(temp)
 			if MAXSTACK < len(stack):
@@ -108,44 +108,42 @@ def DFS(startState, problem):
 def runTests():
 	bannr = "\n********************************\n"
 	
-# 	src = 0.5	
-# 	dst = 1.0
-# 	
-# 	#Intializing objects	
-# 	prob = Problem.Problem(dst,src,1,1,1)
-# 	startState = Problem.ProblemStateWithRef(0,src,False,0,None)
-# 	print ("Source: ",src," Dest: ",dst)
-# 	
-# 	#Check Objects
-# 	print ("Problem: ", prob.toString(),'\n')
-# 	print ("State: ", startState.toString())
-# 	print (bannr)
-# 	
-# 
-# 	#Testing DFS NOT IN THIS VERSION
-# 	print ("TESTING DFS",bannr)	
-# 
-# 	# dfsStack = DFS(startState,prob)
-# # 	print("Type of dfsStack: ", type(dfsStack))
-# # 	print("Within it is: ", dfsStack)
-# # 	print("And that is: ", dfsStack.toString())
-# 
-# 	print (bannr)
-# 
-# 	#Testing BFS
-# 	print ("TESTING BFS",bannr)
-# 	bfsQueue = BFS(startState,prob)
-# 	print("Type of bfsQueue: ",type(bfsQueue))
-# 	print("WIthin it is: ", bfsQueue)
-# 	print("And that is: ", bfsQueue[0])
-# 	print("Which contains: ", type(bfsQueue[0][0]))
-# 
-# 
-# 	print ("TEST BFS",bannr)
-# 	ResultsTup = BFS(startState,prob)
-# 
-# 	for items in ResultsTup[0]:
-# 		print(items.toString())
+	src = 0.5	
+	dst = 1.0
+	
+	#Intializing objects	
+	prob = Problem.Problem(dst,src,1,1,1)
+	startState = Problem.ProblemStateWithRef(0,src,False,0,None)
+	print ("Source: ",src," Dest: ",dst)
+	
+	#Check Objects
+	print ("Problem: ", prob.toString(),'\n')
+	print ("State: ", startState.toString())
+	print (bannr)
+	
+
+	#Testing DFS NOT IN THIS VERSION
+	print ("TESTING DFS",bannr)	
+	dfsStack = DFS(startState,prob)
+	print("Type of dfsStack: ", type(dfsStack))
+	print("Within it is: ", dfsStack)
+	print("And that is: ", dfsStack.toString())
+
+	print (bannr)
+
+	#Testing BFS
+	print ("TESTING BFS",bannr)
+	bfsQueue = BFS(startState,prob)
+	print("Type of bfsQueue: ",type(bfsQueue))
+	print("WIthin it is: ", type(bfsQueue[0]))
+	print("And that is: ", bfsQueue[0])
+	print("Which contains: ", type(bfsQueue[0][0]))
+
+
+	print ("TEST BFS",bannr)
+	ResultsTup = BFS(startState,prob)
+
+
 	
 	#Two-D testing####################################
 	print(bannr,"Testing 2D",bannr)
