@@ -369,7 +369,7 @@ class Problem:
 			elif len(state.loaded[t]) is 0:
 				#if truck has no packages, either go home or get new package
 				cState = copy.copy(state)
-				cState.distance[t] += coordinate.eudCalc(state.vLoc[t],(0,0))
+				cState.distance[t] += coordinate.eudCalc(state.vLoc[t],coordinate(0,0))
 				cState.parentState = state
 				newStates.append(cState)
 				
