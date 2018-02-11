@@ -25,12 +25,12 @@ def heuristicOneProb2D(state,prob):
 	estCost = 0
 	if state.loaded:
 		if state.vLoc == prob.dest:
-			estCost = prob.eudCalc((0,0), prob.dest)
+			estCost = coordinate.eudCalc(coordinate(0,0), prob.dest)
 		else:
 			#at 0 or source
-			estCost = prob.eudCalc(state.vLoc,prob.dest) + prob.eudCalc((0,0), prob.dest)
+			estCost = coordinate.eudCalc(state.vLoc,prob.dest) + coordinate.eudCalc(coordinate(0,0), prob.dest)
 	else:
-		estCost = prob.eudCalc(state.vLoc, prob.src) + prob.eudCalc(prob.src,prob.dest) + prob.eudCalc((0,0), prob.dest)
+		estCost = coordinate.eudCalc(state.vLoc, prob.src) + coordinate.eudCalc(prob.src,prob.dest) + coordinate.eudCalc(coordinate(0,0), prob.dest)
 	
 	return estCost
 """
@@ -69,15 +69,15 @@ Alternative to brute force heuristic for M=N=1, N=Y=2
 perhpas consdier the distance to get each individual package to their goal
 break down the problem into a 1 problem
 """
-"""
+
 def heuristicMN1KY2(state, prob):
 	estCost = 0
 	for i in range(0,len(state.pLoc),1):
-		if stat.pLoc[0] is not prob.dest:
+		if state.pLoc[i] is not prob.dest:
 			estCost = estCost + coordinate.eudCalc(state.pLoc[i],prob.dest[i])
 	return estCost
 			
-"""	
+	
 
 """
 Greedy search
