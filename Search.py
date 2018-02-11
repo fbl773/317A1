@@ -4,6 +4,7 @@
 
 import Problem
 import collections
+from timeit import default_timer as timer
 
 #Queue for BFS
 queue = collections.deque([])
@@ -86,5 +87,29 @@ def runTests():
 		print(items.toString())
 	
 	return
+"""
+	timedTest
+	a test function to track the times of the functions in this file
+	not testing the time of DFS since it is a naive implementation that bottoms out without finding an answer which is expected of it
+	:returns nothing
+"""
+def timedTest():
+	testProblem = Problem.Problem(0.5, 1.0)
+	testState = Problem.ProblemStateWithRef(0, 1.0, False, 0)
+	start = timer()
+	bfs = BFS(testState, testProblem)
+	end = timer()
+	print("Time taken to run Breadth first search: ", end - start)
 
-	
+	src = Problem.coordinate(0.5, 0.5)
+	dest = Problem.coordinate(1.0, 1.0)
+
+	tDProb = Problem.Problem(dest, src, 1, 1, 1)
+	tDStart = Problem.ProblemStateWithRef(Problem.coordinate(0, 0), src, False, 0, None)
+	# timing the one problem on 2D
+	start = timer()
+	bfs2 = BFSTD(tDStart, tDProb)
+	end = timer()
+	print("Time taken to run Breadth first search: ", end - start)
+
+	#potentially add code for the general function here too.

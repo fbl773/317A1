@@ -1,5 +1,6 @@
 import heapq
 import Problem
+from timeit import default_timer as timer
 """
 heuristic for the 1 problem
 
@@ -254,5 +255,32 @@ def runTests():
 
 
 #	print("Final State of the Problem ", tstProb.toString())
+
+def timedTest():
+	testProb = Problem.Problem(0.5, 1.0, 1, 1, 1)
+	testState = Problem.ProblemStateWithRef(0, 1.0, False, 0, None)
+
+	#timing out the 1 problem
+	start = timer()
+	res = aStarSearchWithRef(testState, testProb)
+	end = timer()
+	print(" Result of A* on MNKY = 1 is ", end - start)
+
+	src = Problem.coordinate(0.5, 0.5)
+	dest = Problem.coordinate(1.0, 1.0)
+
+	tDProb = Problem.Problem(dest, src, 1, 1, 1)
+	tDStart = Problem.ProblemStateWithRef(Problem.coordinate(0,0), src, False, 0, None)
+	#timing the one problem on 2D
+	start = timer()
+	res = aStarSearchWithRefTD(tDStart, tDProb )
+	end = timer()
+
+	#Add code to time for the general search.
+
+
+
+	test2dProb = Problem.Problem()
+
 
 

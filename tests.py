@@ -23,11 +23,13 @@ def testUninformedSearch():
 	print ("SEARCH")
 	print ("------")
 	Search.runTests()
+	Search.timedTest()
 
 def testInformedSearch():
 	print ("INFORMED search")
 	print ("---------------")
 	informedSearch.runTests()
+	informedSearch.timedTest()
 
 #main
 runMe = sys.argv[1]
@@ -37,7 +39,7 @@ if runMe is 'i':
 	testInformedSearch()
 #Uninformed Search
 elif runMe is 's':
-	testUinformedSearch()
+	testUninformedSearch()()
 #Problem class
 elif runMe is 'p':
 	testProblem()
