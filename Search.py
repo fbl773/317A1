@@ -62,6 +62,48 @@ def BFSTwoD(startState,problem):
 		else:
 			queue.extend(problem.getSuccessorsTD(state))
 	
+"""
+Depth first search  of states to find the goal state if it exists
+:param: startState the state at which the search is starting from
+:param: problem the object for the current problem
+:returns: the Path of the search the  number of nodes explored and the maximum size the queue was at any point
+		if the search fails the path will be empty
+"""
+def DFS(startState, problem):
+	stack = []
+	#Records the largest size the stack reaches
+	MAXSTACK = 0
+	#Records the number of nodes created
+	NODESCREATED = 1
+
+	if problem.isGoal(startState):
+		return ([startState], NODESCREATED, MAXSTACK)
+
+	newNodes = problem.getSuccessors(startState)
+	NODESCREATED += len(newNodes)
+	stack.extend(newNodes )
+	if MAXSTACK < len(stack):
+		MAXSTACK = len(stack)
+
+	path = []
+	newPathFlag = False
+	while not isEmpty(stack):
+		if newPathFlag is True:
+			path = []
+			newPathFlag = False
+		state = stack.pop()
+		path.append(state)
+		if problem.isGoal(state):
+			return (path, NODESCREATED, MAXSTACK)
+		else:
+			temp = problem.getSuccessors(state)
+			NODESCREATED += len(temp)
+			stack.extend(temp)
+			if MAXSTACK < len(stack):
+				MAXSTACK = len(stack)
+			if len(temp) < 1:
+				newPathFlag = True
+	return (None, NODESCREATED, MAXSTACK)
 
 def runTests():
 	bannr = "\n********************************\n"
