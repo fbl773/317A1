@@ -164,15 +164,17 @@ def aStarSearchWithRef(state, prob):
 	print ("Entering Loop with" )			       
 	print ("Heap Length: ", maxSize)
 	print ("Nodes Created", nodesCreated)
-	maxdist = 0
+	
 	while len(heap) > 0:
 		currentState = heapq.heappop(heap)[1]
 	#	print ("within currentState is: ", type(currentState))		
 
 		#seqPath.append(currentState)
-		#note this wont work for multi trucks cuz distance is a list so just change a loop
-		if currentState.distance > maxdist:
-			maxdist = currentState.distance
+		
+		maxdist = 0
+		"""for dists in currentState.distance:
+			if dists > maxdist:
+				maxdist = dists"""
 		
 		if prob.isOneProbGoal(currentState):
 			return (currentState, nodesCreated, maxSize)
