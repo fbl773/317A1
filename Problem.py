@@ -190,10 +190,10 @@ class Problem:
 		return: true of the state matches the goal state false otherwise
 	"""
 	def isGoal(self, state):
-		for t in range( self.trucks):
+		for t in range(self.trucks):
 			if state.vLoc[t] != (0,0):
 				return False
-		for p in range( self.packages):
+		for p in range(self.packages):
 			if state.pLoc[p] != self.dest[p]:
 				return False		
 		return True

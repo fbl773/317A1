@@ -20,14 +20,14 @@ Breadth First Search of the search states to find the goal state if it exists
 :returns: the Path of the search the  number of nodes explored and the maximum size the queue was at any point
 		if the search fails the path will be empty
 """
-def BFS( startState, problem):
+def BFS(startState, problem):
 	#Records the largestsize of the queue
 	MAXQUEUE = 0
 	#Records the number of nodes examined
 	NODESCREATED = 1
 	queue.append(startState)		#Added as per Wiz's bug catch, not adding the first state
 	
-	newNodes = problem.getSuccessors(startState)
+	newNodes = problem.getOneProbSuccessors(startState)
 	NODESCREATED += len(newNodes)
 	queue.extend(newNodes)
 	if MAXQUEUE < len(queue):
@@ -36,55 +36,62 @@ def BFS( startState, problem):
 	while not isQueueEmpty(queue):
 		state = queue.popleft()
 		path.append(state)
-		if problem.isGoal(state):
+		if problem.isOneProbGoal(state):
 			return (path, NODESCREATED, MAXQUEUE)
 		else:
-			queue.extend(problem.getSuccessors(state))
+			queue.extend(problem.getOneProbSuccessors(state))
 
 def runTests():
 	bannr = "\n********************************\n"
 	
-	src = float(input("Input Source: "))
-	dst = float(input("Input Dest: "))
+# 	src = 0.5	
+# 	dst = 1.0
+# 	
+# 	#Intializing objects	
+# 	prob = Problem.Problem(dst,src,1,1,1)
+# 	startState = Problem.ProblemStateWithRef(0,src,False,0,None)
+# 	print ("Source: ",src," Dest: ",dst)
+# 	
+# 	#Check Objects
+# 	print ("Problem: ", prob.toString(),'\n')
+# 	print ("State: ", startState.toString())
+# 	print (bannr)
+# 	
+# 
+# 	#Testing DFS NOT IN THIS VERSION
+# 	print ("TESTING DFS",bannr)	
+# 
+# 	# dfsStack = DFS(startState,prob)
+# # 	print("Type of dfsStack: ", type(dfsStack))
+# # 	print("Within it is: ", dfsStack)
+# # 	print("And that is: ", dfsStack.toString())
+# 
+# 	print (bannr)
+# 
+# 	#Testing BFS
+# 	print ("TESTING BFS",bannr)
+# 	bfsQueue = BFS(startState,prob)
+# 	print("Type of bfsQueue: ",type(bfsQueue))
+# 	print("WIthin it is: ", bfsQueue)
+# 	print("And that is: ", bfsQueue[0])
+# 	print("Which contains: ", type(bfsQueue[0][0]))
+# 
+# 
+# 	print ("TEST BFS",bannr)
+# 	ResultsTup = BFS(startState,prob)
+# 
+# 	for items in ResultsTup[0]:
+# 		print(items.toString())
 	
-	#Intializing objects	
-	prob = Problem.Problem(dst,src)
-	startState = Problem.ProblemState(0,src,False,0)
-	print ("Source: ",src," Dest: ",dst)
+	#Two-D testing####################################
+	print(bannr,"Testing 2D",bannr)
+
+	src = Problem.coordinate(0.5,0.5)
+	dst = Problem.coordinate(1.0,1.0)
 	
-	#Check Objects
-	print ("Problem: ", prob.toString(),'\n')
-	print ("State: ", startState.toString())
-	print (bannr)
+	print ("TESTPOINTS: \n","Src: ",src.toString(),"\n Dest: ", dst.toString())
 	
-	testProblem = Problem.Problem(dst,src)
-	testState = Problem.ProblemState(0,src,False,0)
 
-
-	#Testing DFS
-	print ("TESTING DFS",bannr)	
-
-	dfsStack = DFS(startState,prob)
-	print("Type of dfsStack: ", type(dfsStack))
-	print("Within it is: ", dfsStack)
-	print("And that is: ", dfsStack.toString())
-
-	print (bannr)
-
-	#Testing BFS
-	print ("TESTING BFS",bannr)
-	bfsQueue = BFS(startState,prob)
-	print("Type of bfsQueue: ",type(bfsQueue))
-	print("WIthin it is: ", bfsQueue)
-	print("And that is: ", bfsQueue.toString())
-
-
-	print ("TEST BFS",bannr)
-	ResultsTup = BFS(testState,testProblem)
-
-	for items in ResultsTup[0]:
-		print(items.toString())
-	
 	return
 
 	
