@@ -67,8 +67,8 @@ Coordinate object
 used for representing a point in 2D space
 """
 class coordinate(object):
-	x = 0
-	y = 0
+	x = 0.0
+	y = 0.0
 	
 	def __init__(self, newX, newY):
 		self.x = newX
@@ -80,9 +80,20 @@ class coordinate(object):
 	"""
 	def eudCalc(cord1,cord2):
 		return math.sqrt((cord1.x - cord2.x)**2 + (cord1.y - cord2.y)**2)
-	def toString(self):
-		return ('('+ str(self.x) + ',' + str(self.y) + ')')
+	
+	def getXY(self):
+		coord = []
+		coord.append(str(self.x))
+		coord.append(str(self.y))
+		return coord
 
+	def toString(self):
+		xy = self.getXY()
+		#print ("XY IS: ", type(xy), ' ', xy)
+		joined = ','.join(xy)
+		#print ("Joined is: " , joined)
+		retMe = '('+joined+')'
+		return retMe
 """
  Problem
   Class to store the problem successor function
@@ -110,7 +121,7 @@ class Problem:
 	def toString(self):
 		bannr = "\n****PROBLEM****\n"
 		return(bannr + "Destination:Source" + '\n' +
-			  str(self.dest) + ':' + str(self.src))
+			  str(self.dest.toString()) + ':' + str(self.src.toString()))
 	"""
 	isOneProbGoal()
 	one problem Goal checking function
@@ -378,65 +389,66 @@ def runTests():
 	
 	#for Y = 1
 	bannr = '\n*****************************\n'
-	src = 0.5		
-	dest = 1.0 
 
-	"""
-	#taking in 2D, sohuld work for 1D as well
-	
-	sinput = []
-	dinput = []
-	
-	Y = int(input("Number of dimensions: "))
-	sources = input("Space seperated list of package sources: ")
-	sinput.extend(sources.split(' '))
-	destinations = input("Space seperated list of package destinations: ")
-	dinput.extend(destinations.split(' '))
-	
-	src = []
-	dest = []
-
-	if( Y ==1):
-		for value in sinput:
-			src.append(float(value))
-		for value in dinput:
-			dest.append(float(value))
-	else: #assume y =2 	
-		for i in range(1,len(sinput),2):
-			coord = coordinate(i, i+1)
-			src.append(coord)
-		for i in range(1,len(dinput),2):
-			coord = coordinate(i, i+1)
-			dest.append(coord)
-	"""
-	
-	
-	#Testing Input validity
-	print ("src: ",src, " dest: ", dest)
-
-	#Testing State Declaration
-	startState = ProblemState(0,src,False,0) # was startState = ProblemState(0,src,False,0) change back if error ~sarah
-	if startState is None:
-		print ("No no no no no no no no no no none")
-	else:
-		print ("StartState is not None: ", startState.toString())
-
-	print (bannr)
-
-	#Testing Problem Declaration
-	aProblem = Problem(dest,src,1,1,1)
-	print (aProblem.toString())
-
-	print (bannr)
-
-	#Testing Successor Function
-	successorList = aProblem.getOneProbSuccessors(startState)
-	successors = ''	
-	for s in successorList:
-		successors += s.toString()
-
-	print("Type of Succesors is: ", type(successorList))
-	print(" And it Contains: ", successors)
+# 	src = 0.5		
+# 	dest = 1.0 
+# 
+# 	"""
+# 	#taking in 2D, sohuld work for 1D as well
+# 	
+# 	sinput = []
+# 	dinput = []
+# 	
+# 	Y = int(input("Number of dimensions: "))
+# 	sources = input("Space seperated list of package sources: ")
+# 	sinput.extend(sources.split(' '))
+# 	destinations = input("Space seperated list of package destinations: ")
+# 	dinput.extend(destinations.split(' '))
+# 	
+# 	src = []
+# 	dest = []
+# 
+# 	if( Y ==1):
+# 		for value in sinput:
+# 			src.append(float(value))
+# 		for value in dinput:
+# 			dest.append(float(value))
+# 	else: #assume y =2 	
+# 		for i in range(1,len(sinput),2):
+# 			coord = coordinate(i, i+1)
+# 			src.append(coord)
+# 		for i in range(1,len(dinput),2):
+# 			coord = coordinate(i, i+1)
+# 			dest.append(coord)
+# 	"""
+# 	
+# 	
+# 	#Testing Input validity
+# 	print ("src: ",src, " dest: ", dest)
+# 
+# 	#Testing State Declaration
+# 	startState = ProblemState(0,src,False,0) # was startState = ProblemState(0,src,False,0) change back if error ~sarah
+# 	if startState is None:
+# 		print ("No no no no no no no no no no none")
+# 	else:
+# 		print ("StartState is not None: ", startState.toString())
+# 
+# 	print (bannr)
+# 
+# 	#Testing Problem Declaration
+# 	aProblem = Problem(dest,src,1,1,1)
+# 	print (aProblem.toString())
+# 
+# 	print (bannr)
+# 
+# 	#Testing Successor Function
+# 	successorList = aProblem.getOneProbSuccessors(startState)
+# 	successors = ''	
+# 	for s in successorList:
+# 		successors += s.toString()
+# 
+# 	print("Type of Succesors is: ", type(successorList))
+# 	print(" And it Contains: ", successors)
 
 	#Testing 2d problems
 	print("Testing 2D",bannr)
@@ -450,12 +462,17 @@ def runTests():
 	aProblem2 = Problem(dest,src,1,1,1)	
 	print("2DProblem: ",aProblem2.toString())
 	
+	print ("Type of 2DtoString: ", type(aProblem2.toString()))
+	print (" And that string is: ", aProblem2.toString())
+
+
+	
 	#Time to find those successors!
 	startState2 = ProblemStateWithRef(0,src,False,0,None)
 	print("2DState: ", startState2.toString())
 	
 	#And now the moment we've all been waiting for!
-	successors2 = aProblem2.getSuccessorsTD(startState2)
+	#successors2 = aProblem2.getSuccessorsTD(startState2)
 
 
 
