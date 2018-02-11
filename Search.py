@@ -40,6 +40,28 @@ def BFS(startState, problem):
 			return (path, NODESCREATED, MAXQUEUE)
 		else:
 			queue.extend(problem.getOneProbSuccessors(state))
+"""
+A Shameless copy of BFS where the oneD methods are replaced with their twoD counterparts.
+"""
+def BFSTwoD(startState,problem):
+	MAXQUEUE = 0
+	NODESCREATED = 1
+	queue.append(startState)
+
+	newNodes = problem.getSuccessorsTD(startState) #This is a major difference
+	NODESCREATED += len(newNodes)
+	queue.extend(newNodes)
+	if MAXQUEUE < len(queue):
+		MAXQUEUE = len(queue)
+	path = []
+	while not isQueueEmpty(queue):
+		state = queue.popleft()
+		path.append(state)
+		if problem.isOneProbGoalTD(state):
+			return (path,NODESCREATED,MAXQUEUE)
+		else:
+			queue.extend(problem.getSuccessorsTD(state))
+	
 
 def runTests():
 	bannr = "\n********************************\n"
@@ -86,12 +108,29 @@ def runTests():
 	#Two-D testing####################################
 	print(bannr,"Testing 2D",bannr)
 
+	#Defining Points
+	origin = Problem.coordinate(0,0)
 	src = Problem.coordinate(0.5,0.5)
 	dst = Problem.coordinate(1.0,1.0)
-	
 	print ("TESTPOINTS: \n","Src: ",src.toString(),"\n Dest: ", dst.toString())
 	
+	#Initializing Problem/State
+	prob2 = Problem.Problem(dst,src,1,1,1)
+	startState2 = Problem.ProblemStateWithRef(origin,src,False,0,None)	
+	print ("Problem: ",prob2.toString())
+	print ("State: ", startState2.toString())
 
+	#Testing Search
+	print("TESTING BFS",bannr)
+	bfs2Queue = BFSTwoD(startState2,prob2)
+	print ("Within BFSTree is: ",bfsQueue2)
+	print ("And that is: ", bfsQueue2[0])
+	print ("Which contains: ", type(bfsQueue2[0][0]))
+	
+	print ("Holy shit you made it this far! A+ Dervs and Sarah")
+
+	
+	
 	return
 
 	
