@@ -24,11 +24,13 @@ def testUninformedSearch():
 	print ("SEARCH")
 	print ("------")
 	Search.runTests()
+	Search.timedTest()
 
 def testInformedSearch():
 	print ("INFORMED search")
 	print ("---------------")
 	informedSearch.runTests()
+	informedSearch.timedTest()
 
 def testGenerator():
 	print ("GENERATOR")
