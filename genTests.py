@@ -16,19 +16,19 @@ from random import random
    ----------
 	d: the dimesionality of the coordinate
 '''
-def getCoord(d):
+def getCoord(y):
 	coord = []
 	
-	for i in range(d):
+	for i in range(y):
 		addMe = random()
 		coord.append(str(addMe))
-	return ' '.join(coord)
+	return coord
 
-def genSet(y,d):
+def genSet(n,y):
 	group = []
-	for i in range(y):
-		group.append(getCoord(d))
-	return ' '.join(group)
+	for i in range(n):
+		group.append(getCoord(y))
+	return group
 
 """
 oneTest()
@@ -41,9 +41,34 @@ def oneTest():
 	return mnky + pointSrc[0][0] +' ' + pointDes[0][0]
 
 
-
+"""
+became completely redundant. sorry
+"""
 def getMNKY(mnky):
-	return ' '.join(mnky)
+	return str(mnky)
+
+"""
+giveMNKY()
+	- gives a list of lists that represent a list of N, Ydimensional coordinates
+	
+	Paramaters
+	-----------
+	giveMe: an mnky whos n and y values we will use to generate a list of points
+	
+	return: [[point],....,[point]] A list of coordinates.
+	
+"""
+def giveMNKY(mnky):
+	giveMe = getMNKY(mnky)
+	numPoints = int(giveMe[1]) #The bloody getMNKY function adds a space that changes index we need 
+	dimensions = int(giveMe[3]) #ditto
+
+	return genSet(numPoints, dimensions)
+
+def runTests():
+	tstMNKY = input("MNKY: ")
+	generated = giveMNKY(tstMNKY)
+	print ("Generated points were: ",generated)
 	
 def usage():
 	bannr = "\n#################################################\n"
@@ -51,8 +76,12 @@ def usage():
 	infoMsg= "Outputs the MNKY values then Generates n random \npoints of dimensionality y"
 	
 	return bannr + infoMsg + '\n' + usgMsg + bannr
+
+
 #MAIN#################
 
+"""
+FROM CMD LINE DAYS
 #I know this is a bunk check, I also know that I really shouldn't need exception handling in a program this simple. 
 # But It works. and This is really more of a novelty."
 if sys.argv[1] is 'u':
@@ -64,10 +93,10 @@ else:
 			print (oneTest())
 		else:	
 			numPoints = int(mnky[1])
-			dest = genSet(numPoints,int(mnky[3]))
-			src = genSet(numPoints,int(mnky[3]))
+			dest = ' '.join(genSet(numPoints,int(mnky[3])))
+			src = ' '.join(genSet(numPoints,int(mnky[3])))
 			print(getMNKY(mnky),src,dest)
 	except IndexError as e:
 		print (e)
 		print (usage())
-
+"""
