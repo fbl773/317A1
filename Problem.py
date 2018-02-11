@@ -532,6 +532,7 @@ def runTests():
 	origin = coordinate(0.0,0.0)
 	goalState = ProblemStateWithRef(origin,dest,False,0,None)
 	print ("GoalState is goal state? ",aProblem2.isOneProbGoalTD(goalState))
+	print ("StartState is goal state? ",aProblem2.isOneProbGoalTD(startState2))
 
 	print (bannr, "PROBLEM MODULE TESTING FINISHED",bannr)
 		
