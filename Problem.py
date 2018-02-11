@@ -111,7 +111,16 @@ class coordinate(object):
 	def __init__(self, newX, newY):
 		self.x = newX
 		self.y = newY
-	
+	"""
+	Check the equivilence of two points (intersect) 
+	"""
+	def intersect(coord1,coord2):
+		if (coord1.x != coord2.x):
+			return False
+		elif (coord1.y != coord2.y):
+			return False
+		else:
+			return True
 	"""
 	eudCalc()
 		calculate euclidean distance bewteen 2 points
@@ -176,7 +185,8 @@ class Problem:
 		return: true of the state matches the goal state false otherwise
 	"""
 	def isOneProbGoalTD( self, state):
-		if state.vLoc == (0,0) and state.pLoc == self.dest:
+		origin = coordinate(0.0,0.0)	
+		if (coordinate.intersect(state.vLoc,origin) and coordinate.intersect(self.dest, state.pLoc)):
 			return True
 		else:
 			return False
@@ -517,7 +527,11 @@ def runTests():
 	print("Type of Succesors is: ", type(successorList2))
 	print(" And it Contains: ", successors)
 
-
+	print ("Testing goal State Function TD",bannr)
+	
+	origin = coordinate(0.0,0.0)
+	goalState = ProblemStateWithRef(origin,dest,False,0,None)
+	print ("GoalState is goal state? ",aProblem2.isOneProbGoalTD(goalState))
 
 	print (bannr, "PROBLEM MODULE TESTING FINISHED",bannr)
 		
