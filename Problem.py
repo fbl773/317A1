@@ -23,10 +23,10 @@ class ProblemState(object):
 		self.loaded = loaded
 		self.distance = distance
 		
-	"""
+	
 	#toString()
 	#- Returns a string represntation Problem state Attributes
-	"""
+	
 	def toString(self):
 		bannr = "\n****PROBLEM_STATE****\n"
 		return (bannr + "vLoc: " +str(self.vLoc) + '\n' +
@@ -60,6 +60,11 @@ class ProblemStateWithRef(object):
 	"""
 	def toString(self):
 		bannr = "\n****PROBLEM_STATE****\n"
+		if(type(self.vLoc) is coordinate and type(self.pLoc) is coordinate):
+			return (bannr + "vLoc: " + str(self.vLoc.toString()) + '\n' +
+					"pLoc: " + str(self.pLoc.toString()) + '\n' +
+					"loaded: " + str(self.loaded) + '\n' +
+					"distance: " + str(self.distance) + '\n')
 		return (bannr + "vLoc: " +str(self.vLoc) + '\n' +
 				"pLoc: " + str(self.pLoc) + '\n'+
 				"loaded: " + str(self.loaded) + '\n' +
@@ -74,7 +79,8 @@ class ProblemStateWithRef(object):
 class ProblemStateGeneral(object):
 	vLoc = []
 	pLoc = []
-	loaded = [][]
+	#Note: loaded is going to ba a list of lists
+	loaded = []
 	distance = []
 	parentState = None
 
@@ -141,6 +147,9 @@ class Problem:
 	"""
 	def toString(self):
 		bannr = "\n****PROBLEM****\n"
+		if(type(self.src) is coordinate and type(self.dest) is coordinate):
+			return (bannr + "Destination:Source" + '\n' +
+					str(self.dest.toString()) + ':' + str(self.src.toString()))
 		return(bannr + "Destination:Source" + '\n' +
 			  str(self.dest) + ':' + str(self.src))
 	"""
@@ -211,31 +220,31 @@ class Problem:
 		newStates = []
 		if state.vLoc == 0:
 			if state.loaded:
-				newStates.append( ProblemState(self.src, self.src, state.loaded, state.distance + abs(self.src - state.vLoc),state) )
-				newStates.append(ProblemState(self.dest, self.dest, state.loaded, state.distance + abs(self.dest - state.vLoc ),state) )
+				newStates.append( ProblemStateWithRef(self.src, self.src, state.loaded, state.distance + abs(self.src - state.vLoc),state) )
+				newStates.append(ProblemStateWithRef(self.dest, self.dest, state.loaded, state.distance + abs(self.dest - state.vLoc ),state) )
 			else:
-				newStates.append( ProblemState(self.src, state.pLoc, state.loaded, state.distance + abs(self.src - state.vLoc),state) )
-				newStates.append(ProblemState(self.dest, state.pLoc, state.loaded, state.distance + abs(self.dest - state.vLoc ),state) )
+				newStates.append( ProblemStateWithRef(self.src, state.pLoc, state.loaded, state.distance + abs(self.src - state.vLoc),state) )
+				newStates.append(ProblemStateWithRef(self.dest, state.pLoc, state.loaded, state.distance + abs(self.dest - state.vLoc ),state) )
 		elif state.vLoc == self.src :
 			if state.loaded == False:
 				if state.pLoc != self.dest:
-					newStates.append(ProblemState(state.vLoc, state.pLoc, True, state.distance,state))
+					newStates.append(ProblemStateWithRef(state.vLoc, state.pLoc, True, state.distance,state))
 				#also consider that it doesn't pick up package and move without package
-				newStates.append(ProblemState(self.dest, state.pLoc, state.loaded, state.distance + abs(self.dest - state.vLoc ),state) )
-				newStates.append(ProblemState(0, state.pLoc, state.loaded, state.distance + abs(0 - state.vLoc ),state) )
+				newStates.append(ProblemStateWithRef(self.dest, state.pLoc, state.loaded, state.distance + abs(self.dest - state.vLoc ),state) )
+				newStates.append(ProblemStateWithRef(0, state.pLoc, state.loaded, state.distance + abs(0 - state.vLoc ),state) )
 			else:
-				newStates.append(ProblemState(0, 0, state.loaded, state.distance + abs(0 - state.vLoc ),state))
-				newStates.append(ProblemState(self.dest, self.dest, state.loaded, state.distance + abs(self.dest - state.vLoc ),state))
+				newStates.append(ProblemStateWithRef(0, 0, state.loaded, state.distance + abs(0 - state.vLoc ),state))
+				newStates.append(ProblemStateWithRef(self.dest, self.dest, state.loaded, state.distance + abs(self.dest - state.vLoc ),state))
 		else:
 			if state.loaded == True:
 				#only legal state to drop off package.
-				newStates.append(ProblemState(state.vLoc, state.pLoc, False, state.distance,state))
+				newStates.append(ProblemStateWithRef(state.vLoc, state.pLoc, False, state.distance,state))
 				#also consider when it doesnt do the smart thing
-				newStates.append(ProblemState(0, 0, state.loaded, state.distance + abs(0 - state.vLoc),state))
-				newStates.append(ProblemState(self.src, self.src, state.loaded, state.distance + abs(self.src - state.vLoc),state))
+				newStates.append(ProblemStateWithRef(0, 0, state.loaded, state.distance + abs(0 - state.vLoc),state))
+				newStates.append(ProblemStateWithRef(self.src, self.src, state.loaded, state.distance + abs(self.src - state.vLoc),state))
 			else:
-				newStates.append( ProblemState( self.src, state.pLoc, state.loaded, state.distance + abs(self.src - state.vLoc ),state) )
-				newStates.append(ProblemState( 0, state.pLoc, state.loaded, state.distance + abs(0 - state.vLoc),state) )
+				newStates.append( ProblemStateWithRef( self.src, state.pLoc, state.loaded, state.distance + abs(self.src - state.vLoc ),state) )
+				newStates.append(ProblemStateWithRef( 0, state.pLoc, state.loaded, state.distance + abs(0 - state.vLoc),state) )
 				
 		return newStates
 	"""
@@ -256,7 +265,7 @@ class Problem:
 				newStates.append(ProblemStateWithRef(self.dest, state.pLoc, state.loaded, state.distance + abs(self.dest - state.vLoc ), state) )
 		elif state.vLoc == self.src :
 			if state.loaded == False:
-				if state.pLoc != prob.dest:
+				if state.pLoc != self.dest:
 					newStates.append(ProblemStateWithRef(state.vLoc, state.pLoc, True, state.distance,state))
 				#also consider that it doesn't pick up package and move without package
 				newStates.append(ProblemStateWithRef(self.dest, state.pLoc, state.loaded, state.distance + abs(self.dest - state.vLoc), state))
@@ -286,28 +295,28 @@ class Problem:
 	"""
 	def getSuccessorsTD(self,state):
 		newStates = []
-		if state.vLoc == 0:
-			newStates.append( ProblemStateWithRef(self.src, state.pLoc, state.loaded, state.distance + coordinate.eudCalc((0,0), self.src), state) )
-			newStates.append(ProblemStateWithRef(self.dest, state.pLoc, state.loaded, state.distance + coordinate.eudCalc((0,0), self.dest), state) )
+		if state.vLoc.x == 0 and state.vLoc.y == 0:
+			newStates.append( ProblemStateWithRef(self.src, state.pLoc, state.loaded, state.distance + coordinate.eudCalc(coordinate(0,0), self.src), state) )
+			newStates.append(ProblemStateWithRef(self.dest, state.pLoc, state.loaded, state.distance + coordinate.eudCalc(coordinate(0,0), self.dest), state) )
 		elif state.vLoc == self.src :
 			if state.loaded == False:
 				if state.pLoc != self.dest: #package not already at destination
 					newStates.append(ProblemStateWithRef(state.vLoc, state.pLoc, True, state.distance, state))
 				#also consider that it doesn't pick up package and move without package
 				newStates.append(ProblemStateWithRef(self.dest, state.pLoc, state.loaded, state.distance + coordinate.eudCalc(state.vLoc, self.dest), state))
-				newStates.append(ProblemStateWithRef((0,0), state.pLoc, state.loaded, state.distance + coordinate.eudCalc(state.vLoc, (0,0)),state) )
+				newStates.append(ProblemStateWithRef(coordinate(0,0), state.pLoc, state.loaded, state.distance + coordinate.eudCalc(state.vLoc, coordinate(0,0)),state) )
 			else:
-				newStates.append(ProblemStateWithRef((0,0), (0,0), state.loaded, state.distance + coordinate.eudCalc(state.vLoc, (0,0)),state))
+				newStates.append(ProblemStateWithRef(coordinate(0,0), coordinate(0,0), state.loaded, state.distance + coordinate.eudCalc(state.vLoc, coordinate(0,0)),state))
 				newStates.append(ProblemStateWithRef(self.dest, self.dest, state.loaded, state.distance +  coordinate.eudCalc(state.vLoc, self.dest), state))
 		else:
 			if state.loaded == True:
-				newStates.append(ProblemState(state.vLoc, state.pLoc, False, state.distance, state))
+				newStates.append(ProblemStateWithRef(state.vLoc, state.pLoc, False, state.distance, state))
 				#also consider when it doesnt do the smart thing
-				newStates.append(ProblemStateWithRef((0,0), (0,0), state.loaded, state.distance + coordinate.eudCalc(state.vLoc, (0,0)),state))
+				newStates.append(ProblemStateWithRef(coordinate(0,0), coordinate(0,0), state.loaded, state.distance + coordinate.eudCalc(state.vLoc, coordinate(0,0)),state))
 				newStates.append(ProblemStateWithRef(self.src, self.src, state.loaded, state.distance +  coordinate.eudCalc(state.vLoc, self.src),state))
 			else:
 				newStates.append( ProblemStateWithRef( self.src, state.pLoc, state.loaded, state.distance + coordinate.eudCalc(state.vLoc, self.src),state) )
-				newStates.append(ProblemStateWithRef( (0,0), state.pLoc, state.loaded, state.distance + coordinate.eudCalc(state.vLoc, (0,0)),state) )
+				newStates.append(ProblemStateWithRef( coordinate(0,0), state.pLoc, state.loaded, state.distance + coordinate.eudCalc(state.vLoc, coordinate(0,0)),state) )
 		return newStates
 	
 	"""
@@ -459,7 +468,7 @@ def runTests():
 	print ("src: ",src, " dest: ", dest)
 
 	#Testing State Declaration
-	startState = ProblemState(0,src,False,0) # was startState = ProblemState(0,src,False,0) change back if error ~sarah
+	startState = ProblemStateWithRef(0,src,False,0, None) # was startState = ProblemState(0,src,False,0) change back if error ~sarah
 	if startState is None:
 		print ("No no no no no no no no no no none")
 	else:
@@ -495,13 +504,18 @@ def runTests():
 	print("2DProblem: ",aProblem2.toString())
 	
 	#Time to find those successors!
-	startState2 = ProblemStateWithRef(0,src,False,0,None)
+	startState2 = ProblemStateWithRef(coordinate(0, 0), src,False,0,None)
 	print("2DState: ", startState2.toString())
 	
 	#And now the moment we've all been waiting for!
-	successors2 = aProblem2.getSuccessorsTD(startState2)
+	successorList2 = aProblem2.getSuccessorsTD(startState2)
 
+	successors = ''
+	for s in successorList2:
+		successors += s.toString()
 
+	print("Type of Succesors is: ", type(successorList2))
+	print(" And it Contains: ", successors)
 
 
 
