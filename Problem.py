@@ -5,6 +5,9 @@
 import copy
 import math
 
+"""
+------------------------------------
+OUTDATED
 #ProblemState
 #Object to hold a state of the problem
 #Does not have reference to itself
@@ -21,8 +24,8 @@ class ProblemState(object):
 		self.distance = distance
 		
 	"""
-	toString()
-	- Returns a string represntation Problem state Attributes
+	#toString()
+	#- Returns a string represntation Problem state Attributes
 	"""
 	def toString(self):
 		bannr = "\n****PROBLEM_STATE****\n"
@@ -33,6 +36,8 @@ class ProblemState(object):
 	
 	def __lt__(self, other):
     		return self.distance < other.distance
+-------------------------------------
+"""
 #ProblemState
 #Object to hold a state of the problem
 #with reference to itself
@@ -62,6 +67,33 @@ class ProblemStateWithRef(object):
 	
 	def __lt__(self, other):
     		return self.distance < other.distance
+#ProblemState
+#Object to hold a state of the problem
+#with reference to itself
+#lists for multiple trucks and/or packages and/or capacity
+class ProblemStateGeneral(object):
+	vLoc = []
+	pLoc = []
+	loaded = [][]
+	distance = []
+	parentState = None
+
+	def __init__(self, vLoc, pLoc, loaded, distance, parent):
+		self.vLoc = vLoc
+		self.pLoc = pLoc
+		self.loaded = loaded
+		self.distance = distance
+		self.parentState = parent
+	"""
+	toString()
+	- Returns a string represntation Problem state Attributes
+	"""
+	def toString(self):
+		bannr = "\n****PROBLEM_STATE****\n"
+		return (bannr + "vLoc: " +str(self.vLoc) + '\n' +
+				"pLoc: " + str(self.pLoc) + '\n'+
+				"loaded: " + str(self.loaded) + '\n' +
+				"distance: " + str(self.distance) + '\n') 
 """
 Coordinate object
 used for representing a point in 2D space
@@ -190,30 +222,31 @@ class Problem:
 		newStates = []
 		if state.vLoc == 0:
 			if state.loaded:
-				newStates.append( ProblemState(self.src, self.src, state.loaded, state.distance + abs(self.src - state.vLoc)) )
-				newStates.append(ProblemState(self.dest, self.dest, state.loaded, state.distance + abs(self.dest - state.vLoc )) )
+				newStates.append( ProblemState(self.src, self.src, state.loaded, state.distance + abs(self.src - state.vLoc),state) )
+				newStates.append(ProblemState(self.dest, self.dest, state.loaded, state.distance + abs(self.dest - state.vLoc ),state) )
 			else:
-				newStates.append( ProblemState(self.src, state.pLoc, state.loaded, state.distance + abs(self.src - state.vLoc)) )
-				newStates.append(ProblemState(self.dest, state.pLoc, state.loaded, state.distance + abs(self.dest - state.vLoc )) )
+				newStates.append( ProblemState(self.src, state.pLoc, state.loaded, state.distance + abs(self.src - state.vLoc),state) )
+				newStates.append(ProblemState(self.dest, state.pLoc, state.loaded, state.distance + abs(self.dest - state.vLoc ),state) )
 		elif state.vLoc == self.src :
 			if state.loaded == False:
-				newStates.append(ProblemState(state.vLoc, state.pLoc, True, state.distance))
+				if state.pLoc != self.dest:
+					newStates.append(ProblemState(state.vLoc, state.pLoc, True, state.distance,state))
 				#also consider that it doesn't pick up package and move without package
-				newStates.append(ProblemState(self.dest, state.pLoc, state.loaded, state.distance + abs(self.dest - state.vLoc )) )
-				newStates.append(ProblemState(0, state.pLoc, state.loaded, state.distance + abs(0 - state.vLoc )) )
+				newStates.append(ProblemState(self.dest, state.pLoc, state.loaded, state.distance + abs(self.dest - state.vLoc ),state) )
+				newStates.append(ProblemState(0, state.pLoc, state.loaded, state.distance + abs(0 - state.vLoc ),state) )
 			else:
-				newStates.append(ProblemState(0, 0, state.loaded, state.distance + abs(0 - state.vLoc )))
-				newStates.append(ProblemState(self.dest, self.dest, state.loaded, state.distance + abs(self.dest - state.vLoc )))
+				newStates.append(ProblemState(0, 0, state.loaded, state.distance + abs(0 - state.vLoc ),state))
+				newStates.append(ProblemState(self.dest, self.dest, state.loaded, state.distance + abs(self.dest - state.vLoc ),state))
 		else:
 			if state.loaded == True:
 				#only legal state to drop off package.
-				newStates.append(ProblemState(state.vLoc, state.pLoc, False, state.distance))
+				newStates.append(ProblemState(state.vLoc, state.pLoc, False, state.distance,state))
 				#also consider when it doesnt do the smart thing
-				newStates.append(ProblemState(0, 0, state.loaded, state.distance + abs(0 - state.vLoc)))
-				newStates.append(ProblemState(self.src, self.src, state.loaded, state.distance + abs(self.src - state.vLoc)))
+				newStates.append(ProblemState(0, 0, state.loaded, state.distance + abs(0 - state.vLoc),state))
+				newStates.append(ProblemState(self.src, self.src, state.loaded, state.distance + abs(self.src - state.vLoc),state))
 			else:
-				newStates.append( ProblemState( self.src, state.pLoc, state.loaded, state.distance + abs(self.src - state.vLoc )) )
-				newStates.append(ProblemState( 0, state.pLoc, state.loaded, state.distance + abs(0 - state.vLoc)) )
+				newStates.append( ProblemState( self.src, state.pLoc, state.loaded, state.distance + abs(self.src - state.vLoc ),state) )
+				newStates.append(ProblemState( 0, state.pLoc, state.loaded, state.distance + abs(0 - state.vLoc),state) )
 				
 		return newStates
 	"""
@@ -234,7 +267,8 @@ class Problem:
 				newStates.append(ProblemStateWithRef(self.dest, state.pLoc, state.loaded, state.distance + abs(self.dest - state.vLoc ), state) )
 		elif state.vLoc == self.src :
 			if state.loaded == False:
-				newStates.append(ProblemStateWithRef(state.vLoc, state.pLoc, True, state.distance,state))
+				if state.pLoc != prob.dest:
+					newStates.append(ProblemStateWithRef(state.vLoc, state.pLoc, True, state.distance,state))
 				#also consider that it doesn't pick up package and move without package
 				newStates.append(ProblemStateWithRef(self.dest, state.pLoc, state.loaded, state.distance + abs(self.dest - state.vLoc), state))
 				newStates.append(ProblemStateWithRef(0, state.pLoc, state.loaded, state.distance + abs(0 - state.vLoc ), state))
@@ -256,7 +290,7 @@ class Problem:
 	
 	"""
 	getSuccessorsTD
-	one problem but 2 dimensions
+	one problem but 2 dimensions with reference
 	 Returns a list of the possible moves that to be searched through
 	 used for the 1 problem in 2D
 	 param: curState - the current state in the search
@@ -264,26 +298,27 @@ class Problem:
 	def getSuccessorsTD(self,state):
 		newStates = []
 		if state.vLoc == 0:
-			newStates.append( ProblemState(self.src, state.pLoc, state.loaded, state.distance + coordinate.eudCalc((0,0), self.src)) )
-			newStates.append(ProblemState(self.dest, state.pLoc, state.loaded, state.distance + coordinate.eudCalc((0,0), self.dest)) )
+			newStates.append( ProblemStateWithRef(self.src, state.pLoc, state.loaded, state.distance + coordinate.eudCalc((0,0), self.src), state) )
+			newStates.append(ProblemStateWithRef(self.dest, state.pLoc, state.loaded, state.distance + coordinate.eudCalc((0,0), self.dest), state) )
 		elif state.vLoc == self.src :
 			if state.loaded == False:
-				newStates.append(ProblemState(state.vLoc, state.pLoc, True, state.distance))
+				if state.pLoc != self.dest: #package not already at destination
+					newStates.append(ProblemStateWithRef(state.vLoc, state.pLoc, True, state.distance, state))
 				#also consider that it doesn't pick up package and move without package
-				newStates.append(ProblemState(self.dest, state.pLoc, state.loaded, state.distance + coordinate.eudCalc(state.vLoc, self.dest)))
-				newStates.append(ProblemState((0,0), state.pLoc, state.loaded, state.distance + coordinate.eudCalc(state.vLoc, (0,0))) )
+				newStates.append(ProblemStateWithRef(self.dest, state.pLoc, state.loaded, state.distance + coordinate.eudCalc(state.vLoc, self.dest), state))
+				newStates.append(ProblemStateWithRef((0,0), state.pLoc, state.loaded, state.distance + coordinate.eudCalc(state.vLoc, (0,0)),state) )
 			else:
-				newStates.append(ProblemState((0,0), (0,0), state.loaded, state.distance + coordinate.eudCalc(state.vLoc, (0,0))))
-				newStates.append(ProblemState(self.dest, self.dest, state.loaded, state.distance +  coordinate.eudCalc(state.vLoc, self.dest)))
+				newStates.append(ProblemStateWithRef((0,0), (0,0), state.loaded, state.distance + coordinate.eudCalc(state.vLoc, (0,0)),state))
+				newStates.append(ProblemStateWithRef(self.dest, self.dest, state.loaded, state.distance +  coordinate.eudCalc(state.vLoc, self.dest), state))
 		else:
 			if state.loaded == True:
-				newStates.append(ProblemState(state.vLoc, state.pLoc, False, state.distance))
+				newStates.append(ProblemState(state.vLoc, state.pLoc, False, state.distance, state))
 				#also consider when it doesnt do the smart thing
-				newStates.append(ProblemState((0,0), (0,0), state.loaded, state.distance + coordinate.eudCalc(state.vLoc, (0,0))))
-				newStates.append(ProblemState(self.src, self.src, state.loaded, state.distance +  coordinate.eudCalc(state.vLoc, self.src)))
+				newStates.append(ProblemStateWithRef((0,0), (0,0), state.loaded, state.distance + coordinate.eudCalc(state.vLoc, (0,0)),state))
+				newStates.append(ProblemStateWithRef(self.src, self.src, state.loaded, state.distance +  coordinate.eudCalc(state.vLoc, self.src),state))
 			else:
-				newStates.append( ProblemState( self.src, state.pLoc, state.loaded, state.distance + coordinate.eudCalc(state.vLoc, self.src)) )
-				newStates.append(ProblemState( (0,0), state.pLoc, state.loaded, state.distance + coordinate.eudCalc(state.vLoc, (0,0))) )
+				newStates.append( ProblemStateWithRef( self.src, state.pLoc, state.loaded, state.distance + coordinate.eudCalc(state.vLoc, self.src),state) )
+				newStates.append(ProblemStateWithRef( (0,0), state.pLoc, state.loaded, state.distance + coordinate.eudCalc(state.vLoc, (0,0)),state) )
 		return newStates
 	
 	"""
@@ -308,6 +343,7 @@ class Problem:
 						#only legal move is to drop off package i
 						cState = copy.copy(state)
 						cState.loaded[t].remove(pIndex)
+						cState.parentState = state
 						newStates.append(cState)
 						#distance doesn't change
 					else:
@@ -315,6 +351,7 @@ class Problem:
 						cState = copy.copy(state)
 						cState.distance[t] += coordinate.eudCalc(state.vLoc[t],self.dest[pIndex])
 						cState.vLoc[t] = self.dest[pIndex]
+						cState.parentState = state
 						#need to update pacakge locations
 						for x in range(0,self.k,1):
 							newPI = state.loaded[t][x] - 1
@@ -325,6 +362,7 @@ class Problem:
 				#if truck has no packages, either go home or get new package
 				cState = copy.copy(state)
 				cState.distance[t] += coordinate.eudCalc(state.vLoc[t],(0,0))
+				cState.parentState = state
 				newStates.append(cState)
 				
 				#check packages not loaded and at a source
@@ -334,12 +372,14 @@ class Problem:
 							#pick up package
 							cState = copy.copy(state)
 							cState.loaded[t].append(p+1)
+							cState.parentState = state
 							newStates.append(cState)
 						else:
 							#go to a new package
 							cState = copy.copy(state)
 							cState.distance[t] += coordinate.eudCalc(state.vLoc[t],self.src[p])
 							cState.vLoc[t] = self.src[p]
+							cState.parentState = state
 							newStates.append(cState)						
 				
 			else:
@@ -351,12 +391,14 @@ class Problem:
 					if state.vLoc[t] == self.dest[pIndex]:
 						cState = copy.copy(state)
 						cState.loaded[t].remove(pIndex)
+						cState.parentState = state
 						newStates.append(cState)
 					else:
 						#go to destination
 						cState = copy.copy(state)
 						cState.distance[t] += coordinate.eudCalc(state.vLoc[t],self.dest[pIndex])
 						cState.vLoc[t] = self.dest[pIndex]
+						cState.parentState = state
 						#need to update pacakge locations
 						for x in range(0,self.k,1):
 							newPI = state.loaded[t][x] - 1
@@ -369,12 +411,14 @@ class Problem:
 							#pick up package
 							cState = copy.copy(state)
 							cState.loaded[t].append(p+1)
+							cState.parentState = state
 							newStates.append(cState)
 						else:
 							#go to a new package
 							cState = copy.copy(state)
 							cState.distance[t] += coordinate.eudCalc(state.vLoc[t],self.src[p])
 							cState.vLoc[t] = self.src[p]
+							cState.parentState = state
 							for x in range(0,len(state.loaded[t]),1):
 								newPI = state.loaded[t][x] - 1
 								cState.pLoc[newPI] = self.src[p]
