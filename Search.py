@@ -139,6 +139,7 @@ def runTests():
 	ResultsTup = bfsQueue
 	
 	print ("Path",bannr)
+	print ("Path length: ", len(bfsQueue[0]))
 	for items in ResultsTup[0]:
 		print ('-----^-------')
 		print(items.toString())
@@ -167,6 +168,7 @@ def runTests():
 	print ("Max Queue Size: ", str(bfsQueue2[2]))
 	
 	print ("Path",bannr)
+	print ("Path length: ", len(bfsQueue2[0]))
 	for items in bfsQueue2[0]:
 		print ('------^-------')
 		print (items.toString())	
