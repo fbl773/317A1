@@ -31,7 +31,7 @@ def searchSC():
 	Search.showcase()
 def problemSC():
 	Problem.showcase()
-def informedSC():
+def informedSearchSC():
 	informedSearch.showcase()
 
 
@@ -55,4 +55,4 @@ elif (runMe is 's'):
 elif (runMe is 'p'):
 	problemSC()
 elif (runMe is 'i'):
-	print ("Informed search totally works")
+	informedSearchSC()

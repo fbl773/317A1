@@ -319,7 +319,7 @@ def runTests():
 	print("Depth of Search was ", numNodespath)
 	print("Number of Nodes created ", genStar[1])
 	print("Maximum size of the heap ", genStar[2])
-	print("Max distance by one truck ", genStar[3] )
+	print("Max distance by one truck ", genStar[3])
 	
 	
 	
@@ -351,10 +351,6 @@ def timedTest():
 
 	#Add code to time for the general search.
 
-
-
-	test2dProb = Problem.Problem()
-
 def showcase():
 	bannr = '\n*****************************\n'
 
@@ -382,7 +378,7 @@ def showcase():
 	#Check resultant depth
 	showPath = input("Show path knowing it could be pretty deep? (y/n)")
 
-	if (showPath is 'y')
+	if (showPath is 'y'):
 		while temp is not None:
 			numNodespath += 1
 			print(temp.toString())
