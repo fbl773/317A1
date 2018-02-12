@@ -27,6 +27,9 @@ def usage():
 def generatorSC():
 	genTests.showcase()
 
+def searchSC():
+	Search.showcase()
+
 
 
 
@@ -40,4 +43,5 @@ if (runMe is 'u'):
 	print(usage())
 elif (runMe is 'g'):
 	generatorSC()
-
+elif (runMe is 's'):
+	searchSC()
