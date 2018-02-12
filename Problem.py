@@ -474,6 +474,7 @@ def runTests():
 	src = 0.5		
 	dest = 1.0 
 
+
 	"""
 	#taking in 2D, sohuld work for 1D as well
 	
@@ -502,8 +503,8 @@ def runTests():
 			coord = coordinate(i, i+1)
 			dest.append(coord)
 	"""
-	"""
-	
+
+
 	#Testing Input validity
 	print ("src: ",src, " dest: ", dest)
 
@@ -564,7 +565,7 @@ def runTests():
 	print ("GoalState is goal state? ",aProblem2.isOneProbGoalTD(goalState))
 	print ("StartState is goal state? ",aProblem2.isOneProbGoalTD(startState2))
 
-	"""
+	
 
 	dests = [coordinate(0.5, 0.5), coordinate(1.0, 1.0)]
 	srcs = [coordinate(1.5,1.5), coordinate(0.7, 0.6)]
