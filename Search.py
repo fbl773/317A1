@@ -36,14 +36,19 @@ def BFS(startState, problem):
 	queue.extend(newNodes)
 	if MAXQUEUE < len(queue):
 		MAXQUEUE = len(queue)
-	path = []
+	#path = []
 	while not isQueueEmpty(queue):
 		state = queue.popleft()
-		path.append(state)
+		#path.append(state)
 		if problem.isOneProbGoal(state):
-			return (path, NODESCREATED, MAXQUEUE)
+			return (state, NODESCREATED, MAXQUEUE)
 		else:
-			queue.extend(problem.getOneProbSuccessors(state))
+			temp = problem.getOneProbSuccessors(state)
+			NODESCREATED += len(temp)
+			queue.extend(temp)
+			if MAXQUEUE < len(queue):
+				MAXQUEUE = len(queue)
+	return (None, NODESCREATED, MAXQUEUE)
 """
 A Shameless copy of BFS where the oneD methods are replaced with their twoD counterparts.
 """
@@ -57,14 +62,19 @@ def BFSTD(startState,problem):
 	queue.extend(newNodes)
 	if MAXQUEUE < len(queue):
 		MAXQUEUE = len(queue)
-	path = []
+	#path = []
 	while not isQueueEmpty(queue):
 		state = queue.popleft()
-		path.append(state)
+		#path.append(state)
 		if problem.isOneProbGoalTD(state):
 			return (path,NODESCREATED,MAXQUEUE)
 		else:
-			queue.extend(problem.getSuccessorsTD(state))
+			temp = problem.getSuccessorsTD(state)
+			NODESCREATED += len(temp)
+			queue.extend(temp)
+			if MAXQUEUE < len(queue):
+				MAXQUEUE = len(queue)
+	return (None, NODESCREATED, MAXQUEUE)
 	
 """
 Depth first search  of states to find the goal state if it exists
@@ -89,24 +99,24 @@ def DFS(startState, problem):
 	if MAXSTACK < len(stack):
 		MAXSTACK = len(stack)
 
-	path = []
-	newPathFlag = False
+	#path = []
+	#newPathFlag = False
 	while not isEmpty(stack):
-		if newPathFlag is True:
-			path = []
-			newPathFlag = False
+		#if newPathFlag is True:
+			#path = []
+			#newPathFlag = False
 		state = stack.pop()
-		path.append(state)
+		#path.append(state)
 		if problem.isOneProbGoalTD(state):
-			return (path, NODESCREATED, MAXSTACK)
+			return (state, NODESCREATED, MAXSTACK)
 		else:
 			temp = problem.getSuccessorsTD(state)
 			NODESCREATED += len(temp)
 			stack.extend(temp)
 			if MAXSTACK < len(stack):
 				MAXSTACK = len(stack)
-			if len(temp) < 1:
-				newPathFlag = True
+			#if len(temp) < 1:
+				#newPathFlag = True
 	return (None, NODESCREATED, MAXSTACK)
 
 def runTests():
