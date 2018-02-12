@@ -36,14 +36,19 @@ def BFS(startState, problem):
 	queue.extend(newNodes)
 	if MAXQUEUE < len(queue):
 		MAXQUEUE = len(queue)
-	path = []
+	#path = []
 	while not isQueueEmpty(queue):
 		state = queue.popleft()
-		path.append(state)
+		#path.append(state)
 		if problem.isOneProbGoal(state):
-			return (path, NODESCREATED, MAXQUEUE)
+			return (state, NODESCREATED, MAXQUEUE)
 		else:
-			queue.extend(problem.getOneProbSuccessors(state))
+			temp = problem.getOneProbSuccessors(state)
+			NODESCREATED += len(temp)
+			queue.extend(temp)
+			if MAXQUEUE < len(queue):
+				MAXQUEUE = len(queue)
+	return (None, NODESCREATED, MAXQUEUE)
 """
 A Shameless copy of BFS where the oneD methods are replaced with their twoD counterparts.
 """
@@ -57,14 +62,19 @@ def BFSTD(startState,problem):
 	queue.extend(newNodes)
 	if MAXQUEUE < len(queue):
 		MAXQUEUE = len(queue)
-	path = []
+	#path = []
 	while not isQueueEmpty(queue):
 		state = queue.popleft()
-		path.append(state)
+		#path.append(state)
 		if problem.isOneProbGoalTD(state):
-			return (path,NODESCREATED,MAXQUEUE)
+			return (state,NODESCREATED,MAXQUEUE)
 		else:
-			queue.extend(problem.getSuccessorsTD(state))
+			temp = problem.getSuccessorsTD(state)
+			NODESCREATED += len(temp)
+			queue.extend(temp)
+			if MAXQUEUE < len(queue):
+				MAXQUEUE = len(queue)
+	return (None, NODESCREATED, MAXQUEUE)
 	
 """
 Depth first search  of states to find the goal state if it exists
@@ -89,24 +99,24 @@ def DFS(startState, problem):
 	if MAXSTACK < len(stack):
 		MAXSTACK = len(stack)
 
-	path = []
-	newPathFlag = False
+	#path = []
+	#newPathFlag = False
 	while not isEmpty(stack):
-		if newPathFlag is True:
-			path = []
-			newPathFlag = False
+		#if newPathFlag is True:
+			#path = []
+			#newPathFlag = False
 		state = stack.pop()
-		path.append(state)
+		#path.append(state)
 		if problem.isOneProbGoalTD(state):
-			return (path, NODESCREATED, MAXSTACK)
+			return (state, NODESCREATED, MAXSTACK)
 		else:
 			temp = problem.getSuccessorsTD(state)
 			NODESCREATED += len(temp)
 			stack.extend(temp)
 			if MAXSTACK < len(stack):
 				MAXSTACK = len(stack)
-			if len(temp) < 1:
-				newPathFlag = True
+			#if len(temp) < 1:
+				#newPathFlag = True
 	return (None, NODESCREATED, MAXSTACK)
 
 def runTests():
@@ -127,23 +137,31 @@ def runTests():
 	print (bannr)
 	
 	#Testing BFS
+
 	print ("TESTING BFS",bannr)
 	bfsQueue = BFSTD(startState1,prob1)
 	print("Type of bfsQueue: ",type(bfsQueue))
 	#print("WIthin it is: ", bfsQueue)
 	#print("And that is: ", bfsQueue[0])
-	print("Which contains: ", type(bfsQueue[0][0]))
+	print("Which contains: ", type(bfsQueue[0]))
 	print ("Nodes created: ", str(bfsQueue[1]))
 	print ("Max Queue Size: ", str(bfsQueue[2]))
 
 	ResultsTup = bfsQueue
-	
-	print ("Path",bannr)
-	print ("Path length: ", len(bfsQueue[0]))
-	for items in ResultsTup[0]:
-		print ('-----^-------')
-		print(items.toString())
-	
+	numNodespath = 0
+	temp = ResultsTup[0]
+	print("Printing Path from goal to start")
+	while temp is not None:
+		numNodespath += 1
+		# print in here
+		print(temp.toString())
+		print(bannr)
+		temp = temp.parentState
+	print("Depth of Search was ", numNodespath)
+	print("Number of Nodes created ", ResultsTup[1])
+	print("Maximum size of the heap ",ResultsTup[2])
+
+
 	#Two-D testing####################################
 	print(bannr,"Testing 2D",bannr)
 
@@ -163,15 +181,23 @@ def runTests():
 	bfsQueue2 = BFSTD(startState2,prob2)
 	print ("Within BFSTree is: ",type(bfsQueue2))
 	#print ("And that is: ", bfsQueue2[0])
-	print ("Which contains: ", type(bfsQueue2[0][0]))
+	print ("Which contains: ", type(bfsQueue2[0]))
 	print ("Nodes created: ", str(bfsQueue2[1]))
 	print ("Max Queue Size: ", str(bfsQueue2[2]))
-	
-	print ("Path",bannr)
-	print ("Path length: ", len(bfsQueue2[0]))
-	for items in bfsQueue2[0]:
-		print ('------^-------')
-		print (items.toString())	
+
+	ResultsTup = bfsQueue2
+	numNodespath = 0
+	temp = ResultsTup[0]
+	print("Printing Path from goal to start")
+	while temp is not None:
+		numNodespath += 1
+		# print in here
+		print(temp.toString())
+		print(bannr)
+		temp = temp.parentState
+	print("Depth of Search was ", numNodespath)
+	print("Number of Nodes created ", ResultsTup[1])
+	print("Maximum size of the heap ", ResultsTup[2])
 
 	#TESTING DFS 1D
 	
