@@ -77,6 +77,32 @@ def usage():
 	
 	return bannr + infoMsg + '\n' + usgMsg + bannr
 
+def showcase():
+	stopShow = False
+
+	while(not stopShow):
+		showMNKY = input("Input MNKY: ")
+		showMNKY = getMNKY(showMNKY)
+
+		print ("M: ",showMNKY[0])
+		print ("N: ",showMNKY[1])
+		print ("K: ",showMNKY[2])
+		print ("Y: ",showMNKY[3])
+
+		print ("Randomized point set of size ",showMNKY[1], " and dimensionality ", showMNKY[3])
+		print ("*************************************************")
+		points = genSet(int(showMNKY[1]),int(showMNKY[3]))
+		print (points)
+	
+		stayShow = input("Run another test? (y/n)")
+		if (stayShow is 'n'):
+			stopShow = True	
+		elif (stayShow is 'y'):
+			print ("Start again! \n")
+		else:
+			print ("yeah I'm lazy. it just will keep going until you type n")
+	return
+	
 
 #MAIN#################
 
