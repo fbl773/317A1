@@ -215,7 +215,7 @@ def aStarGeneral(state, prob):
 			if dists > maxdist:
 				maxdist = dists
 
-		if prob.isOneProbGoal(currentState):
+		if prob.isGoal(currentState):
 			return (currentState, nodesCreated, maxSize, maxdist)
 		else:
 			newNodes.extend(prob.getSuccessorsGeneral(currentState))

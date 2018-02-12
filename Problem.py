@@ -231,10 +231,10 @@ class Problem:
 	"""
 	def isGoal(self, state):
 		for t in range(self.trucks):
-			if state.vLoc[t] != (0,0):
+			if state.vLoc[t].x != 0 and state.vLoc[t].y != 0:
 				return False
 		for p in range(self.packages):
-			if state.pLoc[p] != self.dest[p]:
+			if state.pLoc[p].x != self.dest[p].x and  state.pLoc[p].y != self.dest[p].y:
 				return False		
 		return True
 	
