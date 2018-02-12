@@ -90,14 +90,36 @@ class ProblemStateGeneral(object):
 		self.loaded = loaded
 		self.distance = distance
 		self.parentState = parent
+
+	"""
+	numLoaded()
+	Determines how many packages are on a particular truck.
+	:param truckID: an integer refering to which truck to look at
+	":returns: the number of packages loaded onto a truck.
+	"""
+	def numLoaded(self, truckID):
+		numPacks = 0
+		for i in self.loaded[truckID]:
+			if i is True:
+				numPacks += 1
+		return numPacks
+
+
 	"""
 	toString()
 	- Returns a string represntation Problem state Attributes
 	"""
 	def toString(self):
 		bannr = "\n****PROBLEM_STATE****\n"
-		return (bannr + "vLoc: " +str(self.vLoc) + '\n' +
-				"pLoc: " + str(self.pLoc) + '\n'+
+		vLocs = ''
+		pLocs = ''
+		for truck in self.vLoc:
+			vLocs += truck.toString() + ' '
+		for pack in self.pLoc:
+			pLocs += pack.toString() + ' '
+
+		return (bannr + "vLoc: " + vLocs + '\n' +
+				"pLoc: " + pLocs + '\n'+
 				"loaded: " + str(self.loaded) + '\n' +
 				"distance: " + str(self.distance) + '\n') 
 """
@@ -341,7 +363,7 @@ class Problem:
 		
 		for t in range(0,self.trucks,1):
 		
-			if len(state.loaded[t]) is self.k:
+			if state.numLoaded(t) is self.k:
 				#truck is full, legal moves is to drop something off
 				
 				for i in range (0,self.k,1):
@@ -366,10 +388,10 @@ class Problem:
 							cState.pLoc[newPI] = self.dest[pIndex]
 						newStates.append(cState) 
 			
-			elif len(state.loaded[t]) is 0:
+			elif  state.numLoaded(t) is 0:
 				#if truck has no packages, either go home or get new package
 				cState = copy.copy(state)
-				cState.distance[t] += coordinate.eudCalc(state.vLoc[t],(0,0))
+				cState.distance[t] += coordinate.eudCalc(state.vLoc[t],coordinate(0,0))
 				cState.parentState = state
 				newStates.append(cState)
 				
@@ -472,7 +494,7 @@ def runTests():
 			coord = coordinate(i, i+1)
 			dest.append(coord)
 	"""
-	
+	"""
 	
 	#Testing Input validity
 	print ("src: ",src, " dest: ", dest)
@@ -533,6 +555,27 @@ def runTests():
 	goalState = ProblemStateWithRef(origin,dest,False,0,None)
 	print ("GoalState is goal state? ",aProblem2.isOneProbGoalTD(goalState))
 	print ("StartState is goal state? ",aProblem2.isOneProbGoalTD(startState2))
+
+	"""
+
+	dests = [coordinate(0.5, 0.5), coordinate(1.0, 1.0)]
+	srcs = [coordinate(1.5,1.5), coordinate(0.7, 0.6)]
+
+	genProb = Problem(dests, srcs, 1, 1, 2)
+
+	loades = [False, False]
+	dists = [0]
+
+	genState = ProblemStateGeneral([coordinate(0,0)], list(srcs), [loades], dists, None)
+
+	succs = genProb.getSuccessorsGeneral(genState)
+
+	for state in succs:
+		print(state.toString())
+
+
+
+
 
 	print (bannr, "PROBLEM MODULE TESTING FINISHED",bannr)
 		
