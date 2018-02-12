@@ -29,14 +29,19 @@ def generatorSC():
 
 def searchSC():
 	Search.showcase()
-
+def problemSC():
+	Problem.showcase()
 
 
 
 #main
 arg1 = sys.argv[1]
 bannr = '\n*********************\n'
-runMe = arg1.split('-')[1]
+
+try:
+	runMe = arg1.split('-')[1]
+except Error as e:
+	print(usage())
 
 print ("Showcase MNKY",bannr)
 if (runMe is 'u'):
@@ -45,3 +50,5 @@ elif (runMe is 'g'):
 	generatorSC()
 elif (runMe is 's'):
 	searchSC()
+elif (runMe is 'p'):
+	problemSC()
