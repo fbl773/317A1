@@ -31,17 +31,19 @@ def searchSC():
 	Search.showcase()
 def problemSC():
 	Problem.showcase()
+def informedSC():
+	informedSearch.showcase()
 
 
 
 #main
-arg1 = sys.argv[1]
 bannr = '\n*********************\n'
 
 try:
+	arg1 = sys.argv[1]
 	runMe = arg1.split('-')[1]
-except Error as e:
-	print(usage())
+except:
+	sys.exit(usage())
 
 print ("Showcase MNKY",bannr)
 if (runMe is 'u'):
@@ -52,3 +54,5 @@ elif (runMe is 's'):
 	searchSC()
 elif (runMe is 'p'):
 	problemSC()
+elif (runMe is 'i'):
+	print ("Informed search totally works")
