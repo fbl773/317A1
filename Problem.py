@@ -104,6 +104,14 @@ class ProblemStateGeneral(object):
 				numPacks += 1
 		return numPacks
 
+	def __lt__(self, other):
+		selfSum = 0
+		othSum = 0
+		for i in range (0, len(self.distance)):
+			selfSum += self.distance[i]
+			othSum += other.distance[i]
+		return selfSum < othSum
+
 
 	"""
 	toString()
