@@ -24,6 +24,12 @@ def usage():
 	return msg
 
 
+def generatorSC():
+	genTests.showcase()
+
+
+
+
 #main
 arg1 = sys.argv[1]
 bannr = '\n*********************\n'
@@ -32,5 +38,6 @@ runMe = arg1.split('-')[1]
 print ("Showcase MNKY",bannr)
 if (runMe is 'u'):
 	print(usage())
-
+elif (runMe is 'g'):
+	generatorSC()
 
