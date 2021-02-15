@@ -66,7 +66,7 @@ class ProblemStateWithRef(object):
 				"distance: " + str(self.distance) + '\n') 
 	
 	def __lt__(self, other):
-    		return self.distance < other.distance
+		return self.distance < other.distance
 #ProblemState
 #Object to hold a state of the problem
 #with reference to itself
@@ -275,7 +275,7 @@ class Problem:
 				newStates.append(ProblemStateWithRef(self.dest, state.pLoc, state.loaded, state.distance + abs(self.dest - state.vLoc ), state) )
 		elif state.vLoc == self.src :
 			if state.loaded == False:
-				if state.pLoc != prob.dest:
+				if state.pLoc != state.dest:
 					newStates.append(ProblemStateWithRef(state.vLoc, state.pLoc, True, state.distance,state))
 				#also consider that it doesn't pick up package and move without package
 				newStates.append(ProblemStateWithRef(self.dest, state.pLoc, state.loaded, state.distance + abs(self.dest - state.vLoc), state))
