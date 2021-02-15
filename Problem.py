@@ -60,18 +60,13 @@ class ProblemStateWithRef(object):
 	"""
 	def toString(self):
 		bannr = "\n****PROBLEM_STATE****\n"
-		if(type(self.vLoc) is coordinate and type(self.pLoc) is coordinate):
-			return (bannr + "vLoc: " + str(self.vLoc.toString()) + '\n' +
-					"pLoc: " + str(self.pLoc.toString()) + '\n' +
-					"loaded: " + str(self.loaded) + '\n' +
-					"distance: " + str(self.distance) + '\n')
 		return (bannr + "vLoc: " +str(self.vLoc) + '\n' +
 				"pLoc: " + str(self.pLoc) + '\n'+
 				"loaded: " + str(self.loaded) + '\n' +
 				"distance: " + str(self.distance) + '\n') 
 	
 	def __lt__(self, other):
-    		return self.distance < other.distance
+		return self.distance < other.distance
 #ProblemState
 #Object to hold a state of the problem
 #with reference to itself
@@ -79,8 +74,7 @@ class ProblemStateWithRef(object):
 class ProblemStateGeneral(object):
 	vLoc = []
 	pLoc = []
-	#Note: loaded is going to ba a list of lists
-	loaded = []
+	loaded = [][]
 	distance = []
 	parentState = None
 
@@ -90,29 +84,6 @@ class ProblemStateGeneral(object):
 		self.loaded = loaded
 		self.distance = distance
 		self.parentState = parent
-
-	"""
-	numLoaded()
-	Determines how many packages are on a particular truck.
-	:param truckID: an integer refering to which truck to look at
-	":returns: the number of packages loaded onto a truck.
-	"""
-	def numLoaded(self, truckID):
-		numPacks = 0
-		for i in self.loaded[truckID]:
-			if i is True:
-				numPacks += 1
-		return numPacks
-
-	def __lt__(self, other):
-		selfSum = 0
-		othSum = 0
-		for i in range (0, len(self.distance)):
-			selfSum += self.distance[i]
-			othSum += other.distance[i]
-		return selfSum < othSum
-
-
 	"""
 	toString()
 	- Returns a string represntation Problem state Attributes
@@ -215,8 +186,7 @@ class Problem:
 		return: true of the state matches the goal state false otherwise
 	"""
 	def isOneProbGoalTD( self, state):
-		origin = coordinate(0.0,0.0)	
-		if (coordinate.intersect(state.vLoc,origin) and coordinate.intersect(self.dest, state.pLoc)):
+		if state.vLoc == (0,0) and state.pLoc == self.dest:
 			return True
 		else:
 			return False
@@ -230,11 +200,11 @@ class Problem:
 		return: true of the state matches the goal state false otherwise
 	"""
 	def isGoal(self, state):
-		for t in range(self.trucks):
-			if state.vLoc[t].x != 0 and state.vLoc[t].y != 0:
+		for t in range( self.trucks):
+			if state.vLoc[t] != (0,0):
 				return False
-		for p in range(self.packages):
-			if state.pLoc[p].x != self.dest[p].x and  state.pLoc[p].y != self.dest[p].y:
+		for p in range( self.packages):
+			if state.pLoc[p] != self.dest[p]:
 				return False		
 		return True
 	
@@ -305,7 +275,7 @@ class Problem:
 				newStates.append(ProblemStateWithRef(self.dest, state.pLoc, state.loaded, state.distance + abs(self.dest - state.vLoc ), state) )
 		elif state.vLoc == self.src :
 			if state.loaded == False:
-				if state.pLoc != self.dest:
+				if state.pLoc != state.dest:
 					newStates.append(ProblemStateWithRef(state.vLoc, state.pLoc, True, state.distance,state))
 				#also consider that it doesn't pick up package and move without package
 				newStates.append(ProblemStateWithRef(self.dest, state.pLoc, state.loaded, state.distance + abs(self.dest - state.vLoc), state))
