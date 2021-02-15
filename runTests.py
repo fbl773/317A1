@@ -5,13 +5,14 @@
 #    Lecture: 01
 #   Tutorial: T01	
 # Assignment: MNKY 
-#   Synopsis: Calls the runTest method of all the modules
+#   Synopsis: Calls the runTest method of all the modules when given a commandline arg.
 
 import Problem
 import Search
 import informedSearch
+import genTests
 import sys
-print ("MNKY Tester")
+
 
 def testProblem():
 	print ("PROBLEM")
@@ -23,23 +24,29 @@ def testUninformedSearch():
 	print ("SEARCH")
 	print ("------")
 	Search.runTests()
+	Search.timedTest()
 
 def testInformedSearch():
 	print ("INFORMED search")
 	print ("---------------")
 	informedSearch.runTests()
+	informedSearch.timedTest()
+
+def testGenerator():
+	print ("GENERATOR")
+	print ("---------")
+	genTests.runTests()
 
 #main
 runMe = sys.argv[1]
+print ("MNKY TESTER")
 
-#informed search
 if runMe is 'i':
 	testInformedSearch()
-#Uninformed Search
 elif runMe is 's':
-	testUinformedSearch()
-#Problem class
+	testUninformedSearch()
 elif runMe is 'p':
 	testProblem()
-else:
-	print("call with: i for informedSearch.py\n s for Search.py\n p for Problem.py\n")
+elif runMe is 'g':
+	testGenerator()
+

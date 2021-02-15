@@ -1,5 +1,6 @@
 import heapq
 import Problem
+from timeit import default_timer as timer
 """
 heuristic for the 1 problem
 
@@ -68,15 +69,15 @@ Alternative to brute force heuristic for M=N=1, N=Y=2
 perhpas consdier the distance to get each individual package to their goal
 break down the problem into a 1 problem
 """
-"""
+
 def heuristicMN1KY2(state, prob):
 	estCost = 0
 	for i in range(0,len(state.pLoc),1):
-		if stat.pLoc[0] is not prob.dest:
-			estCost = estCost + coordinate.eudCalc(state.pLoc[i],prob.dest[i])
+		if state.pLoc[i] is not prob.dest:
+			estCost = estCost + Problem.coordinate.eudCalc(state.pLoc[i],prob.dest[i])
 	return estCost
 			
-"""	
+
 
 """
 Greedy search
@@ -186,6 +187,49 @@ def aStarSearchWithRef(state, prob):
 
 
 """
+	aStarGeneral
+	A* search using our general successor This should handle a wider range of problems
+	:param state: the start state of the current search is a search object.
+	:param prob: the problem object for this search
+	:return: returns the goal state(with references to its parents), the number of nodes created, the largest size of the heap and the largest distance travelled by one truck in a tuple
+"""
+def aStarGeneral(state, prob):
+	#heap to sort states
+	heap = []
+	#temporary holder for new States
+	newNodes = []
+
+	#creating a heap out of the heap list
+	heapq.heappush(heap, (0, state))
+	maxSize = len(heap)
+	nodesCreated = len(heap)
+
+	while len(heap) > 0:
+		currentState = heapq.heappop(heap)[1]
+
+		#finds the maximum distance traveled and the sum of distances
+		maxdist = 0
+		sumdist = 0
+		for dists in currentState.distance:
+			sumdist += dists
+			if dists > maxdist:
+				maxdist = dists
+
+		if prob.isGoal(currentState):
+			return (currentState, nodesCreated, maxSize, maxdist)
+		else:
+			newNodes.extend(prob.getSuccessorsGeneral(currentState))
+			for vState in newNodes:
+				heapq.heappush(heap, (heuristicMN1KY2(vState, prob) + sumdist + 10*maxdist, vState))
+				nodesCreated += 1
+				newNodes.remove(vState)
+			if len(heap) > maxSize:
+				maxSize = len(heap)
+
+	return (None, nodesCreated, maxSize, maxdist)
+
+
+"""
 	The tests for the informed search
 """
 def runTests():
@@ -245,7 +289,37 @@ def runTests():
 	print("Maximum size of the heap ", aStar1[2])
 
 	#Testing 2D#######
-	print ("Testing 2D A*",bannr)
+	#print ("Testing 2D A*",bannr)
+
+	#Testing the general case
+
+	print("??????????????????????????????????????????????????????????????????????????????????")
+
+	dests = [Problem.coordinate(0.5, 0.5), Problem.coordinate(1.0, 1.0)]
+	srcs = [Problem.coordinate(1.5, 1.5), Problem.coordinate(0.7, 0.6)]
+
+	genProb = Problem.Problem(dests, srcs, 1, 1, 2)
+
+	loades = [False, False]
+	dists = [0]
+
+	genState = Problem.ProblemStateGeneral([Problem.coordinate(0, 0)], list(srcs), [loades], dists, None)
+
+	genStar = aStarGeneral(genState, genProb)
+
+	numNodespath = 0
+	temp = genStar[0]
+	print("Printing Path from goal to start")
+	while temp is not None:
+		numNodespath += 1
+		# print in here
+		print(temp.toString())
+		print(bannr)
+		temp = temp.parentState
+	print("Depth of Search was ", numNodespath)
+	print("Number of Nodes created ", genStar[1])
+	print("Maximum size of the heap ", genStar[2])
+	print("Max distance by one truck ", genStar[3] )
 	
 	
 	
@@ -254,5 +328,32 @@ def runTests():
 
 
 #	print("Final State of the Problem ", tstProb.toString())
+
+def timedTest():
+	testProb = Problem.Problem(0.5, 1.0, 1, 1, 1)
+	testState = Problem.ProblemStateWithRef(0, 1.0, False, 0, None)
+
+	#timing out the 1 problem
+	start = timer()
+	res = aStarSearchWithRef(testState, testProb)
+	end = timer()
+	print(" Result of A* on MNKY = 1 is ", end - start)
+
+	src = Problem.coordinate(0.5, 0.5)
+	dest = Problem.coordinate(1.0, 1.0)
+
+	tDProb = Problem.Problem(dest, src, 1, 1, 1)
+	tDStart = Problem.ProblemStateWithRef(Problem.coordinate(0,0), src, False, 0, None)
+	#timing the one problem on 2D
+	start = timer()
+	#res = aStarSearchWithRefTD(tDStart, tDProb )
+	end = timer()
+
+	#Add code to time for the general search.
+
+
+
+	test2dProb = Problem.Problem()
+
 
 

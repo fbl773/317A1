@@ -23,10 +23,10 @@ class ProblemState(object):
 		self.loaded = loaded
 		self.distance = distance
 		
-	"""
+	
 	#toString()
 	#- Returns a string represntation Problem state Attributes
-	"""
+	
 	def toString(self):
 		bannr = "\n****PROBLEM_STATE****\n"
 		return (bannr + "vLoc: " +str(self.vLoc) + '\n' +
@@ -90,8 +90,15 @@ class ProblemStateGeneral(object):
 	"""
 	def toString(self):
 		bannr = "\n****PROBLEM_STATE****\n"
-		return (bannr + "vLoc: " +str(self.vLoc) + '\n' +
-				"pLoc: " + str(self.pLoc) + '\n'+
+		vLocs = ''
+		pLocs = ''
+		for truck in self.vLoc:
+			vLocs += truck.toString() + ' '
+		for pack in self.pLoc:
+			pLocs += pack.toString() + ' '
+
+		return (bannr + "vLoc: " + vLocs + '\n' +
+				"pLoc: " + pLocs + '\n'+
 				"loaded: " + str(self.loaded) + '\n' +
 				"distance: " + str(self.distance) + '\n') 
 """
@@ -99,33 +106,31 @@ Coordinate object
 used for representing a point in 2D space
 """
 class coordinate(object):
-	x = 0.0
-	y = 0.0
+	x = 0
+	y = 0
 	
 	def __init__(self, newX, newY):
 		self.x = newX
 		self.y = newY
-	
+	"""
+	Check the equivilence of two points (intersect) 
+	"""
+	def intersect(coord1,coord2):
+		if (coord1.x != coord2.x):
+			return False
+		elif (coord1.y != coord2.y):
+			return False
+		else:
+			return True
 	"""
 	eudCalc()
 		calculate euclidean distance bewteen 2 points
 	"""
 	def eudCalc(cord1,cord2):
 		return math.sqrt((cord1.x - cord2.x)**2 + (cord1.y - cord2.y)**2)
-	
-	def getXY(self):
-		coord = []
-		coord.append(str(self.x))
-		coord.append(str(self.y))
-		return coord
-
 	def toString(self):
-		xy = self.getXY()
-		#print ("XY IS: ", type(xy), ' ', xy)
-		joined = ','.join(xy)
-		#print ("Joined is: " , joined)
-		retMe = '('+joined+')'
-		return retMe
+		return ('('+ str(self.x) + ',' + str(self.y) + ')')
+
 """
  Problem
   Class to store the problem successor function
@@ -152,8 +157,11 @@ class Problem:
 	"""
 	def toString(self):
 		bannr = "\n****PROBLEM****\n"
+		if(type(self.src) is coordinate and type(self.dest) is coordinate):
+			return (bannr + "Destination:Source" + '\n' +
+					str(self.dest.toString()) + ':' + str(self.src.toString()))
 		return(bannr + "Destination:Source" + '\n' +
-			  str(self.dest.toString()) + ':' + str(self.src.toString()))
+			  str(self.dest) + ':' + str(self.src))
 	"""
 	isOneProbGoal()
 	one problem Goal checking function
@@ -222,31 +230,31 @@ class Problem:
 		newStates = []
 		if state.vLoc == 0:
 			if state.loaded:
-				newStates.append( ProblemState(self.src, self.src, state.loaded, state.distance + abs(self.src - state.vLoc),state) )
-				newStates.append(ProblemState(self.dest, self.dest, state.loaded, state.distance + abs(self.dest - state.vLoc ),state) )
+				newStates.append( ProblemStateWithRef(self.src, self.src, state.loaded, state.distance + abs(self.src - state.vLoc),state) )
+				newStates.append(ProblemStateWithRef(self.dest, self.dest, state.loaded, state.distance + abs(self.dest - state.vLoc ),state) )
 			else:
-				newStates.append( ProblemState(self.src, state.pLoc, state.loaded, state.distance + abs(self.src - state.vLoc),state) )
-				newStates.append(ProblemState(self.dest, state.pLoc, state.loaded, state.distance + abs(self.dest - state.vLoc ),state) )
+				newStates.append( ProblemStateWithRef(self.src, state.pLoc, state.loaded, state.distance + abs(self.src - state.vLoc),state) )
+				newStates.append(ProblemStateWithRef(self.dest, state.pLoc, state.loaded, state.distance + abs(self.dest - state.vLoc ),state) )
 		elif state.vLoc == self.src :
 			if state.loaded == False:
 				if state.pLoc != self.dest:
-					newStates.append(ProblemState(state.vLoc, state.pLoc, True, state.distance,state))
+					newStates.append(ProblemStateWithRef(state.vLoc, state.pLoc, True, state.distance,state))
 				#also consider that it doesn't pick up package and move without package
-				newStates.append(ProblemState(self.dest, state.pLoc, state.loaded, state.distance + abs(self.dest - state.vLoc ),state) )
-				newStates.append(ProblemState(0, state.pLoc, state.loaded, state.distance + abs(0 - state.vLoc ),state) )
+				newStates.append(ProblemStateWithRef(self.dest, state.pLoc, state.loaded, state.distance + abs(self.dest - state.vLoc ),state) )
+				newStates.append(ProblemStateWithRef(0, state.pLoc, state.loaded, state.distance + abs(0 - state.vLoc ),state) )
 			else:
-				newStates.append(ProblemState(0, 0, state.loaded, state.distance + abs(0 - state.vLoc ),state))
-				newStates.append(ProblemState(self.dest, self.dest, state.loaded, state.distance + abs(self.dest - state.vLoc ),state))
+				newStates.append(ProblemStateWithRef(0, 0, state.loaded, state.distance + abs(0 - state.vLoc ),state))
+				newStates.append(ProblemStateWithRef(self.dest, self.dest, state.loaded, state.distance + abs(self.dest - state.vLoc ),state))
 		else:
 			if state.loaded == True:
 				#only legal state to drop off package.
-				newStates.append(ProblemState(state.vLoc, state.pLoc, False, state.distance,state))
+				newStates.append(ProblemStateWithRef(state.vLoc, state.pLoc, False, state.distance,state))
 				#also consider when it doesnt do the smart thing
-				newStates.append(ProblemState(0, 0, state.loaded, state.distance + abs(0 - state.vLoc),state))
-				newStates.append(ProblemState(self.src, self.src, state.loaded, state.distance + abs(self.src - state.vLoc),state))
+				newStates.append(ProblemStateWithRef(0, 0, state.loaded, state.distance + abs(0 - state.vLoc),state))
+				newStates.append(ProblemStateWithRef(self.src, self.src, state.loaded, state.distance + abs(self.src - state.vLoc),state))
 			else:
-				newStates.append( ProblemState( self.src, state.pLoc, state.loaded, state.distance + abs(self.src - state.vLoc ),state) )
-				newStates.append(ProblemState( 0, state.pLoc, state.loaded, state.distance + abs(0 - state.vLoc),state) )
+				newStates.append( ProblemStateWithRef( self.src, state.pLoc, state.loaded, state.distance + abs(self.src - state.vLoc ),state) )
+				newStates.append(ProblemStateWithRef( 0, state.pLoc, state.loaded, state.distance + abs(0 - state.vLoc),state) )
 				
 		return newStates
 	"""
@@ -297,28 +305,28 @@ class Problem:
 	"""
 	def getSuccessorsTD(self,state):
 		newStates = []
-		if state.vLoc == 0:
-			newStates.append( ProblemStateWithRef(self.src, state.pLoc, state.loaded, state.distance + coordinate.eudCalc((0,0), self.src), state) )
-			newStates.append(ProblemStateWithRef(self.dest, state.pLoc, state.loaded, state.distance + coordinate.eudCalc((0,0), self.dest), state) )
+		if state.vLoc.x == 0 and state.vLoc.y == 0:
+			newStates.append( ProblemStateWithRef(self.src, state.pLoc, state.loaded, state.distance + coordinate.eudCalc(coordinate(0,0), self.src), state) )
+			newStates.append(ProblemStateWithRef(self.dest, state.pLoc, state.loaded, state.distance + coordinate.eudCalc(coordinate(0,0), self.dest), state) )
 		elif state.vLoc == self.src :
 			if state.loaded == False:
 				if state.pLoc != self.dest: #package not already at destination
 					newStates.append(ProblemStateWithRef(state.vLoc, state.pLoc, True, state.distance, state))
 				#also consider that it doesn't pick up package and move without package
 				newStates.append(ProblemStateWithRef(self.dest, state.pLoc, state.loaded, state.distance + coordinate.eudCalc(state.vLoc, self.dest), state))
-				newStates.append(ProblemStateWithRef((0,0), state.pLoc, state.loaded, state.distance + coordinate.eudCalc(state.vLoc, (0,0)),state) )
+				newStates.append(ProblemStateWithRef(coordinate(0,0), state.pLoc, state.loaded, state.distance + coordinate.eudCalc(state.vLoc, coordinate(0,0)),state) )
 			else:
-				newStates.append(ProblemStateWithRef((0,0), (0,0), state.loaded, state.distance + coordinate.eudCalc(state.vLoc, (0,0)),state))
+				newStates.append(ProblemStateWithRef(coordinate(0,0), coordinate(0,0), state.loaded, state.distance + coordinate.eudCalc(state.vLoc, coordinate(0,0)),state))
 				newStates.append(ProblemStateWithRef(self.dest, self.dest, state.loaded, state.distance +  coordinate.eudCalc(state.vLoc, self.dest), state))
 		else:
 			if state.loaded == True:
-				newStates.append(ProblemState(state.vLoc, state.pLoc, False, state.distance, state))
+				newStates.append(ProblemStateWithRef(state.vLoc, state.pLoc, False, state.distance, state))
 				#also consider when it doesnt do the smart thing
-				newStates.append(ProblemStateWithRef((0,0), (0,0), state.loaded, state.distance + coordinate.eudCalc(state.vLoc, (0,0)),state))
+				newStates.append(ProblemStateWithRef(coordinate(0,0), coordinate(0,0), state.loaded, state.distance + coordinate.eudCalc(state.vLoc, coordinate(0,0)),state))
 				newStates.append(ProblemStateWithRef(self.src, self.src, state.loaded, state.distance +  coordinate.eudCalc(state.vLoc, self.src),state))
 			else:
 				newStates.append( ProblemStateWithRef( self.src, state.pLoc, state.loaded, state.distance + coordinate.eudCalc(state.vLoc, self.src),state) )
-				newStates.append(ProblemStateWithRef( (0,0), state.pLoc, state.loaded, state.distance + coordinate.eudCalc(state.vLoc, (0,0)),state) )
+				newStates.append(ProblemStateWithRef( coordinate(0,0), state.pLoc, state.loaded, state.distance + coordinate.eudCalc(state.vLoc, coordinate(0,0)),state) )
 		return newStates
 	
 	"""
@@ -333,7 +341,7 @@ class Problem:
 		
 		for t in range(0,self.trucks,1):
 		
-			if len(state.loaded[t]) is self.k:
+			if state.numLoaded(t) is self.k:
 				#truck is full, legal moves is to drop something off
 				
 				for i in range (0,self.k,1):
@@ -358,10 +366,10 @@ class Problem:
 							cState.pLoc[newPI] = self.dest[pIndex]
 						newStates.append(cState) 
 			
-			elif len(state.loaded[t]) is 0:
+			elif  state.numLoaded(t) is 0:
 				#if truck has no packages, either go home or get new package
 				cState = copy.copy(state)
-				cState.distance[t] += coordinate.eudCalc(state.vLoc[t],(0,0))
+				cState.distance[t] += coordinate.eudCalc(state.vLoc[t],coordinate(0,0))
 				cState.parentState = state
 				newStates.append(cState)
 				
@@ -433,66 +441,65 @@ def runTests():
 	
 	#for Y = 1
 	bannr = '\n*****************************\n'
+	src = 0.5		
+	dest = 1.0 
 
-# 	src = 0.5		
-# 	dest = 1.0 
-# 
-# 	"""
-# 	#taking in 2D, sohuld work for 1D as well
-# 	
-# 	sinput = []
-# 	dinput = []
-# 	
-# 	Y = int(input("Number of dimensions: "))
-# 	sources = input("Space seperated list of package sources: ")
-# 	sinput.extend(sources.split(' '))
-# 	destinations = input("Space seperated list of package destinations: ")
-# 	dinput.extend(destinations.split(' '))
-# 	
-# 	src = []
-# 	dest = []
-# 
-# 	if( Y ==1):
-# 		for value in sinput:
-# 			src.append(float(value))
-# 		for value in dinput:
-# 			dest.append(float(value))
-# 	else: #assume y =2 	
-# 		for i in range(1,len(sinput),2):
-# 			coord = coordinate(i, i+1)
-# 			src.append(coord)
-# 		for i in range(1,len(dinput),2):
-# 			coord = coordinate(i, i+1)
-# 			dest.append(coord)
-# 	"""
-# 	
-# 	
-# 	#Testing Input validity
-# 	print ("src: ",src, " dest: ", dest)
-# 
-# 	#Testing State Declaration
-# 	startState = ProblemState(0,src,False,0) # was startState = ProblemState(0,src,False,0) change back if error ~sarah
-# 	if startState is None:
-# 		print ("No no no no no no no no no no none")
-# 	else:
-# 		print ("StartState is not None: ", startState.toString())
-# 
-# 	print (bannr)
-# 
-# 	#Testing Problem Declaration
-# 	aProblem = Problem(dest,src,1,1,1)
-# 	print (aProblem.toString())
-# 
-# 	print (bannr)
-# 
-# 	#Testing Successor Function
-# 	successorList = aProblem.getOneProbSuccessors(startState)
-# 	successors = ''	
-# 	for s in successorList:
-# 		successors += s.toString()
-# 
-# 	print("Type of Succesors is: ", type(successorList))
-# 	print(" And it Contains: ", successors)
+	"""
+	#taking in 2D, sohuld work for 1D as well
+	
+	sinput = []
+	dinput = []
+	
+	Y = int(input("Number of dimensions: "))
+	sources = input("Space seperated list of package sources: ")
+	sinput.extend(sources.split(' '))
+	destinations = input("Space seperated list of package destinations: ")
+	dinput.extend(destinations.split(' '))
+	
+	src = []
+	dest = []
+
+	if( Y ==1):
+		for value in sinput:
+			src.append(float(value))
+		for value in dinput:
+			dest.append(float(value))
+	else: #assume y =2 	
+		for i in range(1,len(sinput),2):
+			coord = coordinate(i, i+1)
+			src.append(coord)
+		for i in range(1,len(dinput),2):
+			coord = coordinate(i, i+1)
+			dest.append(coord)
+	"""
+	"""
+	
+	#Testing Input validity
+	print ("src: ",src, " dest: ", dest)
+
+	#Testing State Declaration
+	startState = ProblemStateWithRef(0,src,False,0, None) # was startState = ProblemState(0,src,False,0) change back if error ~sarah
+	if startState is None:
+		print ("No no no no no no no no no no none")
+	else:
+		print ("StartState is not None: ", startState.toString())
+
+	print (bannr)
+
+	#Testing Problem Declaration
+	aProblem = Problem(dest,src,1,1,1)
+	print (aProblem.toString())
+
+	print (bannr)
+
+	#Testing Successor Function
+	successorList = aProblem.getOneProbSuccessors(startState)
+	successors = ''	
+	for s in successorList:
+		successors += s.toString()
+
+	print("Type of Succesors is: ", type(successorList))
+	print(" And it Contains: ", successors)
 
 	#Testing 2d problems
 	print("Testing 2D",bannr)
@@ -506,17 +513,43 @@ def runTests():
 	aProblem2 = Problem(dest,src,1,1,1)	
 	print("2DProblem: ",aProblem2.toString())
 	
-	print ("Type of 2DtoString: ", type(aProblem2.toString()))
-	print (" And that string is: ", aProblem2.toString())
-
-
-	
 	#Time to find those successors!
-	startState2 = ProblemStateWithRef(0,src,False,0,None)
+	startState2 = ProblemStateWithRef(coordinate(0, 0), src,False,0,None)
 	print("2DState: ", startState2.toString())
 	
 	#And now the moment we've all been waiting for!
-	#successors2 = aProblem2.getSuccessorsTD(startState2)
+	successorList2 = aProblem2.getSuccessorsTD(startState2)
+
+	successors = ''
+	for s in successorList2:
+		successors += s.toString()
+
+	print("Type of Succesors is: ", type(successorList2))
+	print(" And it Contains: ", successors)
+
+	print ("Testing goal State Function TD",bannr)
+	
+	origin = coordinate(0.0,0.0)
+	goalState = ProblemStateWithRef(origin,dest,False,0,None)
+	print ("GoalState is goal state? ",aProblem2.isOneProbGoalTD(goalState))
+	print ("StartState is goal state? ",aProblem2.isOneProbGoalTD(startState2))
+
+	"""
+
+	dests = [coordinate(0.5, 0.5), coordinate(1.0, 1.0)]
+	srcs = [coordinate(1.5,1.5), coordinate(0.7, 0.6)]
+
+	genProb = Problem(dests, srcs, 1, 1, 2)
+
+	loades = [False, False]
+	dists = [0]
+
+	genState = ProblemStateGeneral([coordinate(0,0)], list(srcs), [loades], dists, None)
+
+	succs = genProb.getSuccessorsGeneral(genState)
+
+	for state in succs:
+		print(state.toString())
 
 
 
