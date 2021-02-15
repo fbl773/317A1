@@ -37,8 +37,21 @@ def testGenerator():
 	print ("---------")
 	genTests.runTests()
 
+def usage():
+	msg = ("USAGE: testMNKY [-uigsp] \n"+
+		"-u Displays usage \n"+
+		"-i runs Informed search tester\n"+
+		"-s runs uninformed search tester\n"+
+		"-p runs Problem class tester\n"+
+		"-g runs the test case generator teter\n")
+	return msg
 #main
-runMe = sys.argv[1]
+try:
+	arg1 = sys.argv[1]
+	runMe = arg1.split('-')[1]
+except:
+	sys.exit(usage())
+
 print ("MNKY TESTER")
 
 if runMe is 'i':
@@ -49,4 +62,6 @@ elif runMe is 'p':
 	testProblem()
 elif runMe is 'g':
 	testGenerator()
+else:
+	print(usage())
 

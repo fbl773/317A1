@@ -242,5 +242,110 @@ def timedTest():
 
 	#potentially add code for the general function here too.
 
+def showcase():
+	bannr = '\n***************************\n'
+	
+
+	print ("SHOWCASE Search",bannr)
+	
+	print ("BFS MNKY=1",bannr)
+
+	src1 = Problem.coordinate(0.5,0) #Uses 2D points with a 0 y value
+	dst1 = Problem.coordinate(1.0,0)
+	origin = Problem.coordinate(0,0)
+	
+	#Intializing objects	
+	prob1 = Problem.Problem(dst1,src1,1,1,1)
+	startState1 = Problem.ProblemStateWithRef(origin,src1,False,0,None)
+	print ("Source: ",src1.toString()," Dest: ",dst1.toString())
+	
+	#Check Objects
+	print ("Problem and ProblemState",bannr)
+	print ("Problem: ", prob1.toString(),'\n')
+	print ("State: ", startState1.toString())
+	
+	pathString = ''
+	#Testing BFS
+	print ("BFS",bannr)
+	bfsQueue = BFSTD(startState1,prob1)
+	print("Type of bfsQueue: ",type(bfsQueue))	
+	print("Which contains: ", type(bfsQueue[0]))
+	
+	ResultsTup = bfsQueue
+	numNodespath = 0
+	temp = ResultsTup[0]
+	print("Printing Path from goal to start")
+	while temp is not None:
+		numNodespath += 1
+		# print in here
+		pathString += temp.toString()
+		pathString += bannr
+# 		print(temp.toString())
+# 		print(bannr)
+		temp = temp.parentState
+	print("Depth of Search was ", numNodespath)
+	print("Number of Nodes created ", ResultsTup[1])
+	print("Maximum size of the heap ", ResultsTup[2])
+	
+	showStates = input("Show all "+str(ResultsTup[1])+" states? (y/n)")
+	if (showStates is 'y'):
+		for state in bfsQueue2[0]:
+			print (pathString)
+	
+	
+	
+
+
+
+
+	
+	#Shwocase 2D 1
+	print ("\nBFS MNK=1 Y=2", bannr)
+	pathString = ''
+	#Defining Points
+	src2 = Problem.coordinate(0.5,0.5)
+	dst2 = Problem.coordinate(1.0,1.0)
+	print ("Source: ",src2.toString(),"\n Dest: ", dst2.toString())
+	
+	#Initializing Problem/State
+	prob2 = Problem.Problem(dst2,src2,1,1,1)
+	startState2 = Problem.ProblemStateWithRef(origin,src2,False,0,None)	
+	print ("Problem: ",prob2.toString())
+	print ("State: ", startState2.toString())
+
+	#Testing Search
+	print("TESTING 2D BFS",bannr)
+	bfsQueue2 = BFSTD(startState2,prob2)
+	print ("Within BFSTree is: ",type(bfsQueue2))
+	print ("Which contains: ", type(bfsQueue2[0]))
+
+	ResultsTup = bfsQueue2
+	numNodespath = 0
+	temp = ResultsTup[0]
+	print("Printing Path from goal to start")
+	while temp is not None:
+		numNodespath += 1
+		# print in here
+		pathString += temp.toString()
+		pathString += bannr
+# 		print(temp.toString())
+# 		print(bannr)
+		temp = temp.parentState
+	print("Depth of Search was ", numNodespath)
+	print("Number of Nodes created ", ResultsTup[1])
+	print("Maximum size of the heap ", ResultsTup[2])
+	
+	showStates = input("Show all "+str(ResultsTup[1])+" states? (y/n)")
+	if (showStates is 'y'):
+		for state in bfsQueue2[0]:
+			print (pathString)
+	
+	
+	print(bannr,"And now for some time stats!",bannr)
+	timedTest()
+	
+
+
+
 
 	

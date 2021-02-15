@@ -27,17 +27,32 @@ def usage():
 def generatorSC():
 	genTests.showcase()
 
+def searchSC():
+	Search.showcase()
+def problemSC():
+	Problem.showcase()
+def informedSearchSC():
+	informedSearch.showcase()
 
 
 
 #main
-arg1 = sys.argv[1]
 bannr = '\n*********************\n'
-runMe = arg1.split('-')[1]
+
+try:
+	arg1 = sys.argv[1]
+	runMe = arg1.split('-')[1]
+except:
+	sys.exit(usage())
 
 print ("Showcase MNKY",bannr)
 if (runMe is 'u'):
 	print(usage())
 elif (runMe is 'g'):
 	generatorSC()
-
+elif (runMe is 's'):
+	searchSC()
+elif (runMe is 'p'):
+	problemSC()
+elif (runMe is 'i'):
+	informedSearchSC()

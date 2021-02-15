@@ -474,6 +474,7 @@ def runTests():
 	src = 0.5		
 	dest = 1.0 
 
+
 	"""
 	#taking in 2D, sohuld work for 1D as well
 	
@@ -502,8 +503,8 @@ def runTests():
 			coord = coordinate(i, i+1)
 			dest.append(coord)
 	"""
-	"""
-	
+
+
 	#Testing Input validity
 	print ("src: ",src, " dest: ", dest)
 
@@ -564,7 +565,7 @@ def runTests():
 	print ("GoalState is goal state? ",aProblem2.isOneProbGoalTD(goalState))
 	print ("StartState is goal state? ",aProblem2.isOneProbGoalTD(startState2))
 
-	"""
+	
 
 	dests = [coordinate(0.5, 0.5), coordinate(1.0, 1.0)]
 	srcs = [coordinate(1.5,1.5), coordinate(0.7, 0.6)]
@@ -586,4 +587,60 @@ def runTests():
 
 
 	print (bannr, "PROBLEM MODULE TESTING FINISHED",bannr)
+	
+
+
+def showcase():
+	bannr = '\n*********************************\n'
+	
+	#for Y = 1
+	src = 0.5		
+	dest = 1.0 
+	
+	startState = ProblemStateWithRef(0,src,False,0, None) # was startState = ProblemState(0,src,False,0) change back if error ~sarah
+	aProblem = Problem(dest,src,1,1,1)
+	successorList = aProblem.getOneProbSuccessors(startState)
+
+	
+	
+	print("1D Problem/State Environment",bannr)
+
+	print ("src: ",src, " dest: ", dest)	
+	print ("Problem: ",aProblem.toString())
+	print ("State: ", startState.toString())
+	print ("Type of Succesors is: ", type(successorList[0]))
+	print ("In a list of length: ", len(successorList))
+
+	showSuccessors = input ("Show all " + str(len(successorList)) +" successors? (y/n)")
+	if(showSuccessors is 'y'):
+		for s in successorList:
+			print (s.toString())
+	
+	#For Y = 2
+	print("2D Problem/State Environment",bannr)
+	
+	src2 = coordinate(0.5,0.5)
+	dest2 = coordinate(1.0,1.0)	
+	aProblem2 = Problem(dest2,src2,1,1,1)	
+	startState2 = ProblemStateWithRef(coordinate(0, 0), src,False,0,None)
+	successorList2 = aProblem2.getSuccessorsTD(startState2)
+
+	
+	print("Source is: " , src2.toString())
+	print("Destination is: ", dest2.toString())
+	print("2DProblem: ",aProblem2.toString())
+	print("2DState: ", startState2.toString())
+	print("Type of Succesors is: ", type(successorList2[0]))
+	print("In a list of length: ", len(successorList2))
+
+
+	
+	showSuccessors = input ("Show all " + str(len(successorList2)) +" successors? (y/n)")
+	if (showSuccessors is 'y'):
+		for s in successorList2:
+			print (s.toString())
+	
+
+
+
 		

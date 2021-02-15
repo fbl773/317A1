@@ -319,7 +319,7 @@ def runTests():
 	print("Depth of Search was ", numNodespath)
 	print("Number of Nodes created ", genStar[1])
 	print("Maximum size of the heap ", genStar[2])
-	print("Max distance by one truck ", genStar[3] )
+	print("Max distance by one truck ", genStar[3])
 	
 	
 	
@@ -351,9 +351,42 @@ def timedTest():
 
 	#Add code to time for the general search.
 
+def showcase():
+	bannr = '\n*****************************\n'
 
+	print("A* MNKY=1",bannr)
 
-	test2dProb = Problem.Problem()
+	#Initialize environment
+	src = 0.5
+	dst = 1.0
+	tstProb = Problem.Problem(dst,src, 1, 1, 1)
+	tstState = Problem.ProblemStateWithRef(0,src,False,0, None)
+	aStar1 = aStarSearchWithRef(tstState,tstProb)
+	numNodespath = 0
+	temp = aStar1[0]
 
+	#Showcase environment.
+	print ("Environment is: ",bannr)
+	print ("Source: ", src,'\n',
+		"Dest : ", dst,'\n',
+	        tstProb.toString(),'\n',
+	        tstState.toString(),'\n')
+	print("Number of Nodes created ", aStar1[1])
+	print("Maximum size of the heap ", aStar1[2])
 
+	
+	#Check resultant depth
+	showPath = input("Show path knowing it could be pretty deep? (y/n)")
+
+	if (showPath is 'y'):
+		while temp is not None:
+			numNodespath += 1
+			print(temp.toString())
+			#print(bannr)
+			temp = temp.parentState
+		print("Depth of Search was ", numNodespath)
+	
+
+	print (bannr, "And now some time stats!",bannr)
+	timedTest()	
 
